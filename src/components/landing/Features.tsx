@@ -2,6 +2,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
+import featureCuradoria from "@/assets/feature-curadoria.jpg";
+import featureEncomenda from "@/assets/feature-encomenda.jpg";
+import featurePlaylists from "@/assets/feature-playlists.jpg";
+import featurePagamento from "@/assets/feature-pagamento.jpg";
+import featureContratos from "@/assets/feature-contratos.jpg";
+
 interface FeatureSection {
   icon: LucideIcon;
   badge: string;
@@ -10,6 +16,7 @@ interface FeatureSection {
   subtitle: string;
   bullets: string[];
   reverse?: boolean;
+  image: string;
 }
 
 const features: FeatureSection[] = [
@@ -24,6 +31,7 @@ const features: FeatureSection[] = [
       "Filtre por estilo, vibe e tema",
       "Algoritmo entende seu gosto musical",
     ],
+    image: featureCuradoria,
   },
   {
     icon: Music,
@@ -37,6 +45,7 @@ const features: FeatureSection[] = [
       "Receba músicas sob medida",
     ],
     reverse: true,
+    image: featureEncomenda,
   },
   {
     icon: Users,
@@ -49,6 +58,7 @@ const features: FeatureSection[] = [
       "Encontre e adicione músicas em equipe",
       "Visualize seu álbum antes mesmo de gravar",
     ],
+    image: featurePlaylists,
   },
   {
     icon: CreditCard,
@@ -62,6 +72,7 @@ const features: FeatureSection[] = [
       "O investimento pode se pagar com a receita do fonograma",
     ],
     reverse: true,
+    image: featurePagamento,
   },
   {
     icon: ShieldCheck,
@@ -74,6 +85,7 @@ const features: FeatureSection[] = [
       "Segurança jurídica total",
       "Integração com editoras e associações",
     ],
+    image: featureContratos,
   },
 ];
 
@@ -124,7 +136,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </ul>
       </motion.div>
 
-      {/* Visual side — abstract illustration */}
+      {/* Visual side — mockup */}
       <motion.div
         className="flex-1 max-w-md w-full"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -132,29 +144,15 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         viewport={{ once: true }}
         transition={{ duration: 0.7, delay: 0.2 }}
       >
-        <div className="relative aspect-square rounded-3xl border border-border bg-card/40 backdrop-blur-sm overflow-hidden">
-          {/* Decorative gradient blob */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              className="w-3/4 h-3/4 rounded-full bg-primary/10 blur-[60px]"
-              animate={{ scale: [1, 1.15, 1], rotate: [0, 5, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-            />
-          </div>
-
-          {/* Icon centered */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="p-6 rounded-2xl bg-primary/10 border border-primary/20">
-              <feature.icon className="w-16 h-16 text-primary" strokeWidth={1.5} />
-            </div>
-          </div>
-
-          {/* Decorative dots grid */}
-          <div className="absolute inset-8 grid grid-cols-6 grid-rows-6 gap-3 opacity-10 pointer-events-none">
-            {Array.from({ length: 36 }).map((_, i) => (
-              <div key={i} className="w-1 h-1 rounded-full bg-foreground" />
-            ))}
-          </div>
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/10">
+          <img
+            src={feature.image}
+            alt={feature.title}
+            className="w-full h-auto"
+            loading="lazy"
+            width={800}
+            height={800}
+          />
         </div>
       </motion.div>
     </div>
