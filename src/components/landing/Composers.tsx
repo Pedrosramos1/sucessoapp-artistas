@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { X, Music2, Play } from "lucide-react";
-import composerWaleria from "@/assets/composer-waleria.jpg";
+import composerWaleria from "@/assets/composer-waleria.png";
+import composerHugoHenrique from "@/assets/composer-hugo-henrique.png";
+import composerJeff from "@/assets/composer-jeff.png";
+import composerIkaro from "@/assets/composer-ikaro.png";
+import composerElias from "@/assets/composer-elias.png";
+import composerDanillo from "@/assets/composer-danillo.png";
 
 interface Composer {
   name: string;
@@ -32,6 +37,7 @@ const composers: Composer[] = [
   {
     name: "Danillo Davilla",
     streams: "6.5B",
+    photo: composerDanillo,
     hits: [
       "Wesley Safadão, Marília Mendonça - Ninguém é de Ferro",
       "Marília Mendonça - Eu Sei de Cor",
@@ -223,6 +229,7 @@ const composers: Composer[] = [
   {
     name: "Hugo Henrique",
     streams: "2.2B",
+    photo: composerHugoHenrique,
     hits: [
       "Hugo Henrique - Mala",
       "Matheus e Kauan, Ana Castela - Ilusão de Ótica",
@@ -234,6 +241,7 @@ const composers: Composer[] = [
   {
     name: "Jeff da Sanfona",
     streams: "2.0B",
+    photo: composerJeff,
     hits: [
       "Danilo e Davi - Apaga Apaga Apaga, Mudou o Texto",
       "Nattan, Diego e Victor Hugo - Andar de Baixo",
@@ -245,6 +253,7 @@ const composers: Composer[] = [
   {
     name: "Ikaro",
     streams: "1.4B",
+    photo: composerIkaro,
     hits: [
       "Diego e Victor Hugo - Tubarões",
       "Panda - Má Influência",
@@ -257,6 +266,7 @@ const composers: Composer[] = [
   {
     name: "Elias Mafra",
     streams: "766M",
+    photo: composerElias,
     hits: [
       "Guilherme e Benuto, Luan Santana - Quarto 67",
       "Maiara e Maraisa, Yasmin Santos - Solteira De Corpo",
