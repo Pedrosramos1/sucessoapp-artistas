@@ -224,6 +224,7 @@ const composers: Composer[] = [
   {
     name: "Marcello Henrique",
     streams: "2.7B",
+    photo: composerMarcello,
     hits: [
       "Murilo Huff, Henrique e Juliano - Desejando Eu",
       "Luan Pereira, Kaique e Felipe - Vacilona",
