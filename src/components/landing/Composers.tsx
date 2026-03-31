@@ -266,6 +266,7 @@ const composers: Composer[] = [
   {
     name: "Elias Mafra",
     streams: "766M",
+    photo: composerElias,
     hits: [
       "Guilherme e Benuto, Luan Santana - Quarto 67",
       "Maiara e Maraisa, Yasmin Santos - Solteira De Corpo",
