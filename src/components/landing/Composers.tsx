@@ -433,10 +433,14 @@ const Composers = () => {
               </button>
 
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
-                  <span className="text-2xl font-bold text-white font-display">
-                    {getInitials(selected.name)}
-                  </span>
+                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 overflow-hidden">
+                  {selected.photo ? (
+                    <img src={selected.photo} alt={selected.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl font-bold text-white font-display">
+                      {getInitials(selected.name)}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">
