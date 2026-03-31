@@ -241,6 +241,7 @@ const composers: Composer[] = [
   {
     name: "Jeff da Sanfona",
     streams: "2.0B",
+    photo: composerJeff,
     hits: [
       "Danilo e Davi - Apaga Apaga Apaga, Mudou o Texto",
       "Nattan, Diego e Victor Hugo - Andar de Baixo",
