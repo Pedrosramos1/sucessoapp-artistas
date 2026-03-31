@@ -85,6 +85,7 @@ const features: FeatureSection[] = [
       "Segurança jurídica total",
       "Integração com editoras e associações",
     ],
+    image: featureContratos,
   },
 ];
 
