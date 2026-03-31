@@ -229,6 +229,7 @@ const composers: Composer[] = [
   {
     name: "Hugo Henrique",
     streams: "2.2B",
+    photo: composerHugoHenrique,
     hits: [
       "Hugo Henrique - Mala",
       "Matheus e Kauan, Ana Castela - Ilusão de Ótica",
