@@ -45,6 +45,7 @@ const features: FeatureSection[] = [
       "Receba músicas sob medida",
     ],
     reverse: true,
+    image: featureEncomenda,
   },
   {
     icon: Users,
