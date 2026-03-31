@@ -207,6 +207,7 @@ const composers: Composer[] = [
   {
     name: "Edu Valim",
     streams: "2.8B",
+    photo: composerEduValim,
     hits: [
       "Henrique e Juliano - Sala de Espera, Meia Metade",
       "Marília Mendonça, Henrique e Juliano - Sabiá",
