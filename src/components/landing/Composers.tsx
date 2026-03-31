@@ -14,6 +14,7 @@ const composers: Composer[] = [
   {
     name: "Waleria Leão",
     streams: "8.7B",
+    photo: composerWaleria,
     hits: [
       "Zezé Di Camargo e Luciano - A Ferro e Fogo",
       "Marília Mendonça, Tayrone - Cé Tá Preparada",
