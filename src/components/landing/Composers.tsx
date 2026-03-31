@@ -253,6 +253,7 @@ const composers: Composer[] = [
   {
     name: "Ikaro",
     streams: "1.4B",
+    photo: composerIkaro,
     hits: [
       "Diego e Victor Hugo - Tubarões",
       "Panda - Má Influência",
