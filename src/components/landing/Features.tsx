@@ -31,6 +31,7 @@ const features: FeatureSection[] = [
       "Filtre por estilo, vibe e tema",
       "Algoritmo entende seu gosto musical",
     ],
+    image: featureCuradoria,
   },
   {
     icon: Music,
