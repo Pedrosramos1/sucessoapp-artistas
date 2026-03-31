@@ -7,6 +7,12 @@ import composerJeff from "@/assets/composer-jeff.png";
 import composerIkaro from "@/assets/composer-ikaro.png";
 import composerElias from "@/assets/composer-elias.png";
 import composerDanillo from "@/assets/composer-danillo.png";
+import composerDanielzao from "@/assets/composer-danielzao.png";
+import composerElan from "@/assets/composer-elan.png";
+import composerLeoSoares from "@/assets/composer-leo-soares.png";
+import composerDanCandido from "@/assets/composer-dan-candido.png";
+import composerEduValim from "@/assets/composer-edu-valim.png";
+import composerMarcello from "@/assets/composer-marcello.png";
 
 interface Composer {
   name: string;
@@ -123,6 +129,7 @@ const composers: Composer[] = [
   {
     name: "Danielzão",
     streams: "4.2B",
+    photo: composerDanielzao,
     hits: [
       "Diego e Victor Hugo - Tubarões",
       "Henrique e Juliano - Quem Ama Sempre Entende, Cuida Bem Dela",
@@ -154,6 +161,7 @@ const composers: Composer[] = [
   {
     name: "Elan Rubio",
     streams: "3.8B",
+    photo: composerElan,
     hits: [
       "Zé Neto e Cristiano - Oi Balde",
       "Henrique e Juliano - Eterno Replay",
@@ -171,6 +179,7 @@ const composers: Composer[] = [
   {
     name: "Leo Soares",
     streams: "3.6B",
+    photo: composerLeoSoares,
     hits: [
       "Israel e Rodolfo - Batom de Cereja, Arruma um Bão",
       "Ana Castela, Israel e Rodolfo - Bombonzinho",
@@ -182,6 +191,7 @@ const composers: Composer[] = [
   {
     name: "Dan Candido",
     streams: "3.5B",
+    photo: composerDanCandido,
     hits: [
       "Henrique e Juliano - Quase Algo, Amigo da Minha Saudade, Novo Eu",
       "Gustavo Mioto - Eu Fujo",
@@ -197,6 +207,7 @@ const composers: Composer[] = [
   {
     name: "Edu Valim",
     streams: "2.8B",
+    photo: composerEduValim,
     hits: [
       "Henrique e Juliano - Sala de Espera, Meia Metade",
       "Marília Mendonça, Henrique e Juliano - Sabiá",
@@ -213,6 +224,7 @@ const composers: Composer[] = [
   {
     name: "Marcello Henrique",
     streams: "2.7B",
+    photo: composerMarcello,
     hits: [
       "Murilo Huff, Henrique e Juliano - Desejando Eu",
       "Luan Pereira, Kaique e Felipe - Vacilona",
