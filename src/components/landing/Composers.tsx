@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { X, Music2, Play } from "lucide-react";
+import composerWaleria from "@/assets/composer-waleria.jpg";
 
 interface Composer {
   name: string;
