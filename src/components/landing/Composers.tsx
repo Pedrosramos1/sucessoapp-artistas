@@ -179,6 +179,7 @@ const composers: Composer[] = [
   {
     name: "Leo Soares",
     streams: "3.6B",
+    photo: composerLeoSoares,
     hits: [
       "Israel e Rodolfo - Batom de Cereja, Arruma um Bão",
       "Ana Castela, Israel e Rodolfo - Bombonzinho",
