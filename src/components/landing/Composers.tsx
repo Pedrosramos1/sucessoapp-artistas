@@ -390,12 +390,7 @@ const Composers = () => {
 
   return (
     <>
-      <section className="relative py-24 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/5 blur-[150px]" />
-        </div>
-
+      <section id="composers" className="relative py-28 overflow-hidden">
         <div className="relative px-4 max-w-6xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -404,9 +399,12 @@ const Composers = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Eles escreveram os maiores sucessos da{" "}
-              <span className="text-primary">última década.</span>
+            <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Compositores na plataforma
+            </span>
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
+              Juntos, somam mais de{" "}
+              <span className="text-highlight">60 bilhões de visualizações</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.{" "}
