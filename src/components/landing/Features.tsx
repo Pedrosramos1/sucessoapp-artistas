@@ -6,27 +6,52 @@ const features = [
   {
     icon: Search,
     title: "Só as melhores, sem bagunça",
-    description: "Navegue por compositores, filtre por estilo, vibe e tema. Encontre a música perfeita sem perder tempo.",
+    subtitle: "É o fim das guias espalhadas pelo WhatsApp.",
+    bullets: [
+      "Navegue pelos perfis dos maiores compositores do Brasil",
+      "Filtre por estilo, vibe e tema",
+      "Algoritmo entende seu gosto musical",
+    ],
   },
   {
     icon: Music,
     title: "Músicas Sob Encomenda",
-    description: "Solicite audições personalizadas de mais de 1.500 compositores cadastrados na plataforma.",
+    subtitle: "Pra quê correr atrás do sucesso? Agora ele vem até você.",
+    bullets: [
+      "Abra audições personalizadas",
+      "+1500 compositores podem criar pensando em você",
+      "Receba músicas sob medida",
+    ],
   },
   {
     icon: Users,
     title: "Playlists em Equipe",
-    description: "Crie playlists compartilhadas entre produtor, artista e A&R. Todo mundo na mesma página.",
+    subtitle: "Produtor musical, artista e A&R trabalhando na mesma playlist.",
+    bullets: [
+      "Crie playlists compartilhadas",
+      "Encontre e adicione músicas em equipe",
+      "Visualize seu álbum antes mesmo de gravar",
+    ],
   },
   {
     icon: CreditCard,
     title: "Um repertório que se paga sozinho",
-    description: "Parcele em até 12x sem juros. Invista no seu repertório e lucre com os resultados.",
+    subtitle: "Composições gigantes, que cabem no seu bolso.",
+    bullets: [
+      "Parcele a licença em até 12x",
+      "Lance a música",
+      "O investimento pode se pagar com a receita do fonograma",
+    ],
   },
   {
     icon: ShieldCheck,
     title: "Contratos Seguros",
-    description: "Licenças automáticas com segurança jurídica. Tudo registrado e protegido para você.",
+    subtitle: "Licenciar música pode ser complicado, mas a gente descomplica.",
+    bullets: [
+      "Envio automático de licenças",
+      "Segurança jurídica total",
+      "Integração com editoras e associações",
+    ],
   },
 ];
 
@@ -68,15 +93,25 @@ const Features = () => {
             >
               {/* Hover glow effect */}
               <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
+
               <motion.div
                 className="relative mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors"
                 whileHover={{ rotate: [0, -10, 10, 0], transition: { duration: 0.5 } }}
               >
                 <feature.icon className="w-6 h-6" />
               </motion.div>
-              <h3 className="relative text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="relative text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+
+              <h3 className="relative text-lg font-semibold mb-1">{feature.title}</h3>
+              <p className="relative text-muted-foreground text-sm mb-4 italic">{feature.subtitle}</p>
+
+              <ul className="relative space-y-2">
+                {feature.bullets.map((bullet) => (
+                  <li key={bullet} className="flex items-start gap-2 text-sm text-secondary-foreground">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
         </div>

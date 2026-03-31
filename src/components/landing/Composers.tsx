@@ -2,23 +2,44 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const composers = [
-  { name: "Waleria Leão", streams: "10B+", songs: "200+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/waleria-leao.webp" },
-  { name: "Danielzão", streams: "8B+", songs: "180+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/danielzao.webp" },
-  { name: "Batista Lima", streams: "5B+", songs: "150+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/batista-lima.webp" },
-  { name: "Junior Pepato", streams: "4B+", songs: "120+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/junior-pepato.webp" },
-  { name: "Dorgival Dantas", streams: "6B+", songs: "250+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/dorgival-dantas.webp" },
-  { name: "Roobin", streams: "3B+", songs: "100+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/roobin.webp" },
-  { name: "Kuke Viana", streams: "2B+", songs: "90+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/kuke-viana.webp" },
-  { name: "Nattan", streams: "7B+", songs: "160+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/nattan.webp" },
-  { name: "Gabriel Bala", streams: "2.5B+", songs: "80+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/gabriel-bala.webp" },
-  { name: "Iguinho e Lulinha", streams: "4B+", songs: "130+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/iguinho-lulinha.webp" },
-  { name: "Éder Samaniego", streams: "1.5B+", songs: "70+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/eder-samaniego.webp" },
-  { name: "Edu Luppa", streams: "3B+", songs: "110+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/edu-luppa.webp" },
-  { name: "Philipe Amorim", streams: "2B+", songs: "85+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/philipe-amorim.webp" },
-  { name: "Felipe Amorim", streams: "5B+", songs: "140+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/felipe-amorim.webp" },
-  { name: "Diego Silveira", streams: "1B+", songs: "60+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/diego-silveira.webp" },
-  { name: "Rapha Lucas", streams: "2B+", songs: "95+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/rapha-lucas.webp" },
+  { name: "Waleria Leão", streams: "8.7B", songs: "11 músicas" },
+  { name: "Danillo Davilla", streams: "6.5B", songs: "9 músicas" },
+  { name: "Bruno Cesar", streams: "5.3B", songs: "14 músicas" },
+  { name: "Bruno Sucesso", streams: "5.2B", songs: "13 músicas" },
+  { name: "Rodrigo Reys", streams: "5.1B", songs: "13 músicas" },
+  { name: "Marcolino", streams: "4.5B", songs: "8 músicas" },
+  { name: "Danielzão", streams: "4.2B", songs: "10 músicas" },
+  { name: "Lucas Ing", streams: "4.1B", songs: "9 músicas" },
+  { name: "Elan Rubio", streams: "3.8B", songs: "11 músicas" },
+  { name: "Leo Soares", streams: "3.6B", songs: "5 músicas" },
+  { name: "Dan Candido", streams: "3.5B", songs: "9 músicas" },
+  { name: "Edu Valim", streams: "2.8B", songs: "10 músicas" },
+  { name: "Marcello Henrique", streams: "2.7B", songs: "10 músicas" },
+  { name: "Hugo Henrique", streams: "2.2B", songs: "5 músicas" },
+  { name: "Jeff da Sanfona", streams: "2.0B", songs: "6 músicas" },
+  { name: "Ikaro", streams: "1.4B", songs: "5 músicas" },
 ];
+
+// Generate placeholder initials-based avatar colors
+const getAvatarColor = (name: string) => {
+  const colors = [
+    "from-violet-600 to-purple-700",
+    "from-blue-600 to-indigo-700",
+    "from-emerald-600 to-teal-700",
+    "from-rose-600 to-pink-700",
+    "from-amber-600 to-orange-700",
+    "from-cyan-600 to-blue-700",
+    "from-fuchsia-600 to-purple-700",
+    "from-lime-600 to-green-700",
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return colors[Math.abs(hash) % colors.length];
+};
+
+const getInitials = (name: string) => {
+  return name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+};
 
 const Composers = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,8 +63,9 @@ const Composers = () => {
             Eles escreveram os maiores sucessos da{" "}
             <span className="text-primary">última década.</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.{" "}
+            <span className="text-foreground font-medium">E agora um deles pode ser seu.</span>
           </p>
         </motion.div>
 
@@ -58,27 +80,24 @@ const Composers = () => {
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
               className="group relative rounded-2xl overflow-hidden border border-border bg-card/30 hover:border-primary/40 transition-colors duration-300"
             >
-              <div className="aspect-[3/4] overflow-hidden">
-                <motion.img
-                  src={composer.image}
-                  alt={composer.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                />
+              {/* Avatar placeholder with gradient */}
+              <div className={`aspect-[3/4] overflow-hidden bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center`}>
+                <span className="text-4xl md:text-5xl font-bold text-white/80 font-display select-none">
+                  {getInitials(composer.name)}
+                </span>
               </div>
+
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-              
+
               {/* Hover glow overlay */}
               <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500 pointer-events-none" />
-              
+
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="font-semibold text-sm md:text-base">{composer.name}</h3>
-                <div className="flex gap-3 mt-1 text-xs text-muted-foreground">
-                  <span>{composer.streams} streams</span>
-                  <span>•</span>
-                  <span>{composer.songs} músicas</span>
+                <div className="flex flex-col sm:flex-row sm:gap-3 mt-1 text-xs text-muted-foreground">
+                  <span className="font-medium text-primary/80">{composer.streams} streams</span>
+                  <span className="hidden sm:inline">•</span>
+                  <span>{composer.songs}</span>
                 </div>
               </div>
             </motion.div>
