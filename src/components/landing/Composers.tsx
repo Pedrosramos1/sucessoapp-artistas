@@ -37,6 +37,7 @@ const composers: Composer[] = [
   {
     name: "Danillo Davilla",
     streams: "6.5B",
+    photo: composerDanillo,
     hits: [
       "Wesley Safadão, Marília Mendonça - Ninguém é de Ferro",
       "Marília Mendonça - Eu Sei de Cor",
