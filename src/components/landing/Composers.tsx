@@ -129,6 +129,7 @@ const composers: Composer[] = [
   {
     name: "Danielzão",
     streams: "4.2B",
+    photo: composerDanielzao,
     hits: [
       "Diego e Victor Hugo - Tubarões",
       "Henrique e Juliano - Quem Ama Sempre Entende, Cuida Bem Dela",
