@@ -191,6 +191,7 @@ const composers: Composer[] = [
   {
     name: "Dan Candido",
     streams: "3.5B",
+    photo: composerDanCandido,
     hits: [
       "Henrique e Juliano - Quase Algo, Amigo da Minha Saudade, Novo Eu",
       "Gustavo Mioto - Eu Fujo",
