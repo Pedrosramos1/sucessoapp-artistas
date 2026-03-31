@@ -326,29 +326,31 @@ const ComposerCard = ({
 }) => (
   <button
     onClick={onClick}
-    className="shrink-0 w-[220px] group cursor-pointer rounded-2xl overflow-hidden border border-border bg-card/30 hover:border-primary/50 hover:bg-card/60 transition-all duration-300 text-left"
+    className="shrink-0 w-[200px] group cursor-pointer text-left"
   >
     <div
-      className={`aspect-[4/3] bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center relative overflow-hidden`}
+      className={`aspect-square rounded-2xl bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center relative overflow-hidden border border-border/50 group-hover:border-primary/40 transition-all duration-300`}
     >
       {composer.photo ? (
         <img src={composer.photo} alt={composer.name} className="w-full h-full object-cover" />
       ) : (
-        <span className="text-3xl font-bold text-white/80 font-display select-none">
+        <span className="text-4xl font-bold text-white/60 font-display select-none">
           {getInitials(composer.name)}
         </span>
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-3">
+        <p className="text-[11px] text-white/70 font-medium">
+          {composer.streams} visualizações
+        </p>
+      </div>
     </div>
-    <div className="p-3">
-      <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
+    <div className="mt-2.5 px-0.5">
+      <h3 className="font-semibold text-sm truncate group-hover:text-highlight transition-colors">
         {composer.name}
       </h3>
-      <p className="text-xs text-primary/70 font-medium mt-0.5">
-        {composer.streams} streams
-      </p>
-      <p className="text-[10px] text-muted-foreground mt-1">
-        {composer.hits.length} hits • clique para ver
+      <p className="text-xs text-muted-foreground mt-0.5">
+        Compositor
       </p>
     </div>
   </button>
@@ -388,12 +390,7 @@ const Composers = () => {
 
   return (
     <>
-      <section className="relative py-24 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/5 blur-[150px]" />
-        </div>
-
+      <section id="composers" className="relative py-28 overflow-hidden">
         <div className="relative px-4 max-w-6xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -402,9 +399,12 @@ const Composers = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Eles escreveram os maiores sucessos da{" "}
-              <span className="text-primary">última década.</span>
+            <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Compositores na plataforma
+            </span>
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
+              Juntos, somam mais de{" "}
+              <span className="text-highlight">60 bilhões de visualizações</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.{" "}
