@@ -161,6 +161,7 @@ const composers: Composer[] = [
   {
     name: "Elan Rubio",
     streams: "3.8B",
+    photo: composerElan,
     hits: [
       "Zé Neto e Cristiano - Oi Balde",
       "Henrique e Juliano - Eterno Replay",
