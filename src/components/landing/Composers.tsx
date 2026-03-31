@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const composers = [
   { name: "Waleria Leão", streams: "10B+", songs: "200+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/waleria-leao.webp" },
@@ -19,25 +20,22 @@ const composers = [
   { name: "Rapha Lucas", streams: "2B+", songs: "95+", image: "https://sucessoapp.com/wp-content/uploads/2024/01/rapha-lucas.webp" },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.05 } },
-};
-
-const item = {
-  hidden: { opacity: 0, scale: 0.95 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-};
-
 const Composers = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const titleY = useTransform(scrollYProgress, [0, 0.3], [60, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section ref={sectionRef} className="relative py-24 px-4 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/5 blur-[150px]" />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          style={{ y: titleY, opacity: titleOpacity }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
@@ -49,28 +47,32 @@ const Composers = () => {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6"
-        >
-          {composers.map((composer) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+          {composers.map((composer, i) => (
             <motion.div
               key={composer.name}
-              variants={item}
-              className="group relative rounded-2xl overflow-hidden border border-border bg-card/30 hover:border-primary/40 transition-all duration-300"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.5, delay: (i % 4) * 0.08, ease: "easeOut" }}
+              whileHover={{ y: -10, transition: { duration: 0.3 } }}
+              className="group relative rounded-2xl overflow-hidden border border-border bg-card/30 hover:border-primary/40 transition-colors duration-300"
             >
               <div className="aspect-[3/4] overflow-hidden">
-                <img
+                <motion.img
                   src={composer.image}
                   alt={composer.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover"
                   loading="lazy"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+              
+              {/* Hover glow overlay */}
+              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500 pointer-events-none" />
+              
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="font-semibold text-sm md:text-base">{composer.name}</h3>
                 <div className="flex gap-3 mt-1 text-xs text-muted-foreground">
@@ -81,7 +83,7 @@ const Composers = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
