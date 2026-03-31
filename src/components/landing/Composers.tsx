@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { X, Music2, Play } from "lucide-react";
-import composerWaleria from "@/assets/composer-waleria.jpg";
+import composerWaleria from "@/assets/composer-waleria.png";
+import composerHugoHenrique from "@/assets/composer-hugo-henrique.png";
+import composerJeff from "@/assets/composer-jeff.png";
+import composerIkaro from "@/assets/composer-ikaro.png";
+import composerElias from "@/assets/composer-elias.png";
+import composerDanillo from "@/assets/composer-danillo.png";
 
 interface Composer {
   name: string;
