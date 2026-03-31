@@ -7,6 +7,12 @@ import composerJeff from "@/assets/composer-jeff.png";
 import composerIkaro from "@/assets/composer-ikaro.png";
 import composerElias from "@/assets/composer-elias.png";
 import composerDanillo from "@/assets/composer-danillo.png";
+import composerDanielzao from "@/assets/composer-danielzao.png";
+import composerElan from "@/assets/composer-elan.png";
+import composerLeoSoares from "@/assets/composer-leo-soares.png";
+import composerDanCandido from "@/assets/composer-dan-candido.png";
+import composerEduValim from "@/assets/composer-edu-valim.png";
+import composerMarcello from "@/assets/composer-marcello.png";
 
 interface Composer {
   name: string;
