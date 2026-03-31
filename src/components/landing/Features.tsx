@@ -58,6 +58,7 @@ const features: FeatureSection[] = [
       "Encontre e adicione músicas em equipe",
       "Visualize seu álbum antes mesmo de gravar",
     ],
+    image: featurePlaylists,
   },
   {
     icon: CreditCard,
