@@ -309,9 +309,13 @@ const ComposerCard = ({
     <div
       className={`aspect-[4/3] bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center relative overflow-hidden`}
     >
-      <span className="text-3xl font-bold text-white/80 font-display select-none">
-        {getInitials(composer.name)}
-      </span>
+      {composer.photo ? (
+        <img src={composer.photo} alt={composer.name} className="w-full h-full object-cover" />
+      ) : (
+        <span className="text-3xl font-bold text-white/80 font-display select-none">
+          {getInitials(composer.name)}
+        </span>
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
     </div>
     <div className="p-3">
