@@ -7,6 +7,7 @@ interface Composer {
   name: string;
   streams: string;
   hits: string[];
+  photo?: string;
 }
 
 const composers: Composer[] = [
