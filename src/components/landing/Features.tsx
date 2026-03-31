@@ -72,6 +72,7 @@ const features: FeatureSection[] = [
       "O investimento pode se pagar com a receita do fonograma",
     ],
     reverse: true,
+    image: featurePagamento,
   },
   {
     icon: ShieldCheck,
