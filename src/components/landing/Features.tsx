@@ -2,6 +2,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
+import featureCuradoria from "@/assets/feature-curadoria.jpg";
+import featureEncomenda from "@/assets/feature-encomenda.jpg";
+import featurePlaylists from "@/assets/feature-playlists.jpg";
+import featurePagamento from "@/assets/feature-pagamento.jpg";
+import featureContratos from "@/assets/feature-contratos.jpg";
+
 interface FeatureSection {
   icon: LucideIcon;
   badge: string;
@@ -10,6 +16,7 @@ interface FeatureSection {
   subtitle: string;
   bullets: string[];
   reverse?: boolean;
+  image: string;
 }
 
 const features: FeatureSection[] = [
