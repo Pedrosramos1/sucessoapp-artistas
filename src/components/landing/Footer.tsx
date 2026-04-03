@@ -1,3 +1,5 @@
+import logo from "@/assets/logo-horizontal.png";
+
 const Footer = () => {
   return (
     <footer className="border-t border-border/50 py-10 px-6 md:px-12">
