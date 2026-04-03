@@ -38,6 +38,7 @@ const features: FeatureSection[] = [
       "Algoritmo entende seu gosto musical",
     ],
     image: featureCuradoria,
+    scrollScreen: screenExplorar,
   },
   {
     icon: Music,
