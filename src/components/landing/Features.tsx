@@ -22,6 +22,7 @@ interface FeatureSection {
   bullets: string[];
   reverse?: boolean;
   image: string;
+  scrollScreen?: string;
 }
 
 const features: FeatureSection[] = [
