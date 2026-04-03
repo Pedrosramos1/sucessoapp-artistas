@@ -73,7 +73,8 @@ const Hero = () => {
           <Button
             asChild
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300"
+            className="text-primary-foreground px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300 hover:shadow-lg"
+            style={{ background: 'var(--gradient-primary)' }}
           >
             <a href={CTA_LINK} target="_blank" rel="noopener noreferrer">
               Explorar músicas agora
