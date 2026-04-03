@@ -453,6 +453,7 @@ const ComposerCarouselCard = ({
       </motion.div>
     </motion.div>
   );
+};
 
 const Composers = () => {
   const scrollRef = useRef<HTMLDivElement>(null!);
