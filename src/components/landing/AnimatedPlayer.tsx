@@ -1,22 +1,28 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Play, Pause, SkipForward, SkipBack, Heart } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack, Heart, Plus, Users } from "lucide-react";
+
+const members = [
+  { name: "Artista", initials: "AR", color: "bg-purple-500" },
+  { name: "Produtor", initials: "PR", color: "bg-blue-500" },
+  { name: "A&R", initials: "A&R", color: "bg-emerald-500" },
+];
 
 const songs = [
-  { title: "Selfie com o Futuro", artist: "João Machado", genre: "Pop", duration: "3:42", color: "from-purple-500/30 to-blue-500/20" },
-  { title: "Beijo na Testa", artist: "Bruno Sucesso", genre: "Sertanejo", duration: "3:18", color: "from-orange-500/30 to-red-500/20" },
-  { title: "Noite de Verão", artist: "Rebeka Lins", genre: "Pop", duration: "4:01", color: "from-pink-500/30 to-purple-500/20" },
-  { title: "Coração Blindado", artist: "Guth", genre: "Sertanejo", duration: "3:55", color: "from-blue-500/30 to-cyan-500/20" },
-  { title: "Céu de Diamante", artist: "Mãozinha", genre: "Pop", duration: "3:29", color: "from-emerald-500/30 to-teal-500/20" },
+  { title: "Selfie com o Futuro", artist: "João Machado", duration: "3:42", addedBy: 0 },
+  { title: "Beijo na Testa", artist: "Bruno Sucesso", duration: "3:18", addedBy: 1 },
+  { title: "Noite de Verão", artist: "Rebeka Lins", duration: "4:01", addedBy: 2 },
+  { title: "Coração Blindado", artist: "Guth", duration: "3:55", addedBy: 0 },
+  { title: "Céu de Diamante", artist: "Mãozinha", duration: "3:29", addedBy: 1 },
+  { title: "Fogo Cruzado", artist: "Nattan", duration: "3:12", addedBy: 2 },
 ];
 
 const AnimatedPlayer = () => {
   const [currentSong, setCurrentSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [liked, setLiked] = useState<Set<number>>(new Set([0, 2]));
+  const [liked, setLiked] = useState<Set<number>>(new Set([0, 2, 4]));
 
-  // Auto-advance songs
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
@@ -25,7 +31,7 @@ const AnimatedPlayer = () => {
           setCurrentSong((s) => (s + 1) % songs.length);
           return 0;
         }
-        return prev + 0.8;
+        return prev + 0.5;
       });
     }, 50);
     return () => clearInterval(interval);
@@ -45,152 +51,192 @@ const AnimatedPlayer = () => {
 
   return (
     <motion.div
-      className="flex-1 max-w-sm w-full mx-auto"
+      className="flex-1 max-w-md w-full mx-auto"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <div className="rounded-3xl bg-[hsl(240_15%_8%)] border border-white/10 shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.5)] overflow-hidden">
-        <div className="pt-6 px-5 pb-5 flex flex-col">
-            {/* Header */}
-            <p className="text-[10px] text-white/40 uppercase tracking-[0.15em] font-medium mb-3 text-center">
-              Músicas sob encomenda
-            </p>
+      <div className="rounded-2xl bg-card border border-border shadow-[0_20px_50px_-12px_hsl(0_0%_0%/0.4)] overflow-hidden">
+        {/* Header */}
+        <div className="px-5 pt-5 pb-3 border-b border-border/50">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-foreground text-sm font-bold">Playlist do Álbum</p>
+              <p className="text-muted-foreground text-xs mt-0.5">6 músicas · Colaborativa</p>
+            </div>
+            <div className="flex items-center -space-x-2">
+              {members.map((m) => (
+                <div
+                  key={m.name}
+                  className={`w-7 h-7 rounded-full ${m.color} flex items-center justify-center text-[9px] font-bold text-white border-2 border-card`}
+                  title={m.name}
+                >
+                  {m.initials}
+                </div>
+              ))}
+              <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center border-2 border-card">
+                <Plus className="w-3 h-3 text-muted-foreground" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-            {/* Now Playing Card */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSong}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35 }}
-                className={`rounded-2xl bg-gradient-to-br ${song.color} border border-white/10 p-4 mb-4`}
-              >
-                {/* Album art placeholder */}
-                <div className="w-full aspect-square rounded-xl bg-white/5 mb-3 flex items-center justify-center overflow-hidden relative">
+        {/* Now Playing mini bar */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSong}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="px-5 py-3 bg-primary/5 border-b border-border/30"
+          >
+            <div className="flex items-center gap-3">
+              {/* Visualizer */}
+              <div className="flex items-end gap-[2px] h-8 w-8 shrink-0">
+                {Array.from({ length: 4 }).map((_, i) => (
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-600/20"
-                    animate={{ rotate: isPlaying ? 360 : 0 }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    key={i}
+                    className="w-[4px] rounded-sm bg-primary"
+                    animate={{
+                      height: isPlaying ? [6, Math.random() * 24 + 8, 6] : 6,
+                    }}
+                    transition={{
+                      duration: 0.5 + Math.random() * 0.3,
+                      repeat: Infinity,
+                      delay: i * 0.1,
+                    }}
                   />
-                  <div className="w-16 h-16 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center z-10">
-                    <motion.div
-                      className="w-6 h-6 rounded-full bg-white/20"
-                      animate={{ scale: isPlaying ? [1, 1.2, 1] : 1 }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    />
-                  </div>
-                  {/* Visualizer bars */}
-                  <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-[3px]">
-                    {Array.from({ length: 16 }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="w-[3px] rounded-full bg-primary/60"
-                        animate={{
-                          height: isPlaying
-                            ? [4, Math.random() * 20 + 6, 4]
-                            : 4,
-                        }}
-                        transition={{
-                          duration: 0.4 + Math.random() * 0.4,
-                          repeat: Infinity,
-                          delay: i * 0.05,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                ))}
+              </div>
 
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-white text-sm font-bold leading-tight">{song.title}</p>
-                    <p className="text-white/50 text-xs mt-0.5">{song.artist}</p>
-                  </div>
-                  <motion.button
-                    whileTap={{ scale: 0.8 }}
-                    onClick={() => {
-                      setLiked((prev) => {
-                        const next = new Set(prev);
-                        if (next.has(currentSong)) next.delete(currentSong);
-                        else next.add(currentSong);
-                        return next;
-                      });
-                    }}
-                  >
-                    <Heart
-                      className={`w-4 h-4 transition-colors ${liked.has(currentSong) ? "text-red-400 fill-red-400" : "text-white/30"}`}
-                    />
-                  </motion.button>
-                </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-foreground text-xs font-semibold truncate">{song.title}</p>
+                <p className="text-muted-foreground text-[10px] truncate">{song.artist}</p>
+              </div>
 
-                {/* Progress bar */}
-                <div className="mt-3">
-                  <div className="h-[3px] bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-white/60 rounded-full"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between mt-1">
-                    <span className="text-[9px] text-white/30">
-                      {Math.floor((progress / 100) * 3)}:{String(Math.floor(((progress / 100) * 220) % 60)).padStart(2, "0")}
-                    </span>
-                    <span className="text-[9px] text-white/30">{song.duration}</span>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+              <div className="flex items-center gap-2">
+                <motion.button whileTap={{ scale: 0.8 }} onClick={handlePrev}>
+                  <SkipBack className="w-3.5 h-3.5 text-muted-foreground" />
+                </motion.button>
+                <motion.button
+                  whileTap={{ scale: 0.85 }}
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
+                >
+                  {isPlaying ? (
+                    <Pause className="w-3.5 h-3.5 text-primary-foreground" />
+                  ) : (
+                    <Play className="w-3.5 h-3.5 text-primary-foreground ml-0.5" />
+                  )}
+                </motion.button>
+                <motion.button whileTap={{ scale: 0.8 }} onClick={handleNext}>
+                  <SkipForward className="w-3.5 h-3.5 text-muted-foreground" />
+                </motion.button>
+              </div>
+            </div>
 
-            {/* Controls */}
-            <div className="flex items-center justify-center gap-6 mb-4">
-              <motion.button whileTap={{ scale: 0.8 }} onClick={handlePrev}>
-                <SkipBack className="w-5 h-5 text-white/50" />
-              </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.85 }}
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="w-11 h-11 rounded-full bg-primary flex items-center justify-center"
+            {/* Progress */}
+            <div className="mt-2 h-[2px] bg-border rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-primary rounded-full"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Song list */}
+        <div className="px-2 py-2 max-h-[280px] overflow-hidden">
+          {songs.map((s, i) => {
+            const isActive = i === currentSong;
+            const member = members[s.addedBy];
+
+            return (
+              <motion.div
+                key={s.title}
+                layout
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
+                  isActive ? "bg-primary/10" : "hover:bg-secondary/50"
+                }`}
+                onClick={() => {
+                  setCurrentSong(i);
+                  setProgress(0);
+                }}
               >
-                {isPlaying ? (
-                  <Pause className="w-5 h-5 text-white" />
-                ) : (
-                  <Play className="w-5 h-5 text-white ml-0.5" />
-                )}
-              </motion.button>
-              <motion.button whileTap={{ scale: 0.8 }} onClick={handleNext}>
-                <SkipForward className="w-5 h-5 text-white/50" />
-              </motion.button>
-            </div>
+                <span className="text-[10px] text-muted-foreground w-4 text-right shrink-0 font-mono">
+                  {isActive && isPlaying ? (
+                    <motion.span
+                      animate={{ opacity: [1, 0.3, 1] }}
+                      transition={{ duration: 1.2, repeat: Infinity }}
+                      className="text-primary text-xs"
+                    >
+                      ♪
+                    </motion.span>
+                  ) : (
+                    i + 1
+                  )}
+                </span>
 
-            {/* Playlist */}
-            <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">Próximas</p>
-            <div className="flex-1 overflow-hidden space-y-1">
-              {songs.map((s, i) => {
-                if (i === currentSong) return null;
-                return (
-                  <motion.div
-                    key={s.title}
-                    layout
-                    className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
-                    onClick={() => {
-                      setCurrentSong(i);
-                      setProgress(0);
-                    }}
-                  >
-                    <div className="w-8 h-8 rounded-md bg-white/5 flex items-center justify-center shrink-0">
-                      <Play className="w-3 h-3 text-white/40" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-white/80 text-xs font-medium truncate">{s.title}</p>
-                      <p className="text-white/30 text-[10px] truncate">{s.artist}</p>
-                    </div>
-                    <span className="text-[10px] text-white/20 shrink-0">{s.duration}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
+                <div className="min-w-0 flex-1">
+                  <p className={`text-xs font-medium truncate ${isActive ? "text-primary" : "text-foreground"}`}>
+                    {s.title}
+                  </p>
+                  <p className="text-muted-foreground text-[10px] truncate">{s.artist}</p>
+                </div>
+
+                <div
+                  className={`w-5 h-5 rounded-full ${member.color} flex items-center justify-center shrink-0`}
+                  title={`Adicionado por ${member.name}`}
+                >
+                  <span className="text-[7px] font-bold text-white">{member.initials}</span>
+                </div>
+
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLiked((prev) => {
+                      const next = new Set(prev);
+                      if (next.has(i)) next.delete(i);
+                      else next.add(i);
+                      return next;
+                    });
+                  }}
+                  className="shrink-0"
+                >
+                  <Heart
+                    className={`w-3.5 h-3.5 transition-colors ${
+                      liked.has(i) ? "text-red-400 fill-red-400" : "text-muted-foreground/30"
+                    }`}
+                  />
+                </motion.button>
+
+                <span className="text-[10px] text-muted-foreground/50 shrink-0 w-8 text-right">
+                  {s.duration}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        <div className="px-5 py-3 border-t border-border/30 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Users className="w-3.5 h-3.5" />
+            <span className="text-[10px]">3 colaboradores online</span>
+          </div>
+          <div className="flex items-center gap-1">
+            {members.map((m, i) => (
+              <motion.div
+                key={m.name}
+                className={`w-2 h-2 rounded-full ${m.color}`}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>

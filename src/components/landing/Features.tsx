@@ -55,7 +55,6 @@ const features: FeatureSection[] = [
     ],
     reverse: true,
     image: featureEncomenda,
-    animatedPlayer: true,
   },
   {
     icon: Users,
@@ -69,6 +68,7 @@ const features: FeatureSection[] = [
       "Visualize seu álbum antes mesmo de gravar",
     ],
     image: featurePlaylists,
+    animatedPlayer: true,
   },
   {
     icon: CreditCard,
