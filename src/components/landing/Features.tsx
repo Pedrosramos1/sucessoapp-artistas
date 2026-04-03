@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
+import AnimatedPlayer from "./AnimatedPlayer";
 
 import featureCuradoria from "@/assets/feature-curadoria.png";
 import featureEncomenda from "@/assets/feature-encomenda.png";
@@ -23,6 +24,7 @@ interface FeatureSection {
   reverse?: boolean;
   image: string;
   scrollScreen?: string;
+  animatedPlayer?: boolean;
 }
 
 const features: FeatureSection[] = [
@@ -53,6 +55,7 @@ const features: FeatureSection[] = [
     ],
     reverse: true,
     image: featureEncomenda,
+    animatedPlayer: true,
   },
   {
     icon: Users,
@@ -244,6 +247,9 @@ const StaticImageCard = ({ feature }: { feature: FeatureSection }) => {
 const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   if (feature.scrollScreen) {
     return <PhoneMockup screenSrc={feature.scrollScreen} />;
+  }
+  if (feature.animatedPlayer) {
+    return <AnimatedPlayer />;
   }
   return <StaticImageCard feature={feature} />;
 };
