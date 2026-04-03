@@ -11,8 +11,8 @@ const WaveformDivider = () => {
     ];
     return heights.map((h, i) => ({
       height: h,
-      animDuration: 2.2 + Math.sin(i * 1.3) * 0.8,
-      animDelay: i * 0.12,
+      animDuration: 4.5 + Math.sin(i * 1.3) * 1.5,
+      animDelay: i * 0.2,
     }));
   }, []);
 
@@ -30,7 +30,7 @@ const WaveformDivider = () => {
               className="flex-shrink-0"
               style={{ width: barWidth }}
               animate={{
-                scaleY: [1, 0.45 + Math.random() * 0.25, 1, 0.5 + Math.random() * 0.2, 1],
+                scaleY: [1, 0.65 + Math.random() * 0.15, 1, 0.7 + Math.random() * 0.15, 1],
               }}
               transition={{
                 duration: bar.animDuration,
