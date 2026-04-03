@@ -45,21 +45,14 @@ const AnimatedPlayer = () => {
 
   return (
     <motion.div
-      className="flex-1 max-w-xs w-full mx-auto"
+      className="flex-1 max-w-sm w-full mx-auto"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <div className="relative mx-auto" style={{ width: 280, height: 580 }}>
-        {/* Phone bezel */}
-        <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
-        <div className="absolute inset-[4px] rounded-[2.75rem] overflow-hidden bg-[hsl(240_15%_8%)]">
-          {/* Notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-2xl z-20" />
-
-          {/* Screen content */}
-          <div className="pt-10 px-4 h-full flex flex-col">
+      <div className="rounded-3xl bg-[hsl(240_15%_8%)] border border-white/10 shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.5)] overflow-hidden">
+        <div className="pt-6 px-5 pb-5 flex flex-col">
             {/* Header */}
             <p className="text-[10px] text-white/40 uppercase tracking-[0.15em] font-medium mb-3 text-center">
               Músicas sob encomenda
@@ -198,10 +191,7 @@ const AnimatedPlayer = () => {
                 );
               })}
             </div>
-          </div>
         </div>
-        {/* Bottom bar */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
       </div>
     </motion.div>
   );
