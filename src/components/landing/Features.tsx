@@ -205,7 +205,7 @@ const StaticImageCard = ({ feature }: { feature: FeatureSection }) => {
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-border bg-card"
+        className="relative rounded-2xl overflow-hidden border border-gray-200 bg-white"
         style={{
           rotateX,
           rotateY,
