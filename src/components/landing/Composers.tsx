@@ -515,11 +515,10 @@ const Composers = () => {
         >
           <div
             ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide py-8 snap-x snap-mandatory"
+            className="flex gap-6 overflow-x-auto scrollbar-hide py-8"
             style={{
               paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
               paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
-              WebkitOverflowScrolling: "touch",
             }}
           >
             {tripled.map((composer, i) => (
