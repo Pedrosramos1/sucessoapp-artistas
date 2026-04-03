@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import featureCuradoria from "@/assets/feature-curadoria.jpg";
@@ -89,41 +89,194 @@ const features: FeatureSection[] = [
   },
 ];
 
-const FeatureBlock = ({ feature }: { feature: FeatureSection }) => {
+/**
+ * Stagger container variants — each child enters sequentially
+ * with a 0.12s delay between them for a polished cascade effect.
+ */
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+/**
+ * Individual item fade+slide animation.
+ * Uses cubic-bezier for a professional, slightly bouncy easing.
+ */
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier — smooth deceleration
+    },
+  },
+};
+
+/**
+ * 3D tilt card component with parallax inner content.
+ * Uses perspective transform for depth, spring physics for fluid motion.
+ * On mobile: relies on scroll-based reveal instead of hover.
+ */
+const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Raw mouse position values
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring-smoothed rotation — creates the fluid, premium feel
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), {
+    stiffness: 200,
+    damping: 30,
+  });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), {
+    stiffness: 200,
+    damping: 30,
+  });
+
+  // Parallax offset for inner content — moves opposite to tilt
+  const innerX = useSpring(useTransform(mouseX, [-0.5, 0.5], [8, -8]), {
+    stiffness: 200,
+    damping: 30,
+  });
+  const innerY = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
+    stiffness: 200,
+    damping: 30,
+  });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    // Normalize to -0.5 to 0.5 range
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      className="flex-1 max-w-md w-full"
+      style={{ perspective: 800 }}
+      variants={itemVariants}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-border bg-card"
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        animate={{
+          scale: isHovered ? 1.04 : 1,
+          boxShadow: isHovered
+            ? "0 25px 60px -12px hsl(216 100% 50% / 0.25), 0 0 40px hsl(274 79% 66% / 0.1)"
+            : "0 4px 20px -4px hsl(0 0% 0% / 0.3)",
+        }}
+        transition={{
+          scale: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+          boxShadow: { duration: 0.4, ease: "easeOut" },
+        }}
+      >
+        {/* Parallax inner image — moves subtly opposite to tilt direction */}
+        <motion.div style={{ x: innerX, y: innerY, scale: 1.05 }}>
+          <img
+            src={feature.image}
+            alt={feature.title}
+            className="w-full h-auto"
+            loading="lazy"
+            width={800}
+            height={800}
+          />
+        </motion.div>
+
+        {/* Gradient overlay that intensifies on hover */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          animate={{
+            background: isHovered
+              ? "linear-gradient(135deg, hsl(216 100% 50% / 0.08), hsl(274 79% 66% / 0.06))"
+              : "linear-gradient(135deg, transparent, transparent)",
+          }}
+          transition={{ duration: 0.4 }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
   const y = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20`}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
     >
-      {/* Text side */}
+      {/* Text side — scroll-linked fade+slide */}
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
-        <span className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <motion.span
+          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          variants={itemVariants}
+        >
           <feature.icon className="w-3.5 h-3.5" />
           {feature.badge}
-        </span>
+        </motion.span>
 
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+        <motion.h2
+          className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
+          variants={itemVariants}
+        >
           {feature.title}{" "}
           <span className="text-highlight">{feature.highlight}</span>
-        </h2>
+        </motion.h2>
 
-        <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+        <motion.p
+          className="text-muted-foreground text-lg mb-8 leading-relaxed"
+          variants={itemVariants}
+        >
           {feature.subtitle}
-        </p>
+        </motion.p>
 
+        {/* Bullet points with staggered entry */}
         <ul className="space-y-4">
           {feature.bullets.map((bullet, i) => (
             <motion.li
               key={bullet}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+              variants={{
+                hidden: { opacity: 0, x: -24 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    duration: 0.45,
+                    delay: 0.3 + i * 0.1,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  },
+                },
+              }}
               className="flex items-start gap-3 text-base text-secondary-foreground"
             >
               <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
@@ -133,26 +286,9 @@ const FeatureBlock = ({ feature }: { feature: FeatureSection }) => {
         </ul>
       </motion.div>
 
-      {/* Visual side */}
-      <motion.div
-        className="flex-1 max-w-md w-full"
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.15 }}
-      >
-        <div className="relative rounded-2xl overflow-hidden border border-border">
-          <img
-            src={feature.image}
-            alt={feature.title}
-            className="w-full h-auto"
-            loading="lazy"
-            width={800}
-            height={800}
-          />
-        </div>
-      </motion.div>
-    </div>
+      {/* Visual side — 3D tilt card */}
+      <FeatureImageCard feature={feature} />
+    </motion.div>
   );
 };
 
@@ -160,11 +296,12 @@ const Features = () => {
   return (
     <section id="features" className="relative py-28 px-4 overflow-hidden">
       <div className="max-w-6xl mx-auto">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-8"
         >
           <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -176,7 +313,7 @@ const Features = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-6"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
@@ -191,9 +328,10 @@ const Features = () => {
           </p>
         </motion.div>
 
+        {/* Feature blocks with staggered scroll reveals */}
         <div className="space-y-28 lg:space-y-36 mt-24">
           {features.map((feature, i) => (
-            <FeatureBlock key={feature.title} feature={feature} />
+            <FeatureBlock key={feature.title} feature={feature} index={i} />
           ))}
         </div>
       </div>
