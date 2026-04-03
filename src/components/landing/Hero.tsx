@@ -52,59 +52,7 @@ const Hero = () => {
         </div>
       </nav>
 
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] rounded-full blur-[180px]" style={{ background: 'radial-gradient(ellipse, hsl(216 100% 50% / 0.12), hsl(274 79% 66% / 0.06), transparent)' }} />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] blur-[80px]" style={{ background: 'linear-gradient(to top, hsl(216 100% 50% / 0.08), transparent)' }} />
-      </div>
 
-      {/* Decorative floating brand icons */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
-        style={{ opacity }}
-      >
-        {/* Sparkle — top right, gentle float */}
-        <motion.div
-          className="absolute top-[15%] right-[8%] hidden md:block"
-          animate={{ y: [0, -12, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <img
-            src={iconSparkle}
-            alt=""
-            aria-hidden="true"
-            className="w-16 lg:w-20 opacity-20"
-          />
-        </motion.div>
-
-        {/* Music + sparkles — bottom left, gentle float */}
-        <motion.div
-          className="absolute bottom-[18%] left-[6%] hidden md:block"
-          animate={{ y: [0, 10, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >
-          <img
-            src={iconMusicSparkles}
-            alt=""
-            aria-hidden="true"
-            className="w-20 lg:w-24 opacity-15"
-          />
-        </motion.div>
-
-        {/* Sparkle — bottom right, smaller */}
-        <motion.div
-          className="absolute bottom-[25%] right-[12%] hidden lg:block"
-          animate={{ y: [0, 8, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        >
-          <img
-            src={iconSparkle}
-            alt=""
-            aria-hidden="true"
-            className="w-10 opacity-10"
-          />
-        </motion.div>
-      </motion.div>
 
       {/* Hero content */}
       <motion.div
