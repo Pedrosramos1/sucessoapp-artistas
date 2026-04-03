@@ -366,7 +366,7 @@ const Features = () => {
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-8"
         >
-          <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500">
+          <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Nossa Plataforma
           </span>
         </motion.div>
