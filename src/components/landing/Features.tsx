@@ -251,6 +251,9 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   if (feature.scrollScreen) {
     return <PhoneMockup screenSrc={feature.scrollScreen} />;
   }
+  if (feature.animatedAudition) {
+    return <AnimatedAudition />;
+  }
   if (feature.animatedPlayer) {
     return <AnimatedPlayer />;
   }
