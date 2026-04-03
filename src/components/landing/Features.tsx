@@ -150,11 +150,7 @@ const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
   );
 };
 
-const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
-  if (feature.scrollScreen) {
-    return <PhoneMockup screenSrc={feature.scrollScreen} />;
-  }
-
+const StaticImageCard = ({ feature }: { feature: FeatureSection }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -243,6 +239,13 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
       </motion.div>
     </motion.div>
   );
+};
+
+const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
+  if (feature.scrollScreen) {
+    return <PhoneMockup screenSrc={feature.scrollScreen} />;
+  }
+  return <StaticImageCard feature={feature} />;
 };
 
 const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: number }) => {
