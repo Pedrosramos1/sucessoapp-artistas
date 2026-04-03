@@ -49,9 +49,9 @@ const AnimatedAudition = () => {
       transition={{ duration: 0.5 }}
     >
       <motion.div style={{ y: cardY, scale: cardScale }}>
-        <div className="rounded-2xl bg-[hsl(0_0%_92%)] shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.12)] aspect-square flex flex-col items-center justify-center p-8 relative overflow-hidden">
+        <div className="rounded-2xl bg-card border border-border shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.3)] aspect-square flex flex-col items-center justify-center p-8 relative overflow-hidden">
           {/* Subtle inner shadow for depth */}
-          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_2px_8px_0_hsl(0_0%_0%/0.04)]" />
+          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_2px_8px_0_hsl(0_0%_0%/0.15)]" />
 
           {/* Time badge */}
           <motion.div
@@ -62,16 +62,16 @@ const AnimatedAudition = () => {
               transform: "translateX(-50%)",
             }}
           >
-            <div className="bg-white text-[hsl(0_0%_30%)] text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow-[0_2px_10px_-2px_hsl(0_0%_0%/0.12)] whitespace-nowrap">
+            <div className="bg-secondary text-foreground text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow-[0_2px_10px_-2px_hsl(0_0%_0%/0.3)] border border-border whitespace-nowrap">
               {String(Math.floor(currentTime / 60)).padStart(2, "0")}:{String(Math.floor(currentTime % 60)).padStart(2, "0")}.{String(Math.floor((currentTime % 1) * 100)).padStart(2, "0")}
             </div>
             {/* Stem line */}
-            <div className="w-[1px] h-4 bg-[hsl(0_0%_70%)] mx-auto" />
+            <div className="w-[1px] h-4 bg-muted-foreground/40 mx-auto" />
           </motion.div>
 
           {/* Playhead line */}
           <motion.div
-            className="absolute z-10 top-[48%] bottom-[30%] w-[1px] bg-[hsl(0_0%_70%)]"
+            className="absolute z-10 top-[48%] bottom-[30%] w-[1px] bg-muted-foreground/40"
             style={{
               left: `${8 + (progress / 100) * 84}%`,
             }}
@@ -86,8 +86,8 @@ const AnimatedAudition = () => {
                 style={{
                   height: `${h * 100}%`,
                   backgroundColor: i <= playedBars
-                    ? "hsl(0 75% 58%)"
-                    : "hsl(0 60% 75% / 0.4)",
+                    ? "hsl(216 100% 50%)"
+                    : "hsl(216 100% 50% / 0.15)",
                 }}
                 initial={{ scaleY: 0 }}
                 whileInView={{ scaleY: 1 }}
