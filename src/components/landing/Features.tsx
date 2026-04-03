@@ -7,6 +7,7 @@ import featureEncomenda from "@/assets/feature-encomenda.png";
 import featurePlaylists from "@/assets/feature-playlists.png";
 import featurePagamento from "@/assets/feature-pagamento.png";
 import featureContratos from "@/assets/feature-contratos.png";
+import screenExplorar from "@/assets/screen-explorar.png";
 
 import iconMusicCircle from "@/assets/icon-music-circle.png";
 import iconDiagonal from "@/assets/icon-diagonal.png";
