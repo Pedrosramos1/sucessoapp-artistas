@@ -3,42 +3,63 @@ import { useMemo } from "react";
 
 const WaveformDivider = () => {
   const bars = useMemo(() => {
-    const count = 32;
-    return Array.from({ length: count }, (_, i) => {
-      const x = i / count;
-      const h = Math.sin(x * Math.PI) * 0.5 + 0.2 + Math.sin(x * 7.3) * 0.15 + Math.sin(x * 13.1) * 0.1;
-      return {
-        height: Math.max(0.15, Math.min(1, h)),
-        delay: i * 0.06,
-        duration: 1.8 + Math.sin(i * 1.7) * 0.6,
-      };
-    });
+    // Create ribbon bars with varying heights matching the reference
+    const heights = [
+      0.55, 0.75, 0.45, 0.85, 0.35, 0.65, 0.90, 0.40, 0.70, 0.50,
+      0.80, 0.60, 0.95, 0.45, 0.70, 0.35, 0.55, 0.80, 0.40, 0.65,
+      0.50, 0.85, 0.60, 0.75, 0.45, 0.90, 0.55, 0.70, 0.85, 0.95,
+    ];
+    return heights.map((h, i) => ({
+      height: h,
+      animDuration: 2.2 + Math.sin(i * 1.3) * 0.8,
+      animDelay: i * 0.12,
+    }));
   }, []);
 
+  const barWidth = 28;
+  const notchDepth = 6;
+
   return (
-    <div className="w-full flex items-center justify-center py-6 overflow-hidden">
-      <div className="flex items-center gap-[6px] h-20 w-full max-w-4xl px-4">
-        {bars.map((bar, i) => (
-          <motion.div
-            key={i}
-            className="flex-1 rounded-sm"
-            style={{
-              background: `linear-gradient(180deg, hsl(270 80% 65%), hsl(216 100% 55%))`,
-              height: `${bar.height * 100}%`,
-              borderRadius: "3px 3px 0 0",
-              clipPath: "polygon(0 0, 40% 0, 50% 12%, 60% 0, 100% 0, 100% 100%, 60% 100%, 50% 88%, 40% 100%, 0 100%)",
-            }}
-            animate={{
-              scaleY: [1, 0.4 + Math.random() * 0.3, 1, 0.5 + Math.random() * 0.3, 1],
-            }}
-            transition={{
-              duration: bar.duration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: bar.delay,
-            }}
-          />
-        ))}
+    <div className="w-full overflow-hidden py-4">
+      <div className="flex items-start justify-center gap-[10px] h-32 mx-auto max-w-6xl px-4">
+        {bars.map((bar, i) => {
+          const h = bar.height * 120;
+          return (
+            <motion.div
+              key={i}
+              className="flex-shrink-0"
+              style={{ width: barWidth }}
+              animate={{
+                scaleY: [1, 0.45 + Math.random() * 0.25, 1, 0.5 + Math.random() * 0.2, 1],
+              }}
+              transition={{
+                duration: bar.animDuration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: bar.animDelay,
+              }}
+            >
+              <svg
+                width={barWidth}
+                height={h}
+                viewBox={`0 0 ${barWidth} ${h}`}
+                fill="none"
+                style={{ display: "block", originY: 0, transformOrigin: "top" }}
+              >
+                <defs>
+                  <linearGradient id={`grad-${i}`} x1="0.5" y1="0" x2="0.5" y2="1">
+                    <stop offset="0%" stopColor="hsl(270, 75%, 65%)" />
+                    <stop offset="100%" stopColor="hsl(216, 100%, 55%)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d={`M0,0 L${barWidth},0 L${barWidth},${h - notchDepth} L${barWidth / 2},${h} L0,${h - notchDepth} Z`}
+                  fill={`url(#grad-${i})`}
+                />
+              </svg>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
