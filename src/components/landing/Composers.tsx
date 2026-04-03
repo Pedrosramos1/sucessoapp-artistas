@@ -6,7 +6,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useRef, useState, useCallback, useEffect } from "react";
-import { X, Music2, Play } from "lucide-react";
+
 
 import composerWaleria from "@/assets/composer-waleria.png";
 import composerHugoHenrique from "@/assets/composer-hugo-henrique.png";
@@ -27,6 +27,21 @@ interface Composer {
   hits: string[];
   photo?: string;
 }
+
+const extractArtists = (hits: string[]): string[] => {
+  const artists = new Set<string>();
+  hits.forEach((hit) => {
+    const parts = hit.split(" - ");
+    if (parts.length > 1) {
+      // Split by comma to get individual artists from collabs
+      parts[0].split(",").forEach((a) => {
+        const trimmed = a.trim();
+        if (trimmed) artists.add(trimmed);
+      });
+    }
+  });
+  return Array.from(artists).slice(0, 6);
+};
 
 const composers: Composer[] = [
   {
@@ -323,14 +338,13 @@ const getInitials = (name: string) =>
 const ComposerCarouselCard = ({
   composer,
   containerRef,
-  onClick,
 }: {
   composer: Composer;
   containerRef: React.RefObject<HTMLDivElement>;
-  onClick: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const artists = extractArtists(composer.hits);
 
   const { scrollXProgress } = useScroll({
     container: containerRef,
@@ -355,9 +369,8 @@ const ComposerCarouselCard = ({
   return (
     <motion.div
       ref={cardRef}
-      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] cursor-pointer"
+      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]"
       style={{ scale, opacity, y }}
-      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -372,6 +385,7 @@ const ComposerCarouselCard = ({
           `,
         }}
       >
+        {/* Photo */}
         <div className="relative aspect-square overflow-hidden">
           {composer.photo ? (
             <motion.img
@@ -390,23 +404,42 @@ const ComposerCarouselCard = ({
               </span>
             </div>
           )}
-
           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-            <span className="text-xs text-white/80 font-medium backdrop-blur-sm bg-black/30 px-2.5 py-1 rounded-full">
-              {composer.streams} streams
-            </span>
-            <span className="text-xs text-white/60 backdrop-blur-sm bg-black/30 px-2.5 py-1 rounded-full">
-              {composer.hits.length} hits
-            </span>
-          </div>
         </div>
 
-        <div className="p-4">
+        {/* Name & Streams */}
+        <div className="px-4 pt-3 pb-2 text-center">
           <h3 className="font-bold text-base truncate">{composer.name}</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Compositor</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            STREAMS{" "}
+            <span className="text-primary font-semibold">{composer.streams}</span>
+          </p>
         </div>
+
+        {/* Artists */}
+        {artists.length > 0 && (
+          <div className="px-4 pb-4">
+            <div className="border-t border-border pt-3">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-3">
+                Artistas
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {artists.map((artist) => (
+                  <div key={artist} className="flex flex-col items-center gap-1.5">
+                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center`}>
+                      <span className="text-[10px] font-bold text-white/80 select-none">
+                        {getInitials(artist)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-muted-foreground text-center leading-tight line-clamp-2">
+                      {artist}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         <motion.div
           className="absolute inset-0 rounded-2xl pointer-events-none"
@@ -423,7 +456,6 @@ const ComposerCarouselCard = ({
 };
 
 const Composers = () => {
-  const [selected, setSelected] = useState<Composer | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null!);
   const isPaused = useRef(false);
   const animFrameRef = useRef<number>(0);
@@ -526,7 +558,6 @@ const Composers = () => {
                 key={`${composer.name}-${i}`}
                 composer={composer}
                 containerRef={scrollRef}
-                onClick={() => setSelected(composer)}
               />
             ))}
           </div>
@@ -560,75 +591,6 @@ const Composers = () => {
           </button>
         </div>
       </section>
-
-      {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelected(null)}
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-background/80 backdrop-blur-md"
-          />
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg max-h-[80vh] rounded-2xl border border-border bg-card shadow-2xl shadow-primary/10 overflow-hidden"
-          >
-            <div className={`relative p-6 bg-gradient-to-br ${getAvatarColor(selected.name)}`}>
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 p-1.5 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 overflow-hidden">
-                  {selected.photo ? (
-                    <img src={selected.photo} alt={selected.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-2xl font-bold text-white font-display">
-                      {getInitials(selected.name)}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">{selected.name}</h3>
-                  <p className="text-white/80 text-sm font-medium flex items-center gap-1.5">
-                    <Music2 className="w-3.5 h-3.5" />
-                    {selected.streams} streams • {selected.hits.length} hits
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 overflow-y-auto max-h-[50vh]">
-              <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3 font-medium">
-                Principais Hits
-              </p>
-              <ul className="space-y-1">
-                {selected.hits.map((hit, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary/50 transition-colors group"
-                  >
-                    <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                      <Play className="w-3 h-3 text-primary" />
-                    </span>
-                    <span className="text-sm text-secondary-foreground leading-snug">{hit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        </div>
-      )}
     </>
   );
 };
