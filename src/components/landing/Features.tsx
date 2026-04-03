@@ -331,7 +331,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-28 px-4 overflow-hidden" style={{ background: "hsl(0, 0%, 97%)", color: "hsl(0, 0%, 10%)" }}>
+    <section id="features" className="relative py-28 px-4 overflow-hidden">
       {/* Decorative brand elements — subtle background accents */}
       <motion.div
         className="absolute top-16 right-[5%] hidden lg:block pointer-events-none"
