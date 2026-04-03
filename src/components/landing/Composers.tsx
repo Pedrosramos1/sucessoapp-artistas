@@ -6,7 +6,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useRef, useState, useCallback, useEffect } from "react";
-import { X, Music2, Play } from "lucide-react";
+
 
 import composerWaleria from "@/assets/composer-waleria.png";
 import composerHugoHenrique from "@/assets/composer-hugo-henrique.png";
