@@ -23,6 +23,7 @@ interface FeatureSection {
   reverse?: boolean;
   image: string;
   scrollScreen?: string;
+  animatedPlayer?: boolean;
 }
 
 const features: FeatureSection[] = [
