@@ -332,30 +332,6 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 const Features = () => {
   return (
     <section id="features" className="relative py-28 px-4 overflow-hidden">
-      {/* Decorative brand elements — subtle background accents */}
-      <motion.div
-        className="absolute top-16 right-[5%] hidden lg:block pointer-events-none"
-        animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <img src={iconMusicCircle} alt="" aria-hidden="true" className="w-28 opacity-[0.06]" />
-      </motion.div>
-
-      <motion.div
-        className="absolute top-[40%] left-[3%] hidden lg:block pointer-events-none"
-        animate={{ y: [0, 12, 0], rotate: [0, -3, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      >
-        <img src={iconDiagonal} alt="" aria-hidden="true" className="w-40 opacity-[0.04]" />
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-[30%] right-[4%] hidden lg:block pointer-events-none"
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      >
-        <img src={iconDocument} alt="" aria-hidden="true" className="w-20 opacity-[0.06]" />
-      </motion.div>
 
 
       <div className="max-w-6xl mx-auto relative z-10">
