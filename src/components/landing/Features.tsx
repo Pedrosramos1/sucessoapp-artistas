@@ -205,7 +205,7 @@ const StaticImageCard = ({ feature }: { feature: FeatureSection }) => {
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-gray-200 bg-white"
+        className="relative rounded-2xl overflow-hidden border border-border bg-card"
         style={{
           rotateX,
           rotateY,
@@ -277,7 +277,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
     >
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
         <motion.span
-          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500"
+          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
           variants={itemVariants}
         >
           <feature.icon className="w-3.5 h-3.5" />
@@ -293,7 +293,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.h2>
 
         <motion.p
-          className="text-gray-500 text-lg mb-8 leading-relaxed"
+          className="text-muted-foreground text-lg mb-8 leading-relaxed"
           variants={itemVariants}
         >
           {feature.subtitle}
@@ -315,7 +315,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
                   },
                 },
               }}
-              className="flex items-start gap-3 text-base text-gray-700"
+              className="flex items-start gap-3 text-base text-secondary-foreground"
             >
               <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               {bullet}
@@ -331,7 +331,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-28 px-4 overflow-hidden" style={{ background: "hsl(0, 0%, 97%)", color: "hsl(0, 0%, 10%)" }}>
+    <section id="features" className="relative py-28 px-4 overflow-hidden">
       {/* Decorative brand elements — subtle background accents */}
       <motion.div
         className="absolute top-16 right-[5%] hidden lg:block pointer-events-none"
@@ -366,7 +366,7 @@ const Features = () => {
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-8"
         >
-          <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500">
+          <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Nossa Plataforma
           </span>
         </motion.div>
