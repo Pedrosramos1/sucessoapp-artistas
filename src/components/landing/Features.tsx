@@ -59,7 +59,7 @@ const features: FeatureSection[] = [
     subtitle: "Produtor musical, artista e A&R trabalhando na mesma playlist.",
     bullets: [
       "Crie playlists compartilhadas",
-      "Encontre e adicione músicas em equipe",
+      "Encontrem e adicione músicas em equipe",
       "Visualize seu álbum antes mesmo de gravar",
     ],
     image: featurePlaylists,
@@ -81,11 +81,11 @@ const features: FeatureSection[] = [
   {
     icon: ShieldCheck,
     badge: "Segurança",
-    title: "Contratos",
+    title: "🔒 Contratos",
     highlight: "Seguros.",
     subtitle: "Licenciar música pode ser complicado, mas a gente descomplica.",
     bullets: [
-      "Envio automático de licenças",
+      "Envio automático de licenças*",
       "Segurança jurídica total",
       "Integração com editoras e associações",
     ],
@@ -324,15 +324,8 @@ const Features = () => {
           className="text-center mb-6"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
-            Plataforma Completa
+            O App <span className="text-highlight">(per)feito</span> pra construir seu repertório.
           </h2>
-          <p className="text-xl md:text-2xl font-semibold text-muted-foreground mb-4">
-            Da organização à venda
-          </p>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            O caminho mais curto entre sua composição e o artista certo.
-            Sua Loja de Hits que trabalha 24h por dia vendendo suas composições por você.
-          </p>
         </motion.div>
 
         <div className="space-y-28 lg:space-y-36 mt-24">
