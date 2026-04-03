@@ -416,25 +416,28 @@ const ComposerCarouselCard = ({
           </p>
         </div>
 
-        {/* Artists */}
+        {/* Artists - Marquee */}
         {artists.length > 0 && (
-          <div className="px-4 pb-4">
-            <div className="border-t border-border pt-3">
+          <div className="px-0 pb-4 overflow-hidden">
+            <div className="border-t border-border pt-3 mx-4">
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-3">
                 Artistas
               </p>
-              <div className="grid grid-cols-3 gap-2">
-                {artists.map((artist) => (
-                  <div key={artist} className="flex flex-col items-center gap-1.5">
-                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center`}>
-                      <span className="text-[10px] font-bold text-white/80 select-none">
+            </div>
+            <div className="relative overflow-hidden">
+              <div className="flex animate-marquee whitespace-nowrap gap-4">
+                {[...artists, ...artists].map((artist, i) => (
+                  <span
+                    key={`${artist}-${i}`}
+                    className="inline-flex items-center gap-1.5 text-xs text-muted-foreground shrink-0"
+                  >
+                    <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center shrink-0`}>
+                      <span className="text-[8px] font-bold text-white/80 select-none">
                         {getInitials(artist)}
                       </span>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground text-center leading-tight line-clamp-2">
-                      {artist}
                     </span>
-                  </div>
+                    {artist}
+                  </span>
                 ))}
               </div>
             </div>
