@@ -57,6 +57,7 @@ const features: FeatureSection[] = [
     ],
     reverse: true,
     image: featureEncomenda,
+    animatedAudition: true,
   },
   {
     icon: Users,
