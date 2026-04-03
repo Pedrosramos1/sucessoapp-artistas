@@ -454,8 +454,7 @@ const ComposerCarouselCard = ({
     </motion.div>
   );
 
-
-  const [selected, setSelected] = useState<Composer | null>(null);
+const Composers = () => {
   const scrollRef = useRef<HTMLDivElement>(null!);
   const isPaused = useRef(false);
   const animFrameRef = useRef<number>(0);
