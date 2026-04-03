@@ -3,6 +3,8 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-horizontal.png";
 
+const CTA_LINK = "#";
+
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
