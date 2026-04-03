@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
@@ -7,6 +7,7 @@ import featureEncomenda from "@/assets/feature-encomenda.png";
 import featurePlaylists from "@/assets/feature-playlists.png";
 import featurePagamento from "@/assets/feature-pagamento.png";
 import featureContratos from "@/assets/feature-contratos.png";
+import screenExplorar from "@/assets/screen-explorar.png";
 
 import iconMusicCircle from "@/assets/icon-music-circle.png";
 import iconDiagonal from "@/assets/icon-diagonal.png";
@@ -21,6 +22,7 @@ interface FeatureSection {
   bullets: string[];
   reverse?: boolean;
   image: string;
+  scrollScreen?: string;
 }
 
 const features: FeatureSection[] = [
@@ -36,6 +38,7 @@ const features: FeatureSection[] = [
       "Algoritmo entende seu gosto musical",
     ],
     image: featureCuradoria,
+    scrollScreen: screenExplorar,
   },
   {
     icon: Music,
@@ -114,7 +117,40 @@ const itemVariants = {
   },
 };
 
-const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
+const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const screenY = useTransform(scrollYProgress, [0, 1], ["0%", "-55%"]);
+
+  return (
+    <motion.div
+      ref={containerRef}
+      className="flex-1 max-w-xs w-full mx-auto"
+      variants={itemVariants}
+    >
+      <div className="relative mx-auto" style={{ width: 280, height: 580 }}>
+        <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
+        <div className="absolute inset-[4px] rounded-[2.75rem] overflow-hidden bg-black">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-2xl z-20" />
+          <motion.img
+            src={screenSrc}
+            alt="App screenshot"
+            className="w-full h-auto"
+            style={{ y: screenY }}
+            loading="lazy"
+          />
+        </div>
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
+      </div>
+    </motion.div>
+  );
+};
+
+const StaticImageCard = ({ feature }: { feature: FeatureSection }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -203,6 +239,13 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
       </motion.div>
     </motion.div>
   );
+};
+
+const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
+  if (feature.scrollScreen) {
+    return <PhoneMockup screenSrc={feature.scrollScreen} />;
+  }
+  return <StaticImageCard feature={feature} />;
 };
 
 const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: number }) => {
