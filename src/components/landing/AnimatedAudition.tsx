@@ -42,14 +42,18 @@ const AnimatedAudition = () => {
   return (
     <motion.div
       ref={containerRef}
-      className="flex-1 max-w-sm w-full mx-auto"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      className="flex-1 max-w-xs w-full mx-auto"
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <motion.div style={{ y: cardY, scale: cardScale }}>
-        <div className="rounded-2xl bg-card border border-border shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.3)] aspect-square flex flex-col items-center justify-center p-8 relative overflow-hidden">
+      <motion.div
+        style={{ y: cardY, scale: cardScale }}
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="rounded-2xl bg-card border border-border shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.3)] aspect-square flex flex-col items-center justify-center p-6 relative overflow-hidden">
           {/* Subtle inner shadow for depth */}
           <div className="absolute inset-0 rounded-2xl shadow-[inset_0_2px_8px_0_hsl(0_0%_0%/0.15)]" />
 
