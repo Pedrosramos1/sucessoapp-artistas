@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useMemo, useState } from "react";
 
 const generateWaveform = (bars: number, seed: number) => {
@@ -16,18 +16,36 @@ const generateWaveform = (bars: number, seed: number) => {
 
 const AnimatedAudition = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const duration = 30;
   const totalBars = 50;
   const waveform = useMemo(() => generateWaveform(totalBars, 4), []);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const cardY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [50, 0, 0, -20]);
-  const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.94, 1, 1, 0.97]);
+  const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.92, 1, 1, 0.95]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,18 +61,19 @@ const AnimatedAudition = () => {
     <motion.div
       ref={containerRef}
       className="flex-1 max-w-xs w-full mx-auto"
+      style={{ perspective: 800 }}
       initial={{ opacity: 0, y: 40, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       <motion.div
-        style={{ y: cardY, scale: cardScale }}
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        ref={cardRef}
+        style={{ rotateX, rotateY, scale: cardScale, transformStyle: "preserve-3d" }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="rounded-2xl bg-card border border-border shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.3)] aspect-square flex flex-col items-center justify-center p-6 relative overflow-hidden">
-          {/* Subtle inner shadow for depth */}
           <div className="absolute inset-0 rounded-2xl shadow-[inset_0_2px_8px_0_hsl(0_0%_0%/0.15)]" />
 
           {/* Time badge */}
@@ -69,16 +88,13 @@ const AnimatedAudition = () => {
             <div className="bg-secondary text-foreground text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow-[0_2px_10px_-2px_hsl(0_0%_0%/0.3)] border border-border whitespace-nowrap">
               {String(Math.floor(currentTime / 60)).padStart(2, "0")}:{String(Math.floor(currentTime % 60)).padStart(2, "0")}.{String(Math.floor((currentTime % 1) * 100)).padStart(2, "0")}
             </div>
-            {/* Stem line */}
             <div className="w-[1px] h-4 bg-muted-foreground/40 mx-auto" />
           </motion.div>
 
-          {/* Playhead line */}
+          {/* Playhead */}
           <motion.div
             className="absolute z-10 top-[48%] bottom-[30%] w-[1px] bg-muted-foreground/40"
-            style={{
-              left: `${8 + (progress / 100) * 84}%`,
-            }}
+            style={{ left: `${8 + (progress / 100) * 84}%` }}
           />
 
           {/* Waveform */}
