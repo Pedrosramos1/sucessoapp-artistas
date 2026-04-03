@@ -11,8 +11,8 @@ const WaveformDivider = () => {
     ];
     return heights.map((h, i) => ({
       height: h,
-      animDuration: 2.2 + Math.sin(i * 1.3) * 0.8,
-      animDelay: i * 0.12,
+      animDuration: 4.5 + Math.sin(i * 1.3) * 1.5,
+      animDelay: i * 0.2,
     }));
   }, []);
 
