@@ -2,8 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-horizontal.png";
-import iconSparkle from "@/assets/icon-sparkle.png";
-import iconMusicSparkles from "@/assets/icon-music-sparkles.png";
 
 const CTA_LINK = "#";
 

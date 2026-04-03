@@ -11,9 +11,6 @@ import featurePagamento from "@/assets/feature-pagamento.png";
 import featureContratos from "@/assets/feature-contratos.png";
 import screenExplorar from "@/assets/screen-explorar.png";
 
-import iconMusicCircle from "@/assets/icon-music-circle.png";
-import iconDiagonal from "@/assets/icon-diagonal.png";
-import iconDocument from "@/assets/icon-document.png";
 
 interface FeatureSection {
   icon: LucideIcon;
