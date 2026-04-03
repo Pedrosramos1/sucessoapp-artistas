@@ -44,7 +44,7 @@ const WaveformDivider = () => {
                 height={h}
                 viewBox={`0 0 ${barWidth} ${h}`}
                 fill="none"
-                style={{ display: "block", originY: 0, transformOrigin: "top" }}
+                style={{ display: "block", transformOrigin: "top" }}
               >
                 <defs>
                   <linearGradient id={`grad-${i}`} x1="0.5" y1="0" x2="0.5" y2="1">
