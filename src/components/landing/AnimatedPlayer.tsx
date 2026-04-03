@@ -193,8 +193,6 @@ const AnimatedPlayer = () => {
             </div>
           </div>
         </div>
-        {/* Bottom bar */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
       </div>
     </motion.div>
   );
