@@ -6,41 +6,41 @@
 
 @layer base {
   :root {
-    --background: 0 0% 5%;
+    --background: 256 38% 8%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 8%;
+    --card: 256 35% 11%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 8%;
+    --popover: 256 35% 11%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 240 70% 65%;
+    --primary: 216 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%;
+    --secondary: 256 30% 14%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 50%;
+    --muted: 256 30% 12%;
+    --muted-foreground: 256 15% 55%;
 
-    --accent: 260 60% 58%;
+    --accent: 274 79% 66%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 240 70% 65%;
+    --border: 256 25% 18%;
+    --input: 256 25% 18%;
+    --ring: 216 100% 50%;
 
     --radius: 0.75rem;
 
-    --highlight: 240 80% 72%;
+    --highlight: 216 100% 55%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(240 70% 65%), hsl(260 60% 58%));
-    --gradient-glow: linear-gradient(135deg, hsl(240 70% 65% / 0.3), hsl(260 60% 58% / 0.15));
-    --shadow-glow: 0 0 40px hsl(240 70% 65% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(216 100% 50%), hsl(274 79% 66%));
+    --gradient-glow: linear-gradient(135deg, hsl(216 100% 50% / 0.3), hsl(274 79% 66% / 0.15));
+    --shadow-glow: 0 0 40px hsl(216 100% 50% / 0.2);
   }
 }
 
