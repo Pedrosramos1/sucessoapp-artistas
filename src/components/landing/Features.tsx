@@ -85,7 +85,7 @@ const features: FeatureSection[] = [
     highlight: "Seguros.",
     subtitle: "Licenciar música pode ser complicado, mas a gente descomplica.",
     bullets: [
-      "Envio automático de licenças",
+      "Envio automático de licenças*",
       "Segurança jurídica total",
       "Integração com editoras e associações",
     ],
