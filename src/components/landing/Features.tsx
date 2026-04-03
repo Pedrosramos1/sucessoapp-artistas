@@ -277,7 +277,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
     >
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
         <motion.span
-          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500"
+          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
           variants={itemVariants}
         >
           <feature.icon className="w-3.5 h-3.5" />
