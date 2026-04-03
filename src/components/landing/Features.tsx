@@ -81,7 +81,7 @@ const features: FeatureSection[] = [
   {
     icon: ShieldCheck,
     badge: "Segurança",
-    title: "Contratos",
+    title: "🔒 Contratos",
     highlight: "Seguros.",
     subtitle: "Licenciar música pode ser complicado, mas a gente descomplica.",
     bullets: [
