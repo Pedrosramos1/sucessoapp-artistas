@@ -86,8 +86,8 @@ const AnimatedAudition = () => {
                 style={{
                   height: `${h * 100}%`,
                   backgroundColor: i <= playedBars
-                    ? "hsl(0 75% 58%)"
-                    : "hsl(0 60% 75% / 0.4)",
+                    ? "hsl(216 100% 50%)"
+                    : "hsl(216 100% 50% / 0.15)",
                 }}
                 initial={{ scaleY: 0 }}
                 whileInView={{ scaleY: 1 }}
