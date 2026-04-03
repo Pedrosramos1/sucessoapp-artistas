@@ -23,6 +23,7 @@ const Hero = () => {
       </nav>
 const CTA_LINK = "#";
 
+const CTA_LINK = "#";
 
 
       {/* Hero content */}
