@@ -71,7 +71,7 @@ const AnimatedAudition = () => {
 
           {/* Playhead line */}
           <motion.div
-            className="absolute z-10 top-[48%] bottom-[30%] w-[1px] bg-[hsl(0_0%_70%)]"
+            className="absolute z-10 top-[48%] bottom-[30%] w-[1px] bg-muted-foreground/40"
             style={{
               left: `${8 + (progress / 100) * 84}%`,
             }}
