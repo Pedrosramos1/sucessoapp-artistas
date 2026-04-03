@@ -117,7 +117,44 @@ const itemVariants = {
   },
 };
 
+const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const screenY = useTransform(scrollYProgress, [0, 1], ["0%", "-55%"]);
+
+  return (
+    <motion.div
+      ref={containerRef}
+      className="flex-1 max-w-xs w-full mx-auto"
+      variants={itemVariants}
+    >
+      <div className="relative mx-auto" style={{ width: 280, height: 580 }}>
+        <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
+        <div className="absolute inset-[4px] rounded-[2.75rem] overflow-hidden bg-black">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-2xl z-20" />
+          <motion.img
+            src={screenSrc}
+            alt="App screenshot"
+            className="w-full h-auto"
+            style={{ y: screenY }}
+            loading="lazy"
+          />
+        </div>
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
+      </div>
+    </motion.div>
+  );
+};
+
 const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
+  if (feature.scrollScreen) {
+    return <PhoneMockup screenSrc={feature.scrollScreen} />;
+  }
+
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
