@@ -124,7 +124,7 @@ const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
     offset: ["start end", "end start"],
   });
 
-  const screenY = useTransform(scrollYProgress, [0, 1], ["0%", "-55%"]);
+  const screenY = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "-35%"]);
 
   return (
     <motion.div
