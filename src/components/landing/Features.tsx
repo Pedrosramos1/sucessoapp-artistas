@@ -278,7 +278,40 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 const Features = () => {
   return (
     <section id="features" className="relative py-28 px-4 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+      {/* Decorative brand elements — subtle background accents */}
+      <motion.div
+        className="absolute top-16 right-[5%] hidden lg:block pointer-events-none"
+        animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src={iconMusicCircle} alt="" aria-hidden="true" className="w-28 opacity-[0.06]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-[40%] left-[3%] hidden lg:block pointer-events-none"
+        animate={{ y: [0, 12, 0], rotate: [0, -3, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      >
+        <img src={iconDiagonal} alt="" aria-hidden="true" className="w-40 opacity-[0.04]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-[30%] right-[4%] hidden lg:block pointer-events-none"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      >
+        <img src={iconDocument} alt="" aria-hidden="true" className="w-20 opacity-[0.06]" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-[10%] left-[8%] hidden lg:block pointer-events-none"
+        animate={{ y: [0, 8, 0], scale: [1, 1.03, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+      >
+        <img src={iconNegociacao} alt="" aria-hidden="true" className="w-48 opacity-[0.05]" />
+      </motion.div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
