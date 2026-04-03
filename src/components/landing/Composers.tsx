@@ -355,7 +355,7 @@ const ComposerCarouselCard = ({
   return (
     <motion.div
       ref={cardRef}
-      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] snap-center cursor-pointer"
+      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] cursor-pointer"
       style={{ scale, opacity, y }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -515,11 +515,10 @@ const Composers = () => {
         >
           <div
             ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide py-8 snap-x snap-mandatory"
+            className="flex gap-6 overflow-x-auto scrollbar-hide py-8"
             style={{
               paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
               paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
-              WebkitOverflowScrolling: "touch",
             }}
           >
             {tripled.map((composer, i) => (
