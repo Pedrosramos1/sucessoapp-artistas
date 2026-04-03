@@ -191,7 +191,6 @@ const AnimatedPlayer = () => {
                 );
               })}
             </div>
-          </div>
         </div>
       </div>
     </motion.div>
