@@ -2,11 +2,11 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring } from "fram
 import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
-import featureCuradoria from "@/assets/feature-curadoria.jpg";
-import featureEncomenda from "@/assets/feature-encomenda.jpg";
-import featurePlaylists from "@/assets/feature-playlists.jpg";
-import featurePagamento from "@/assets/feature-pagamento.jpg";
-import featureContratos from "@/assets/feature-contratos.jpg";
+import featureCuradoria from "@/assets/feature-curadoria.png";
+import featureEncomenda from "@/assets/feature-encomenda.png";
+import featurePlaylists from "@/assets/feature-playlists.png";
+import featurePagamento from "@/assets/feature-pagamento.png";
+import featureContratos from "@/assets/feature-contratos.png";
 
 import iconMusicCircle from "@/assets/icon-music-circle.png";
 import iconDiagonal from "@/assets/icon-diagonal.png";
