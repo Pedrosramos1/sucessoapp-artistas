@@ -68,6 +68,7 @@ const features: FeatureSection[] = [
       "Visualize seu álbum antes mesmo de gravar",
     ],
     image: featurePlaylists,
+    animatedPlayer: true,
   },
   {
     icon: CreditCard,
