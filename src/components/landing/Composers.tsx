@@ -338,12 +338,122 @@ const getInitials = (name: string) =>
 const ComposerCarouselCard = ({
   composer,
   containerRef,
-  onClick,
 }: {
   composer: Composer;
   containerRef: React.RefObject<HTMLDivElement>;
-  onClick: () => void;
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const artists = extractArtists(composer.hits);
+
+  const { scrollXProgress } = useScroll({
+    container: containerRef,
+    target: cardRef,
+    axis: "x",
+    offset: ["start end", "end start"],
+  });
+
+  const rawScale = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [0.85, 0.92, 1, 0.92, 0.85]);
+  const rawOpacity = useTransform(scrollXProgress, [0, 0.3, 0.5, 0.7, 1], [0.5, 0.75, 1, 0.75, 0.5]);
+  const rawY = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [20, 8, 0, 8, 20]);
+
+  const scale = useSpring(rawScale, { stiffness: 300, damping: 35 });
+  const opacity = useSpring(rawOpacity, { stiffness: 300, damping: 35 });
+  const y = useSpring(rawY, { stiffness: 300, damping: 35 });
+
+  const rawGlow = useTransform(scrollXProgress, [0, 0.5, 1], [0, 1, 0]);
+  const glow = useSpring(rawGlow, { stiffness: 300, damping: 35 });
+  const [glowVal, setGlowVal] = useState(0);
+  useMotionValueEvent(glow, "change", (v) => setGlowVal(v));
+
+  return (
+    <motion.div
+      ref={cardRef}
+      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]"
+      style={{ scale, opacity, y }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
+        animate={{ scale: isHovered ? 1.04 : 1 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{
+          boxShadow: `
+            0 20px 50px -10px hsl(216 100% 50% / ${(glowVal * 0.25 + (isHovered ? 0.12 : 0)).toFixed(3)}),
+            0 0 30px hsl(274 79% 66% / ${(glowVal * 0.12 + (isHovered ? 0.06 : 0)).toFixed(3)})
+          `,
+        }}
+      >
+        {/* Photo */}
+        <div className="relative aspect-square overflow-hidden">
+          {composer.photo ? (
+            <motion.img
+              src={composer.photo}
+              alt={composer.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              style={{ imageRendering: "auto" }}
+              animate={{ scale: isHovered ? 1.08 : 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center`}>
+              <span className="text-5xl font-bold text-white/60 font-display select-none">
+                {getInitials(composer.name)}
+              </span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+        </div>
+
+        {/* Name & Streams */}
+        <div className="px-4 pt-3 pb-2 text-center">
+          <h3 className="font-bold text-base truncate">{composer.name}</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            STREAMS{" "}
+            <span className="text-primary font-semibold">{composer.streams}</span>
+          </p>
+        </div>
+
+        {/* Artists */}
+        {artists.length > 0 && (
+          <div className="px-4 pb-4">
+            <div className="border-t border-border pt-3">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-3">
+                Artistas
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {artists.map((artist) => (
+                  <div key={artist} className="flex flex-col items-center gap-1.5">
+                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center`}>
+                      <span className="text-[10px] font-bold text-white/80 select-none">
+                        {getInitials(artist)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-muted-foreground text-center leading-tight line-clamp-2">
+                      {artist}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <motion.div
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          animate={{
+            boxShadow: isHovered
+              ? "inset 0 0 0 1px hsl(216 100% 50% / 0.3)"
+              : "inset 0 0 0 1px transparent",
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
