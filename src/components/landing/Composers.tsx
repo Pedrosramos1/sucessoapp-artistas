@@ -557,7 +557,6 @@ const Composers = () => {
                 key={`${composer.name}-${i}`}
                 composer={composer}
                 containerRef={scrollRef}
-                onClick={() => setSelected(composer)}
               />
             ))}
           </div>
@@ -591,75 +590,6 @@ const Composers = () => {
           </button>
         </div>
       </section>
-
-      {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelected(null)}
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-background/80 backdrop-blur-md"
-          />
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg max-h-[80vh] rounded-2xl border border-border bg-card shadow-2xl shadow-primary/10 overflow-hidden"
-          >
-            <div className={`relative p-6 bg-gradient-to-br ${getAvatarColor(selected.name)}`}>
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 p-1.5 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 overflow-hidden">
-                  {selected.photo ? (
-                    <img src={selected.photo} alt={selected.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-2xl font-bold text-white font-display">
-                      {getInitials(selected.name)}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">{selected.name}</h3>
-                  <p className="text-white/80 text-sm font-medium flex items-center gap-1.5">
-                    <Music2 className="w-3.5 h-3.5" />
-                    {selected.streams} streams • {selected.hits.length} hits
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 overflow-y-auto max-h-[50vh]">
-              <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3 font-medium">
-                Principais Hits
-              </p>
-              <ul className="space-y-1">
-                {selected.hits.map((hit, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary/50 transition-colors group"
-                  >
-                    <span className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                      <Play className="w-3 h-3 text-primary" />
-                    </span>
-                    <span className="text-sm text-secondary-foreground leading-snug">{hit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        </div>
-      )}
     </>
   );
 };
