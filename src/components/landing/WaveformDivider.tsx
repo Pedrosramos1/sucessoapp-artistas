@@ -2,64 +2,77 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 
 const WaveformDivider = () => {
-  const bars = useMemo(() => {
-    // Create ribbon bars with varying heights matching the reference
-    const heights = [
-      0.55, 0.75, 0.45, 0.85, 0.35, 0.65, 0.90, 0.40, 0.70, 0.50,
-      0.80, 0.60, 0.95, 0.45, 0.70, 0.35, 0.55, 0.80, 0.40, 0.65,
-      0.50, 0.85, 0.60, 0.75, 0.45, 0.90, 0.55, 0.70, 0.85, 0.95,
-    ];
-    return heights.map((h, i) => ({
-      height: h,
-      animDuration: 4.5 + Math.sin(i * 1.3) * 1.5,
-      animDelay: i * 0.2,
+  const createBars = (count: number, seed: number) =>
+    Array.from({ length: count }, (_, i) => ({
+      height: 30 + Math.sin(i * seed + 1.2) * 25 + Math.sin(i * seed * 2.3) * 15,
+      duration: 4.5 + Math.sin(i * 1.3) * 1.5,
+      delay: i * 0.22,
     }));
-  }, []);
 
-  const barWidth = 28;
-  const notchDepth = 6;
+  const leftBars = useMemo(() => createBars(10, 0.9), []);
+  const rightBars = useMemo(() => createBars(10, 1.4), []);
+
+  const barWidth = 12;
+  const gap = 5;
+
+  const renderBars = (bars: ReturnType<typeof createBars>, side: "left" | "right") =>
+    bars.map((bar, i) => {
+      // Left: blue tones → Right: warm purple/orange tones
+      const hue = side === "left" ? 216 + i * 4 : 280 - i * 14;
+      const sat = side === "left" ? 80 : 60 + i * 3;
+      const light = 55 + i * 2;
+
+      return (
+        <motion.div
+          key={i}
+          className="rounded"
+          style={{
+            width: barWidth,
+            height: bar.height,
+            background: `hsl(${hue}, ${sat}%, ${light}%)`,
+            opacity: 0.45,
+            transformOrigin: "bottom",
+          }}
+          animate={{
+            scaleY: [1, 0.6 + Math.random() * 0.2, 1, 0.7 + Math.random() * 0.15, 1],
+          }}
+          transition={{
+            duration: bar.duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: bar.delay,
+          }}
+        />
+      );
+    });
 
   return (
-    <div className="w-full overflow-hidden py-4">
-      <div className="flex items-start justify-center gap-[10px] h-32 mx-auto max-w-6xl px-4">
-        {bars.map((bar, i) => {
-          const h = bar.height * 120;
-          return (
-            <motion.div
-              key={i}
-              className="flex-shrink-0"
-              style={{ width: barWidth }}
-              animate={{
-                scaleY: [1, 0.65 + Math.random() * 0.15, 1, 0.7 + Math.random() * 0.15, 1],
-              }}
-              transition={{
-                duration: bar.animDuration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: bar.animDelay,
-              }}
-            >
-              <svg
-                width={barWidth}
-                height={h}
-                viewBox={`0 0 ${barWidth} ${h}`}
-                fill="none"
-                style={{ display: "block", transformOrigin: "top" }}
-              >
-                <defs>
-                  <linearGradient id={`grad-${i}`} x1="0.5" y1="0" x2="0.5" y2="1">
-                    <stop offset="0%" stopColor="hsl(270, 75%, 65%)" />
-                    <stop offset="100%" stopColor="hsl(216, 100%, 55%)" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d={`M0,0 L${barWidth},0 L${barWidth},${h - notchDepth} L${barWidth / 2},${h} L0,${h - notchDepth} Z`}
-                  fill={`url(#grad-${i})`}
-                />
-              </svg>
-            </motion.div>
-          );
-        })}
+    <div className="relative z-10">
+      {/* Curved light section that overlaps the dark hero */}
+      <div
+        className="relative w-full bg-background"
+        style={{
+          borderRadius: "60% 60% 0 0 / 50px 50px 0 0",
+          marginTop: "-50px",
+          paddingTop: "40px",
+          paddingBottom: "0",
+        }}
+      >
+        {/* Left bars decoration */}
+        <div
+          className="absolute left-4 md:left-8 lg:left-12 flex items-end"
+          style={{ bottom: "50%", gap, transform: "translateY(50%)" }}
+        >
+          {renderBars(leftBars, "left")}
+        </div>
+
+        {/* Right bars decoration */}
+        <div
+          className="absolute right-4 md:right-8 lg:right-12 flex items-end"
+          style={{ bottom: "50%", gap, transform: "translateY(50%)" }}
+        >
+          {renderBars(rightBars, "right")}
+        </div>
       </div>
     </div>
   );
