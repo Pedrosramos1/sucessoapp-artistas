@@ -1,5 +1,11 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValueEvent,
+} from "framer-motion";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { X, Music2, Play } from "lucide-react";
 
 import composerWaleria from "@/assets/composer-waleria.png";
@@ -314,102 +320,166 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
-const row1 = composers.slice(0, Math.ceil(composers.length / 2));
-const row2 = composers.slice(Math.ceil(composers.length / 2));
-
-const ComposerCard = ({
+const ComposerCarouselCard = ({
   composer,
+  containerRef,
   onClick,
 }: {
   composer: Composer;
+  containerRef: React.RefObject<HTMLDivElement>;
   onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className="shrink-0 w-[220px] group cursor-pointer text-left"
-  >
-    <div
-      className={`aspect-square rounded-2xl bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center relative overflow-hidden border border-border/50 group-hover:border-primary/40 transition-all duration-300 group-hover:scale-[1.04] group-hover:shadow-lg group-hover:shadow-primary/15`}
-    >
-      {composer.photo ? (
-        <img
-          src={composer.photo}
-          alt={composer.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          style={{
-            imageRendering: "auto",
-            WebkitBackfaceVisibility: "hidden",
-            backfaceVisibility: "hidden",
-          }}
-        />
-      ) : (
-        <span className="text-4xl font-bold text-white/60 font-display select-none">
-          {getInitials(composer.name)}
-        </span>
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-3">
-        <p className="text-[11px] text-white/80 font-medium">
-          {composer.streams} streams
-        </p>
-      </div>
-    </div>
-    <div className="mt-2.5 px-0.5">
-      <h3 className="font-semibold text-sm truncate group-hover:text-highlight transition-colors">
-        {composer.name}
-      </h3>
-      <p className="text-xs text-muted-foreground mt-0.5">Compositor</p>
-    </div>
-  </button>
-);
-
-const ScrollRow = ({
-  items,
-  direction,
-  onSelect,
-  speed = 35,
-}: {
-  items: Composer[];
-  direction: "left" | "right";
-  onSelect: (c: Composer) => void;
-  speed?: number;
 }) => {
-  const doubled = [...items, ...items];
-  const animName = direction === "left" ? "scroll-left" : "scroll-right";
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const { scrollXProgress } = useScroll({
+    container: containerRef,
+    target: cardRef,
+    axis: "x",
+    offset: ["start end", "end start"],
+  });
+
+  const rawScale = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [0.85, 0.92, 1, 0.92, 0.85]);
+  const rawOpacity = useTransform(scrollXProgress, [0, 0.3, 0.5, 0.7, 1], [0.5, 0.75, 1, 0.75, 0.5]);
+  const rawY = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [20, 8, 0, 8, 20]);
+
+  const scale = useSpring(rawScale, { stiffness: 300, damping: 35 });
+  const opacity = useSpring(rawOpacity, { stiffness: 300, damping: 35 });
+  const y = useSpring(rawY, { stiffness: 300, damping: 35 });
+
+  const rawGlow = useTransform(scrollXProgress, [0, 0.5, 1], [0, 1, 0]);
+  const glow = useSpring(rawGlow, { stiffness: 300, damping: 35 });
+  const [glowVal, setGlowVal] = useState(0);
+  useMotionValueEvent(glow, "change", (v) => setGlowVal(v));
 
   return (
-    <div className="relative overflow-hidden group/row">
-      {/* Edge fades */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-      <div
-        className="flex gap-6 w-max"
+    <motion.div
+      ref={cardRef}
+      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] snap-center cursor-pointer"
+      style={{ scale, opacity, y }}
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
+        animate={{ scale: isHovered ? 1.04 : 1 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{
-          animation: `${animName} ${speed}s linear infinite`,
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLDivElement).style.animationPlayState = "paused";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLDivElement).style.animationPlayState = "running";
+          boxShadow: `
+            0 20px 50px -10px hsl(216 100% 50% / ${(glowVal * 0.25 + (isHovered ? 0.12 : 0)).toFixed(3)}),
+            0 0 30px hsl(274 79% 66% / ${(glowVal * 0.12 + (isHovered ? 0.06 : 0)).toFixed(3)})
+          `,
         }}
       >
-        {doubled.map((composer, i) => (
-          <ComposerCard
-            key={`${composer.name}-${i}`}
-            composer={composer}
-            onClick={() => onSelect(composer)}
-          />
-        ))}
-      </div>
-    </div>
+        <div className="relative aspect-square overflow-hidden">
+          {composer.photo ? (
+            <motion.img
+              src={composer.photo}
+              alt={composer.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              style={{ imageRendering: "auto" }}
+              animate={{ scale: isHovered ? 1.08 : 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center`}>
+              <span className="text-5xl font-bold text-white/60 font-display select-none">
+                {getInitials(composer.name)}
+              </span>
+            </div>
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+            <span className="text-xs text-white/80 font-medium backdrop-blur-sm bg-black/30 px-2.5 py-1 rounded-full">
+              {composer.streams} streams
+            </span>
+            <span className="text-xs text-white/60 backdrop-blur-sm bg-black/30 px-2.5 py-1 rounded-full">
+              {composer.hits.length} hits
+            </span>
+          </div>
+        </div>
+
+        <div className="p-4">
+          <h3 className="font-bold text-base truncate">{composer.name}</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">Compositor</p>
+        </div>
+
+        <motion.div
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          animate={{
+            boxShadow: isHovered
+              ? "inset 0 0 0 1px hsl(216 100% 50% / 0.3)"
+              : "inset 0 0 0 1px transparent",
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    </motion.div>
   );
 };
 
 const Composers = () => {
   const [selected, setSelected] = useState<Composer | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null!);
+  const isPaused = useRef(false);
+  const animFrameRef = useRef<number>(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const tripled = [...composers, ...composers, ...composers];
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const oneThird = el.scrollWidth / 3;
+    el.scrollLeft = oneThird;
+
+    const speed = 0.5;
+
+    const animate = () => {
+      if (!isPaused.current && el) {
+        el.scrollLeft += speed;
+        const oneThirdWidth = el.scrollWidth / 3;
+        if (el.scrollLeft >= oneThirdWidth * 2) {
+          el.scrollLeft -= oneThirdWidth;
+        }
+      }
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+
+    el.addEventListener("scroll", checkScroll, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animFrameRef.current);
+      el.removeEventListener("scroll", checkScroll);
+    };
+  }, [checkScroll]);
+
+  const handlePause = () => { isPaused.current = true; };
+  const handleResume = () => { isPaused.current = false; };
+
+  const scroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    isPaused.current = true;
+    const cardWidth = 320 + 24;
+    el.scrollBy({ left: direction === "left" ? -cardWidth : cardWidth, behavior: "smooth" });
+    setTimeout(() => { isPaused.current = false; }, 1000);
+  };
 
   return (
     <>
@@ -438,9 +508,57 @@ const Composers = () => {
           </motion.div>
         </div>
 
-        <div className="space-y-6">
-          <ScrollRow items={row1} direction="left" onSelect={setSelected} speed={40} />
-          <ScrollRow items={row2} direction="right" onSelect={setSelected} speed={45} />
+        <div
+          className="relative"
+          onMouseEnter={handlePause}
+          onMouseLeave={handleResume}
+        >
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide py-8 snap-x snap-mandatory"
+            style={{
+              paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
+              paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {tripled.map((composer, i) => (
+              <ComposerCarouselCard
+                key={`${composer.name}-${i}`}
+                composer={composer}
+                containerRef={scrollRef}
+                onClick={() => setSelected(composer)}
+              />
+            ))}
+          </div>
+
+          <div
+            className="absolute inset-y-0 left-0 w-16 md:w-32 pointer-events-none z-10"
+            style={{ background: "linear-gradient(to right, hsl(var(--background)), transparent)" }}
+          />
+          <div
+            className="absolute inset-y-0 right-0 w-16 md:w-32 pointer-events-none z-10"
+            style={{ background: "linear-gradient(to left, hsl(var(--background)), transparent)" }}
+          />
+
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
+            aria-label="Anterior"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
+            aria-label="Próximo"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
         </div>
       </section>
 
@@ -474,12 +592,7 @@ const Composers = () => {
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 overflow-hidden">
                   {selected.photo ? (
-                    <img
-                      src={selected.photo}
-                      alt={selected.name}
-                      className="w-full h-full object-cover"
-                      style={{ imageRendering: "auto" }}
-                    />
+                    <img src={selected.photo} alt={selected.name} className="w-full h-full object-cover" />
                   ) : (
                     <span className="text-2xl font-bold text-white font-display">
                       {getInitials(selected.name)}
