@@ -23,9 +23,7 @@ const Hero = () => {
           <a href="#" className="text-sm text-foreground font-medium hover:text-highlight transition-colors">Criar conta</a>
         </div>
       </nav>
-const CTA_LINK = "#";
 
-const CTA_LINK = "#";
 
 
       {/* Hero content */}
