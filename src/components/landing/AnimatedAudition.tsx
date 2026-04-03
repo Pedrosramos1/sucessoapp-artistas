@@ -66,7 +66,7 @@ const AnimatedAudition = () => {
               {String(Math.floor(currentTime / 60)).padStart(2, "0")}:{String(Math.floor(currentTime % 60)).padStart(2, "0")}.{String(Math.floor((currentTime % 1) * 100)).padStart(2, "0")}
             </div>
             {/* Stem line */}
-            <div className="w-[1px] h-4 bg-[hsl(0_0%_70%)] mx-auto" />
+            <div className="w-[1px] h-4 bg-muted-foreground/40 mx-auto" />
           </motion.div>
 
           {/* Playhead line */}
