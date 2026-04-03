@@ -14,10 +14,7 @@ const Hero = () => {
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-6 md:px-12 py-5">
-        <div className="flex items-center gap-1.5">
-          <span className="font-display font-extrabold text-2xl text-foreground tracking-tight">Sucesso</span>
-          <span className="font-display font-extrabold text-2xl text-highlight tracking-tight">.App</span>
-        </div>
+        <img src={logo} alt="SucessoApp" className="h-8" />
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">A plataforma</a>
           <a href="#composers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Compositores</a>
