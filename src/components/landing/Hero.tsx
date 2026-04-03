@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo-horizontal.png";
 
 const CTA_LINK = "#"; // Replace with actual link
 
