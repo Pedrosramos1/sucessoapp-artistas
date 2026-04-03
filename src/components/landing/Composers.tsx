@@ -355,7 +355,7 @@ const ComposerCarouselCard = ({
   return (
     <motion.div
       ref={cardRef}
-      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] snap-center cursor-pointer"
+      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px] cursor-pointer"
       style={{ scale, opacity, y }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
