@@ -3,34 +3,6 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-horizontal.png";
 
-const CTA_LINK = "#";
-
-/**
- * Floating decorative element with gentle animation.
- * Uses only transform for 60fps performance.
- */
-const FloatingIcon = ({
-  src,
-  alt,
-  className,
-  delay = 0,
-}: {
-  src: string;
-  alt: string;
-  className: string;
-  delay?: number;
-}) => (
-  <motion.img
-    src={src}
-    alt=""
-    aria-hidden="true"
-    className={`absolute pointer-events-none select-none ${className}`}
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 1.2, delay, ease: "easeOut" }}
-  />
-);
-
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
