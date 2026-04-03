@@ -293,7 +293,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.h2>
 
         <motion.p
-          className="text-gray-500 text-lg mb-8 leading-relaxed"
+          className="text-muted-foreground text-lg mb-8 leading-relaxed"
           variants={itemVariants}
         >
           {feature.subtitle}
