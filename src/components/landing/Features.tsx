@@ -59,7 +59,7 @@ const features: FeatureSection[] = [
     subtitle: "Produtor musical, artista e A&R trabalhando na mesma playlist.",
     bullets: [
       "Crie playlists compartilhadas",
-      "Encontre e adicione músicas em equipe",
+      "Encontrem e adicione músicas em equipe",
       "Visualize seu álbum antes mesmo de gravar",
     ],
     image: featurePlaylists,
