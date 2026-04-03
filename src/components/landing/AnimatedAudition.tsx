@@ -62,7 +62,7 @@ const AnimatedAudition = () => {
               transform: "translateX(-50%)",
             }}
           >
-            <div className="bg-white text-[hsl(0_0%_30%)] text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow-[0_2px_10px_-2px_hsl(0_0%_0%/0.12)] whitespace-nowrap">
+            <div className="bg-secondary text-foreground text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow-[0_2px_10px_-2px_hsl(0_0%_0%/0.3)] border border-border whitespace-nowrap">
               {String(Math.floor(currentTime / 60)).padStart(2, "0")}:{String(Math.floor(currentTime % 60)).padStart(2, "0")}.{String(Math.floor((currentTime % 1) * 100)).padStart(2, "0")}
             </div>
             {/* Stem line */}
