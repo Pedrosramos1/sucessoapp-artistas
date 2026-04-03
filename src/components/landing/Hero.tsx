@@ -28,8 +28,8 @@ const Hero = () => {
 
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] rounded-full bg-primary/8 blur-[180px]" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-t from-primary/5 to-transparent blur-[80px]" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] rounded-full blur-[180px]" style={{ background: 'radial-gradient(ellipse, hsl(216 100% 50% / 0.12), hsl(274 79% 66% / 0.06), transparent)' }} />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] blur-[80px]" style={{ background: 'linear-gradient(to top, hsl(216 100% 50% / 0.08), transparent)' }} />
       </div>
 
       {/* Hero content */}
@@ -73,7 +73,8 @@ const Hero = () => {
           <Button
             asChild
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300"
+            className="text-primary-foreground px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300 hover:shadow-lg"
+            style={{ background: 'var(--gradient-primary)' }}
           >
             <a href={CTA_LINK} target="_blank" rel="noopener noreferrer">
               Explorar músicas agora
