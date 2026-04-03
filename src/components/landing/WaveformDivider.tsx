@@ -30,7 +30,7 @@ const WaveformDivider = () => {
               className="flex-shrink-0"
               style={{ width: barWidth }}
               animate={{
-                scaleY: [1, 0.45 + Math.random() * 0.25, 1, 0.5 + Math.random() * 0.2, 1],
+                scaleY: [1, 0.65 + Math.random() * 0.15, 1, 0.7 + Math.random() * 0.15, 1],
               }}
               transition={{
                 duration: bar.animDuration,
