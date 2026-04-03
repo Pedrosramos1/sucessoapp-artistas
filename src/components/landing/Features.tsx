@@ -1,12 +1,5 @@
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-  useMotionValueEvent,
-} from "framer-motion";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import featureCuradoria from "@/assets/feature-curadoria.jpg";
@@ -15,19 +8,18 @@ import featurePlaylists from "@/assets/feature-playlists.jpg";
 import featurePagamento from "@/assets/feature-pagamento.jpg";
 import featureContratos from "@/assets/feature-contratos.jpg";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-
-interface FeatureCard {
+interface FeatureSection {
   icon: LucideIcon;
   badge: string;
   title: string;
   highlight: string;
   subtitle: string;
   bullets: string[];
+  reverse?: boolean;
   image: string;
 }
 
-const features: FeatureCard[] = [
+const features: FeatureSection[] = [
   {
     icon: Search,
     badge: "Curadoria Inteligente",
@@ -52,6 +44,7 @@ const features: FeatureCard[] = [
       "+1500 compositores podem criar pensando em você",
       "Receba músicas sob medida",
     ],
+    reverse: true,
     image: featureEncomenda,
   },
   {
@@ -78,6 +71,7 @@ const features: FeatureCard[] = [
       "Lance a música",
       "O investimento pode se pagar com a receita do fonograma",
     ],
+    reverse: true,
     image: featurePagamento,
   },
   {
@@ -95,166 +89,191 @@ const features: FeatureCard[] = [
   },
 ];
 
-// ─── Carousel Card ───────────────────────────────────────────────────────────
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
 
-/**
- * Each card calculates its own distance from the viewport center
- * using useScroll + useTransform for continuous, GPU-accelerated interpolation.
- *
- * - scrollXProgress tracks the card's horizontal position relative to the
- *   scroll container.
- * - We map the card's center offset to scale and opacity using useTransform
- *   for buttery-smooth 60fps transitions with zero JS-driven reflows.
- */
-const CarouselCard = ({
-  feature,
-  containerRef,
-}: {
-  feature: FeatureCard;
-  containerRef: React.RefObject<HTMLDivElement>;
-}) => {
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  /**
-   * Distance-from-center calculation:
-   * We track the card's position within the scroll container.
-   * The offset range [-1, 0, 1] maps to [far-left, center, far-right].
-   * Scale and opacity are interpolated continuously across this range.
-   */
-  const { scrollXProgress } = useScroll({
-    container: containerRef,
-    target: cardRef,
-    axis: "x",
-    offset: ["start end", "end start"],
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), {
+    stiffness: 200,
+    damping: 30,
+  });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), {
+    stiffness: 200,
+    damping: 30,
   });
 
-  // Map scroll position to visual properties — continuous interpolation, no binary states
-  const rawScale = useTransform(scrollXProgress, [0, 0.5, 1], [0.88, 1, 0.88]);
-  const rawOpacity = useTransform(scrollXProgress, [0, 0.5, 1], [0.55, 1, 0.55]);
-  const rawY = useTransform(scrollXProgress, [0, 0.5, 1], [16, 0, 16]);
+  const innerX = useSpring(useTransform(mouseX, [-0.5, 0.5], [8, -8]), {
+    stiffness: 200,
+    damping: 30,
+  });
+  const innerY = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
+    stiffness: 200,
+    damping: 30,
+  });
 
-  // Spring physics for fluid, organic motion
-  const scale = useSpring(rawScale, { stiffness: 300, damping: 30 });
-  const opacity = useSpring(rawOpacity, { stiffness: 300, damping: 30 });
-  const y = useSpring(rawY, { stiffness: 300, damping: 30 });
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
 
-  // Shadow interpolation — center card gets a vivid glow
-  const shadowOpacity = useTransform(scrollXProgress, [0, 0.5, 1], [0, 0.3, 0]);
-  const springedShadow = useSpring(shadowOpacity, { stiffness: 300, damping: 30 });
-  const [shadowVal, setShadowVal] = useState(0);
-  useMotionValueEvent(springedShadow, "change", (v) => setShadowVal(v));
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   return (
     <motion.div
       ref={cardRef}
-      className="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[420px] xl:w-[460px] snap-center"
-      style={{ scale, opacity, y }}
+      className="flex-1 max-w-md w-full"
+      style={{ perspective: 800 }}
+      variants={itemVariants}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
-        animate={{
-          scale: isHovered ? 1.03 : 1,
-        }}
-        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="relative rounded-2xl overflow-hidden border border-border bg-card"
         style={{
-          boxShadow: `0 25px 60px -12px hsl(216 100% 50% / ${(shadowVal + (isHovered ? 0.15 : 0)).toFixed(3)}),
-                      0 0 40px hsl(274 79% 66% / ${(shadowVal * 0.4 + (isHovered ? 0.08 : 0)).toFixed(3)})`,
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        animate={{
+          scale: isHovered ? 1.04 : 1,
+          boxShadow: isHovered
+            ? "0 25px 60px -12px hsl(216 100% 50% / 0.25), 0 0 40px hsl(274 79% 66% / 0.1)"
+            : "0 4px 20px -4px hsl(0 0% 0% / 0.3)",
+        }}
+        transition={{
+          scale: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+          boxShadow: { duration: 0.4, ease: "easeOut" },
         }}
       >
-        {/* Image */}
-        <div className="relative overflow-hidden">
-          <motion.img
+        <motion.div style={{ x: innerX, y: innerY, scale: 1.05 }}>
+          <img
             src={feature.image}
             alt={feature.title}
-            className="w-full h-52 sm:h-60 object-cover"
+            className="w-full h-auto"
             loading="lazy"
-            animate={{ scale: isHovered ? 1.06 : 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            width={800}
+            height={800}
           />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-        </div>
+        </motion.div>
 
-        {/* Content */}
-        <div className="p-6 flex flex-col flex-1">
-          <span className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground self-start">
-            <feature.icon className="w-3.5 h-3.5" />
-            {feature.badge}
-          </span>
-
-          <h3 className="text-xl sm:text-2xl font-extrabold leading-tight mb-2">
-            {feature.title}{" "}
-            <span className="text-highlight">{feature.highlight}</span>
-          </h3>
-
-          <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
-            {feature.subtitle}
-          </p>
-
-          <ul className="space-y-2.5 mt-auto">
-            {feature.bullets.map((bullet) => (
-              <li
-                key={bullet}
-                className="flex items-start gap-2.5 text-sm text-secondary-foreground"
-              >
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                {bullet}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          animate={{
+            background: isHovered
+              ? "linear-gradient(135deg, hsl(216 100% 50% / 0.08), hsl(274 79% 66% / 0.06))"
+              : "linear-gradient(135deg, transparent, transparent)",
+          }}
+          transition={{ duration: 0.4 }}
+        />
       </motion.div>
     </motion.div>
   );
 };
 
-// ─── Carousel Container ──────────────────────────────────────────────────────
-
-/**
- * Horizontal scroll carousel with:
- * - Native scroll + snap for mobile
- * - Drag support via Framer Motion for desktop
- * - Dynamic focus: each card interpolates scale/opacity based on center distance
- * - Padding ensures lateral cards are partially visible (depth cue)
- */
-const Features = () => {
-  const scrollRef = useRef<HTMLDivElement>(null!);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    checkScroll();
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    window.addEventListener("resize", checkScroll);
-    return () => {
-      el.removeEventListener("scroll", checkScroll);
-      window.removeEventListener("resize", checkScroll);
-    };
-  }, [checkScroll]);
-
-  const scroll = (direction: "left" | "right") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = el.querySelector<HTMLElement>(":scope > div > div")?.offsetWidth ?? 400;
-    el.scrollBy({ left: direction === "left" ? -cardWidth : cardWidth, behavior: "smooth" });
-  };
+const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
 
   return (
-    <section id="features" className="relative py-28 overflow-hidden">
-      {/* Section header */}
-      <div className="max-w-6xl mx-auto px-4">
+    <motion.div
+      ref={ref}
+      className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20`}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+    >
+      <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
+        <motion.span
+          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          variants={itemVariants}
+        >
+          <feature.icon className="w-3.5 h-3.5" />
+          {feature.badge}
+        </motion.span>
+
+        <motion.h2
+          className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
+          variants={itemVariants}
+        >
+          {feature.title}{" "}
+          <span className="text-highlight">{feature.highlight}</span>
+        </motion.h2>
+
+        <motion.p
+          className="text-muted-foreground text-lg mb-8 leading-relaxed"
+          variants={itemVariants}
+        >
+          {feature.subtitle}
+        </motion.p>
+
+        <ul className="space-y-4">
+          {feature.bullets.map((bullet, i) => (
+            <motion.li
+              key={bullet}
+              variants={{
+                hidden: { opacity: 0, x: -24 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    duration: 0.45,
+                    delay: 0.3 + i * 0.1,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  },
+                },
+              }}
+              className="flex items-start gap-3 text-base text-secondary-foreground"
+            >
+              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              {bullet}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <FeatureImageCard feature={feature} />
+    </motion.div>
+  );
+};
+
+const Features = () => {
+  return (
+    <section id="features" className="relative py-28 px-4 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -272,7 +291,7 @@ const Features = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center mb-16"
+          className="text-center mb-6"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
             Plataforma Completa
@@ -285,70 +304,12 @@ const Features = () => {
             Sua Loja de Hits que trabalha 24h por dia vendendo suas composições por você.
           </p>
         </motion.div>
-      </div>
 
-      {/* Carousel track */}
-      <div className="relative">
-        {/* Scroll container — horizontal, snap, drag-enabled */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto scrollbar-hide px-[max(1rem,calc((100vw-460px)/2))] py-8 snap-x snap-mandatory scroll-smooth"
-          style={{
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-        >
-          {features.map((feature) => (
-            <CarouselCard
-              key={feature.badge}
-              feature={feature}
-              containerRef={scrollRef}
-            />
+        <div className="space-y-28 lg:space-y-36 mt-24">
+          {features.map((feature, i) => (
+            <FeatureBlock key={feature.title} feature={feature} index={i} />
           ))}
         </div>
-
-        {/* Edge fade overlays — visual depth cue */}
-        <div
-          className="absolute inset-y-0 left-0 w-16 md:w-32 pointer-events-none z-10"
-          style={{
-            background: "linear-gradient(to right, hsl(var(--background)), transparent)",
-          }}
-        />
-        <div
-          className="absolute inset-y-0 right-0 w-16 md:w-32 pointer-events-none z-10"
-          style={{
-            background: "linear-gradient(to left, hsl(var(--background)), transparent)",
-          }}
-        />
-
-        {/* Navigation arrows */}
-        <button
-          onClick={() => scroll("left")}
-          className={`absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-            canScrollLeft
-              ? "opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
-              : "opacity-0 pointer-events-none"
-          }`}
-          aria-label="Anterior"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          className={`absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-            canScrollRight
-              ? "opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
-              : "opacity-0 pointer-events-none"
-          }`}
-          aria-label="Próximo"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
       </div>
     </section>
   );
