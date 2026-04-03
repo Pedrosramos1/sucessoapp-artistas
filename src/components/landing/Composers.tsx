@@ -425,7 +425,7 @@ const ComposerCarouselCard = ({
               </p>
             </div>
             <div className="relative overflow-hidden">
-              <div className="flex animate-[marquee_12s_linear_infinite] whitespace-nowrap gap-4">
+              <div className="flex animate-marquee whitespace-nowrap gap-4">
                 {[...artists, ...artists].map((artist, i) => (
                   <span
                     key={`${artist}-${i}`}
