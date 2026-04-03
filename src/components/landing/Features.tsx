@@ -303,13 +303,6 @@ const Features = () => {
         <img src={iconDocument} alt="" aria-hidden="true" className="w-20 opacity-[0.06]" />
       </motion.div>
 
-      <motion.div
-        className="absolute bottom-[10%] left-[8%] hidden lg:block pointer-events-none"
-        animate={{ y: [0, 8, 0], scale: [1, 1.03, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-      >
-        <img src={iconNegociacao} alt="" aria-hidden="true" className="w-48 opacity-[0.05]" />
-      </motion.div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
