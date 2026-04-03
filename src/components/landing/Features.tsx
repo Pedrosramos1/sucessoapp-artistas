@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 
