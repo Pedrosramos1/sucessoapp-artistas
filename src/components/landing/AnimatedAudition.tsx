@@ -49,7 +49,7 @@ const AnimatedAudition = () => {
       transition={{ duration: 0.5 }}
     >
       <motion.div style={{ y: cardY, scale: cardScale }}>
-        <div className="rounded-2xl bg-[hsl(0_0%_92%)] shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.12)] aspect-square flex flex-col items-center justify-center p-8 relative overflow-hidden">
+        <div className="rounded-2xl bg-card border border-border shadow-[0_8px_30px_-8px_hsl(0_0%_0%/0.3)] aspect-square flex flex-col items-center justify-center p-8 relative overflow-hidden">
           {/* Subtle inner shadow for depth */}
           <div className="absolute inset-0 rounded-2xl shadow-[inset_0_2px_8px_0_hsl(0_0%_0%/0.04)]" />
 
