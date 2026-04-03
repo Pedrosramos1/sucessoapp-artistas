@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionVa
 import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 import AnimatedPlayer from "./AnimatedPlayer";
+import AnimatedAudition from "./AnimatedAudition";
 
 import featureCuradoria from "@/assets/feature-curadoria.png";
 import featureEncomenda from "@/assets/feature-encomenda.png";
