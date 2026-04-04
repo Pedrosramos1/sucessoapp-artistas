@@ -332,55 +332,26 @@ const getInitials = (name: string) =>
 
 const ComposerCarouselCard = ({
   composer,
-  containerRef,
 }: {
   composer: Composer;
-  containerRef: React.RefObject<HTMLDivElement>;
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const artists = extractArtists(composer.hits);
 
-  const { scrollXProgress } = useScroll({
-    container: containerRef,
-    target: cardRef,
-    axis: "x",
-    offset: ["start end", "end start"],
-  });
-
-  const rawScale = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [0.85, 0.92, 1, 0.92, 0.85]);
-  const rawOpacity = useTransform(scrollXProgress, [0, 0.3, 0.5, 0.7, 1], [0.5, 0.75, 1, 0.75, 0.5]);
-  const rawY = useTransform(scrollXProgress, [0, 0.35, 0.5, 0.65, 1], [20, 8, 0, 8, 20]);
-
-  const scale = useSpring(rawScale, { stiffness: 300, damping: 35 });
-  const opacity = useSpring(rawOpacity, { stiffness: 300, damping: 35 });
-  const y = useSpring(rawY, { stiffness: 300, damping: 35 });
-
-  const rawGlow = useTransform(scrollXProgress, [0, 0.5, 1], [0, 1, 0]);
-  const glow = useSpring(rawGlow, { stiffness: 300, damping: 35 });
-  const [glowVal, setGlowVal] = useState(0);
-  useMotionValueEvent(glow, "change", (v) => setGlowVal(v));
-
   return (
-    <motion.div
-      ref={cardRef}
-      className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]"
-      style={{ scale, opacity, y }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]">
       <motion.div
         className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
-        animate={{ scale: isHovered ? 1.04 : 1 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{
-          boxShadow: `
-            0 20px 50px -10px hsl(216 100% 50% / ${(glowVal * 0.25 + (isHovered ? 0.12 : 0)).toFixed(3)}),
-            0 0 30px hsl(274 79% 66% / ${(glowVal * 0.12 + (isHovered ? 0.06 : 0)).toFixed(3)})
-          `,
+        animate={{
+          scale: isHovered ? 1.04 : 1,
+          boxShadow: isHovered
+            ? "0 24px 60px -18px hsl(var(--primary) / 0.24), 0 0 30px hsl(var(--accent) / 0.12)"
+            : "0 12px 30px -24px hsl(var(--foreground) / 0.22)",
         }}
+        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
       >
-        {/* Photo */}
         <div className="relative aspect-square overflow-hidden">
           {composer.photo ? (
             <motion.img
@@ -402,7 +373,6 @@ const ComposerCarouselCard = ({
           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
         </div>
 
-        {/* Name & Streams */}
         <div className="px-4 pt-3 pb-2 text-center">
           <h3 className="font-bold text-base truncate">{composer.name}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -411,7 +381,6 @@ const ComposerCarouselCard = ({
           </p>
         </div>
 
-        {/* Artists - Marquee */}
         {artists.length > 0 && (
           <div className="px-0 pb-4 overflow-hidden">
             <div className="border-t border-border pt-3 mx-4">
@@ -443,73 +412,50 @@ const ComposerCarouselCard = ({
           className="absolute inset-0 rounded-2xl pointer-events-none"
           animate={{
             boxShadow: isHovered
-              ? "inset 0 0 0 1px hsl(216 100% 50% / 0.3)"
+              ? "inset 0 0 0 1px hsl(var(--primary) / 0.35)"
               : "inset 0 0 0 1px transparent",
           }}
           transition={{ duration: 0.3 }}
         />
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
 const Composers = () => {
-  const scrollRef = useRef<HTMLDivElement>(null!);
-  const isPaused = useRef(false);
-  const animFrameRef = useRef<number>(0);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const tripled = [...composers, ...composers, ...composers];
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
-  }, []);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [trackWidth, setTrackWidth] = useState(0);
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const oneThird = el.scrollWidth / 3;
-    el.scrollLeft = oneThird;
-
-    const speed = 0.5;
-
-    const animate = () => {
-      if (!isPaused.current && el) {
-        el.scrollLeft += speed;
-        const oneThirdWidth = el.scrollWidth / 3;
-        if (el.scrollLeft >= oneThirdWidth * 2) {
-          el.scrollLeft -= oneThirdWidth;
-        }
-      }
-      animFrameRef.current = requestAnimationFrame(animate);
+    const updateTrackWidth = () => {
+      if (!trackRef.current) return;
+      setTrackWidth(trackRef.current.scrollWidth);
     };
 
-    animFrameRef.current = requestAnimationFrame(animate);
+    updateTrackWidth();
+    window.addEventListener("resize", updateTrackWidth);
 
-    el.addEventListener("scroll", checkScroll, { passive: true });
+    if (typeof ResizeObserver === "undefined") {
+      return () => {
+        window.removeEventListener("resize", updateTrackWidth);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateTrackWidth();
+    });
+
+    if (trackRef.current) {
+      resizeObserver.observe(trackRef.current);
+    }
 
     return () => {
-      cancelAnimationFrame(animFrameRef.current);
-      el.removeEventListener("scroll", checkScroll);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateTrackWidth);
     };
-  }, [checkScroll]);
+  }, []);
 
-  const handlePause = () => { isPaused.current = true; };
-  const handleResume = () => { isPaused.current = false; };
-
-  const scroll = (direction: "left" | "right") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    isPaused.current = true;
-    const cardWidth = 320 + 24;
-    el.scrollBy({ left: direction === "left" ? -cardWidth : cardWidth, behavior: "smooth" });
-    setTimeout(() => { isPaused.current = false; }, 1000);
-  };
+  const animationDuration = trackWidth > 0 ? Math.max(trackWidth / 90, 32) : 32;
 
   return (
     <>
@@ -538,30 +484,42 @@ const Composers = () => {
           </motion.div>
         </div>
 
-        <div
-          className="relative"
-          onPointerEnter={(event) => {
-            if (event.pointerType === "mouse") handlePause();
-          }}
-          onPointerLeave={(event) => {
-            if (event.pointerType === "mouse") handleResume();
-          }}
-        >
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide py-8"
-            style={{
-              paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
-              paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
-            }}
-          >
-            {tripled.map((composer, i) => (
-              <ComposerCarouselCard
-                key={`${composer.name}-${i}`}
-                composer={composer}
-                containerRef={scrollRef}
-              />
-            ))}
+        <div className="relative">
+          <div className="overflow-hidden py-8" style={{ touchAction: "pan-y" }}>
+            <div
+              className="w-full"
+              style={{
+                paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
+                paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
+              }}
+            >
+              <motion.div
+                className="flex w-max"
+                style={{ willChange: "transform" }}
+                animate={trackWidth > 0 ? { x: [0, -trackWidth] } : { x: 0 }}
+                transition={{
+                  duration: animationDuration,
+                  ease: "linear",
+                  repeat: Infinity,
+                }}
+              >
+                {[0, 1].map((groupIndex) => (
+                  <div
+                    key={groupIndex}
+                    ref={groupIndex === 0 ? trackRef : undefined}
+                    className="flex gap-6 pr-6 shrink-0"
+                    aria-hidden={groupIndex === 1}
+                  >
+                    {composers.map((composer, i) => (
+                      <ComposerCarouselCard
+                        key={`${groupIndex}-${composer.name}-${i}`}
+                        composer={composer}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </div>
 
           <div
@@ -572,7 +530,6 @@ const Composers = () => {
             className="absolute inset-y-0 right-0 w-16 md:w-32 pointer-events-none z-10"
             style={{ background: "linear-gradient(to left, hsl(var(--background)), transparent)" }}
           />
-
         </div>
       </section>
     </>
@@ -580,3 +537,4 @@ const Composers = () => {
 };
 
 export default Composers;
+
