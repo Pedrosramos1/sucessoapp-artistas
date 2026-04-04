@@ -1,11 +1,6 @@
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValueEvent,
-} from "framer-motion";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+
 
 
 import composerWaleria from "@/assets/composer-waleria.png";
