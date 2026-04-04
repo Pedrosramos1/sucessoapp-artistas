@@ -19,8 +19,6 @@ const Hero = () => {
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">A plataforma</a>
           <a href="#composers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Compositores</a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">F.A.Q</a>
-          <a href="#" className="text-sm text-foreground font-medium hover:text-highlight transition-colors">Criar conta</a>
         </div>
       </nav>
 
