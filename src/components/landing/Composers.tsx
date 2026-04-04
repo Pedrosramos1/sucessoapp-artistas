@@ -576,24 +576,6 @@ const Composers = () => {
             style={{ background: "linear-gradient(to left, hsl(var(--background)), transparent)" }}
           />
 
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
-            aria-label="Anterior"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 opacity-100 hover:bg-primary hover:border-primary hover:text-primary-foreground cursor-pointer"
-            aria-label="Próximo"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
         </div>
       </section>
     </>
