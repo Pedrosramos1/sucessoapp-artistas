@@ -547,6 +547,8 @@ const Composers = () => {
           className="relative"
           onMouseEnter={handlePause}
           onMouseLeave={handleResume}
+          onTouchStart={handlePause}
+          onTouchEnd={() => { setTimeout(handleResume, 2000); }}
         >
           <div
             ref={scrollRef}
