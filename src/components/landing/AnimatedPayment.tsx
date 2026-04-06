@@ -10,11 +10,6 @@ const AnimatedPayment = () => {
   const [filledFields, setFilledFields] = useState(0);
   const [showCompletion, setShowCompletion] = useState(false);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
-
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
   const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.92, 1, 1, 0.95]);
 
