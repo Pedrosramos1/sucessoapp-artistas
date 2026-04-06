@@ -274,15 +274,15 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
     >
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
         <motion.span
-          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-border bg-secondary text-[10px] md:text-xs font-semibold uppercase tracking-widest text-muted-foreground"
           variants={itemVariants}
         >
-          <feature.icon className="w-3.5 h-3.5" />
+          <feature.icon className="w-3 h-3 md:w-3.5 md:h-3.5" />
           {feature.badge}
         </motion.span>
 
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3 md:mb-4"
           variants={itemVariants}
         >
           {feature.title}{" "}
@@ -290,13 +290,13 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.h2>
 
         <motion.p
-          className="text-muted-foreground text-lg mb-8 leading-relaxed"
+          className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8 leading-relaxed"
           variants={itemVariants}
         >
           {feature.subtitle}
         </motion.p>
 
-        <ul className="space-y-4">
+        <ul className="space-y-3 md:space-y-4">
           {feature.bullets.map((bullet, i) => (
             <motion.li
               key={bullet}
@@ -312,9 +312,9 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
                   },
                 },
               }}
-              className="flex items-start gap-3 text-base text-secondary-foreground"
+              className="flex items-start gap-3 text-sm md:text-base text-secondary-foreground"
             >
-              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              <span className="mt-1.5 md:mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               {bullet}
             </motion.li>
           ))}
@@ -328,7 +328,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-28 px-4 overflow-hidden">
+    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden">
 
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -351,12 +351,12 @@ const Features = () => {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-6"
         >
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
             O App <span className="text-highlight">(per)feito</span> pra construir seu repertório.
           </h2>
         </motion.div>
 
-        <div className="space-y-28 lg:space-y-36 mt-24">
+        <div className="space-y-16 md:space-y-28 lg:space-y-36 mt-16 md:mt-24">
           {features.map((feature, i) => (
             <FeatureBlock key={feature.title} feature={feature} index={i} />
           ))}
