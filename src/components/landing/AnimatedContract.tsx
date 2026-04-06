@@ -11,17 +11,17 @@ const AnimatedContract = () => {
   const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.92, 1, 1, 0.95]);
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
     const run = () => {
       setPhase(0);
-      timeout = setTimeout(() => setPhase(1), 600);
-      timeout = setTimeout(() => setPhase(2), 1800);
-      timeout = setTimeout(() => setPhase(3), 2800);
-      timeout = setTimeout(() => setPhase(4), 3600);
-      timeout = setTimeout(() => run(), 6500);
+      timeouts.push(setTimeout(() => setPhase(1), 600));
+      timeouts.push(setTimeout(() => setPhase(2), 1800));
+      timeouts.push(setTimeout(() => setPhase(3), 2800));
+      timeouts.push(setTimeout(() => setPhase(4), 3600));
+      timeouts.push(setTimeout(() => run(), 6500));
     };
     run();
-    return () => clearTimeout(timeout);
+    return () => timeouts.forEach(clearTimeout);
   }, []);
 
   const clauses = [
