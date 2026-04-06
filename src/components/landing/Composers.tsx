@@ -28,20 +28,6 @@ interface Composer {
   photo?: string;
 }
 
-const extractArtists = (hits: string[]): string[] => {
-  const artists = new Set<string>();
-  hits.forEach((hit) => {
-    const parts = hit.split(" - ");
-    if (parts.length > 1) {
-      // Split by comma to get individual artists from collabs
-      parts[0].split(",").forEach((a) => {
-        const trimmed = a.trim();
-        if (trimmed) artists.add(trimmed);
-      });
-    }
-  });
-  return Array.from(artists).slice(0, 6);
-};
 
 const composers: Composer[] = [
   {
