@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-
+import { artistPhotos } from "./artistPhotos";
 
 
 import composerWaleria from "@/assets/composer-waleria.jpg";
