@@ -428,11 +428,20 @@ const ComposerCarouselCard = ({
                     className="inline-flex flex-col items-center gap-1 shrink-0 min-w-[100px]"
                   >
                     <div className="inline-flex items-center gap-1.5">
-                      <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(item.artist)} flex items-center justify-center shrink-0`}>
-                        <span className="text-[8px] font-bold text-white/80 select-none">
-                          {getInitials(item.artist)}
+                      {artistPhotos[item.artist] ? (
+                        <img
+                          src={artistPhotos[item.artist]}
+                          alt={item.artist}
+                          className="w-6 h-6 rounded-full object-cover shrink-0"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(item.artist)} flex items-center justify-center shrink-0`}>
+                          <span className="text-[8px] font-bold text-white/80 select-none">
+                            {getInitials(item.artist)}
+                          </span>
                         </span>
-                      </span>
+                      )}
                       <span className="text-xs text-muted-foreground whitespace-nowrap">{item.artist}</span>
                     </div>
                     <span className="text-[10px] text-foreground/70 whitespace-nowrap">{item.song}</span>
