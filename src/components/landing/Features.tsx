@@ -266,7 +266,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
   return (
     <motion.div
       ref={ref}
-      className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20`}
+      className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-8 md:gap-12 lg:gap-20`}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"

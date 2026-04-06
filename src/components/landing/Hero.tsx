@@ -14,26 +14,24 @@ const Hero = () => {
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Navigation */}
-      <nav className="relative z-20 flex items-center justify-between px-6 md:px-12 py-5">
-        <img src={logo} alt="SucessoApp" className="h-8" />
+      <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
+        <img src={logo} alt="SucessoApp" className="h-7 md:h-8" />
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">A plataforma</a>
           <a href="#composers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Compositores</a>
         </div>
       </nav>
 
-
-
       {/* Hero content */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 text-center max-w-5xl mx-auto"
+        className="relative z-10 flex-1 flex flex-col items-center justify-center px-5 md:px-4 text-center max-w-5xl mx-auto"
         style={{ y: yText, opacity }}
       >
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.08] tracking-tight mb-4 font-bold"
+          className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-8xl leading-[1.1] tracking-tight mb-3 md:mb-4 font-bold"
         >
           Encontre um hit para chamar de seu
         </motion.h1>
@@ -42,7 +40,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] tracking-tight text-highlight mb-8 font-sans font-semibold"
+          className="text-[1.5rem] sm:text-3xl md:text-4xl lg:text-6xl leading-[1.15] tracking-tight text-highlight mb-6 md:mb-8 font-sans font-semibold"
         >
           Na maior vitrine musical do país.
         </motion.p>
@@ -51,7 +49,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-2"
         >
           Acesse músicas dos compositores dos maiores sucessos do Brasil e compre seu repertório em até 12x, com licenças automáticas em poucos cliques.
         </motion.p>
@@ -60,12 +58,12 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
         >
           <Button
             asChild
             size="lg"
-            className="text-primary-foreground px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300 hover:shadow-lg"
+            className="text-primary-foreground w-full sm:w-auto px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300 hover:shadow-lg"
             style={{ background: 'var(--gradient-primary)' }}
           >
             <a href={CTA_LINK} target="_blank" rel="noopener noreferrer">
@@ -78,7 +76,7 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-4 text-muted-foreground text-sm"
+          className="mt-3 md:mt-4 text-muted-foreground text-xs md:text-sm"
         >
           (Gratuito para artistas)
         </motion.p>
@@ -86,14 +84,14 @@ const Hero = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/20 flex items-start justify-center p-1.5">
+        <div className="w-5 h-8 md:w-6 md:h-10 rounded-full border-2 border-muted-foreground/20 flex items-start justify-center p-1 md:p-1.5">
           <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-primary"
-            animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+            className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary"
+            animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
