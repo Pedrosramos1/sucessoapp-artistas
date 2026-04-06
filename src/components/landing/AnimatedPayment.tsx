@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, useTransform, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { CreditCard, Check, ShieldCheck } from "lucide-react";
 
@@ -47,14 +47,6 @@ const AnimatedPayment = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
   return (
     <motion.div
@@ -67,9 +59,7 @@ const AnimatedPayment = () => {
       transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       <motion.div
-        style={{ rotateX, rotateY, scale: cardScale, transformStyle: "preserve-3d" }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        style={{ scale: cardScale }}
       >
         <div className="relative mx-auto" style={{ maxWidth: 280 }}>
           <div className="relative w-full" style={{ paddingBottom: "207%" }}>
