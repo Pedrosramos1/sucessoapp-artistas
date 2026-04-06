@@ -4,6 +4,7 @@ import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "
 import AnimatedPlayer from "./AnimatedPlayer";
 import AnimatedAudition from "./AnimatedAudition";
 import AnimatedPayment from "./AnimatedPayment";
+import AnimatedContract from "./AnimatedContract";
 
 import featureCuradoria from "@/assets/feature-curadoria.png";
 import featureEncomenda from "@/assets/feature-encomenda.png";
@@ -26,6 +27,7 @@ interface FeatureSection {
   animatedPlayer?: boolean;
   animatedAudition?: boolean;
   animatedPayment?: boolean;
+  animatedContract?: boolean;
 }
 
 const features: FeatureSection[] = [
@@ -99,6 +101,7 @@ const features: FeatureSection[] = [
       "Integração com editoras e associações",
     ],
     image: featureContratos,
+    animatedContract: true,
   },
 ];
 
@@ -261,6 +264,9 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   }
   if (feature.animatedPayment) {
     return <AnimatedPayment />;
+  }
+  if (feature.animatedContract) {
+    return <AnimatedContract />;
   }
   return <StaticImageCard feature={feature} />;
 };
