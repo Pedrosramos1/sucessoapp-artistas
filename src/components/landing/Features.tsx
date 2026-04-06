@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Search, Music, Users, CreditCard, ShieldCheck, type LucideIcon } from "lucide-react";
 import AnimatedPlayer from "./AnimatedPlayer";
 import AnimatedAudition from "./AnimatedAudition";
+import AnimatedPayment from "./AnimatedPayment";
 
 import featureCuradoria from "@/assets/feature-curadoria.png";
 import featureEncomenda from "@/assets/feature-encomenda.png";
@@ -24,6 +25,7 @@ interface FeatureSection {
   scrollScreen?: string;
   animatedPlayer?: boolean;
   animatedAudition?: boolean;
+  animatedPayment?: boolean;
 }
 
 const features: FeatureSection[] = [
@@ -83,6 +85,7 @@ const features: FeatureSection[] = [
     ],
     reverse: true,
     image: featurePagamento,
+    animatedPayment: true,
   },
   {
     icon: ShieldCheck,
@@ -255,6 +258,9 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   }
   if (feature.animatedPlayer) {
     return <AnimatedPlayer />;
+  }
+  if (feature.animatedPayment) {
+    return <AnimatedPayment />;
   }
   return <StaticImageCard feature={feature} />;
 };
