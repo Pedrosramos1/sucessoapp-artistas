@@ -132,22 +132,24 @@ const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
   return (
     <motion.div
       ref={containerRef}
-      className="flex-1 max-w-xs w-full mx-auto"
+      className="flex-1 max-w-[240px] md:max-w-xs w-full mx-auto"
       variants={itemVariants}
     >
-      <div className="relative mx-auto" style={{ width: 280, height: 580 }}>
-        <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
-        <div className="absolute inset-[4px] rounded-[2.75rem] overflow-hidden bg-black">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-2xl z-20" />
-          <motion.img
-            src={screenSrc}
-            alt="App screenshot"
-            className="w-full h-auto"
-            style={{ y: screenY }}
-            loading="lazy"
-          />
+      <div className="relative mx-auto" style={{ maxWidth: 280 }}>
+        <div className="relative w-full" style={{ paddingBottom: "207%" }}>
+          <div className="absolute inset-0 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
+          <div className="absolute inset-[3px] md:inset-[4px] rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-black">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100px] md:w-[120px] h-[24px] md:h-[30px] bg-black rounded-b-2xl z-20" />
+            <motion.img
+              src={screenSrc}
+              alt="App screenshot"
+              className="w-full h-auto"
+              style={{ y: screenY }}
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[80px] md:w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
         </div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
       </div>
     </motion.div>
   );
