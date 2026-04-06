@@ -350,26 +350,12 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
-const extractArtists = (hits: string[]): string[] => {
-  const artists = new Set<string>();
-  hits.forEach((hit) => {
-    const parts = hit.split(" - ");
-    if (parts.length > 1) {
-      parts[0].split(",").forEach((a) => {
-        const trimmed = a.trim();
-        if (trimmed) artists.add(trimmed);
-      });
-    }
-  });
-  return Array.from(artists).slice(0, 6);
-};
-
-const extractTopSongs = (hits: string[], max = 4): string[] => {
+const extractArtistSongs = (hits: string[], max = 6): { artist: string; song: string }[] => {
   return hits
     .filter((h) => h.includes(" - "))
     .map((h) => {
       const parts = h.split(" - ");
-      return parts.slice(1).join(" - ").trim();
+      return { artist: parts[0].trim(), song: parts.slice(1).join(" - ").trim() };
     })
     .slice(0, max);
 };
@@ -380,8 +366,7 @@ const ComposerCarouselCard = ({
   composer: Composer;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const artists = extractArtists(composer.hits);
-  const topSongs = extractTopSongs(composer.hits);
+  const artistSongs = extractArtistSongs(composer.hits);
 
   return (
     <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
