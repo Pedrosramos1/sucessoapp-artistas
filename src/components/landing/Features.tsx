@@ -85,6 +85,7 @@ const features: FeatureSection[] = [
     ],
     reverse: true,
     image: featurePagamento,
+    animatedPayment: true,
   },
   {
     icon: ShieldCheck,
