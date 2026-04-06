@@ -28,20 +28,6 @@ interface Composer {
   photo?: string;
 }
 
-const extractArtists = (hits: string[]): string[] => {
-  const artists = new Set<string>();
-  hits.forEach((hit) => {
-    const parts = hit.split(" - ");
-    if (parts.length > 1) {
-      // Split by comma to get individual artists from collabs
-      parts[0].split(",").forEach((a) => {
-        const trimmed = a.trim();
-        if (trimmed) artists.add(trimmed);
-      });
-    }
-  });
-  return Array.from(artists).slice(0, 6);
-};
 
 const composers: Composer[] = [
   {
@@ -83,6 +69,7 @@ const composers: Composer[] = [
     streams: "5.3B",
     photo: composerBrunoCesar,
     hits: [
+      "Zé Neto e Cristiano - Oi Balde, Estado Decadente, Deu Moral",
       "Gusttavo Lima - Termina Comigo Antes",
       "Simone Mendes - Você Mereceu",
       "Marília Mendonça - Estranho",
@@ -103,6 +90,7 @@ const composers: Composer[] = [
     streams: "5.2B",
     photo: composerBrunoSucesso,
     hits: [
+      "Ana Castela - Chicletinho",
       "Zé Neto e Cristiano - Alô Ambev",
       "Danilo e Davi - Apaga Apaga Apaga",
       "Gustavo Mioto, Mc Don Juan - Quando Apaga a Luz",
@@ -122,6 +110,7 @@ const composers: Composer[] = [
     streams: "5.1B",
     photo: composerRodrigoReys,
     hits: [
+      "João Gomes",
       "Murilo Huff - Mitos e Verdades",
       "Zé Neto e Cristiano - Estado Decadente, Derreter Essa Aliança, Me Bloqueia",
       "Mari Fernandez - Para de Me Assistir",
@@ -139,6 +128,7 @@ const composers: Composer[] = [
     streams: "4.5B",
     photo: composerMarcolino,
     hits: [
+      "Luan Santana - Abalo Emocional, Aluga-se",
       "Ana Castela, Luan Santana - DEJA VU",
       "Matheus e Kauan - A Nossa Praia, Oitava Dose",
       "Diego e Victor Hugo - A Culpa é do Meu Grau",
@@ -170,6 +160,7 @@ const composers: Composer[] = [
     streams: "4.1B",
     photo: composerLucasIng,
     hits: [
+      "Felipe e Rodrigo - Caos De Alguém",
       "Jorge e Mateus - Cantada Boba",
       "Henrique e Juliano - Alô Inveja, Ce Me Conhece Eu Me Conheço",
       "Ana Castela - Fronteira",
@@ -270,18 +261,37 @@ const composers: Composer[] = [
       "Matheus e Kauan - Não Recomendo",
       "Marília Mendonça - Ausência",
       "Murilo Huff, Marília Mendonça - Uma Ex",
+      "Hugo Henrique, Léo Foguete - Terminar Pra Que",
+      "Grelo",
+      "Lauana Prado",
+      "Simone Mendes",
+      "Nattanzinho Lima",
+      "Leo Foguete",
+      "Israel e Rodolfo",
+      "Jorge e Mateus",
+      "Luan Santana",
+      "Juliette",
+      "Vitor Fernandes",
     ],
   },
   {
     name: "Jeff da Sanfona",
-    streams: "2.0B",
+    streams: "2B",
     photo: composerJeff,
     hits: [
       "Danilo e Davi - Apaga Apaga Apaga, Mudou o Texto",
+      "Iguinho e Lulinha",
       "Nattan, Diego e Victor Hugo - Andar de Baixo",
       "Léo Santana, Mc Don Juan, Mari Fernandez - Áudio Que Te Entrega",
       "Henry Freitas - Porra de Love",
+      "Murilo Huff",
+      "Mari Fernandez",
+      "Guilherme e Benuto",
+      "Felipe Araújo",
+      "Mariana Fagundes",
       "Wesley Safadão - Edinalva",
+      "Alexandre Pires",
+      "Diego e Victor Hugo",
     ],
   },
   {
@@ -294,7 +304,12 @@ const composers: Composer[] = [
       "Lauana Prado, Diego e Arnaldo - Desconhecido",
       "Zé Neto e Cristiano - Dubai",
       "Felipe e Rodrigo - Problemão",
+      "Luiza Martins",
+      "Matheus e Kauan",
       "Marília Mendonça, Maiara e Maraisa - Você Não Manda em Mim",
+      "Marcos e Belutti",
+      "Murilo Huff",
+      "Clayton e Romário",
     ],
   },
   {
@@ -335,13 +350,20 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+const extractSongName = (hit: string): { artist: string; song: string } => {
+  const parts = hit.split(" - ");
+  if (parts.length > 1) {
+    return { artist: parts[0].trim(), song: parts.slice(1).join(" - ").trim() };
+  }
+  return { artist: hit.trim(), song: "" };
+};
+
 const ComposerCarouselCard = ({
   composer,
 }: {
   composer: Composer;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const artists = extractArtists(composer.hits);
 
   return (
     <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
@@ -386,28 +408,27 @@ const ComposerCarouselCard = ({
           </p>
         </div>
 
-        {artists.length > 0 && (
-          <div className="px-0 pb-4 overflow-hidden">
-            <div className="border-t border-border pt-3 mx-4">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-3">
-                Artistas
+        {composer.hits.length > 0 && (
+          <div className="px-4 pb-4 flex-1 overflow-hidden">
+            <div className="border-t border-border pt-3">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-2">
+                Músicas
               </p>
-            </div>
-            <div className="relative overflow-hidden">
-              <div className="flex animate-marquee whitespace-nowrap gap-4">
-                {[...artists, ...artists].map((artist, i) => (
-                  <span
-                    key={`${artist}-${i}`}
-                    className="inline-flex items-center gap-1.5 text-xs text-muted-foreground shrink-0"
-                  >
-                    <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center shrink-0`}>
-                      <span className="text-[8px] font-bold text-white/80 select-none">
-                        {getInitials(artist)}
-                      </span>
-                    </span>
-                    {artist}
-                  </span>
-                ))}
+              <div className="space-y-1.5 max-h-[140px] overflow-y-auto scrollbar-thin pr-1">
+                {composer.hits.map((hit, i) => {
+                  const { artist, song } = extractSongName(hit);
+                  return (
+                    <div key={i} className="text-[11px] leading-tight">
+                      <span className="text-muted-foreground">{artist}</span>
+                      {song && (
+                        <>
+                          {" - "}
+                          <span className="text-foreground font-medium">{song}</span>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
