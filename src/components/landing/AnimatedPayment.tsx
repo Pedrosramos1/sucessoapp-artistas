@@ -20,28 +20,24 @@ const AnimatedPayment = () => {
       // Step 0
       setActiveStep(0); setFilledFields(0); setShowCompletion(false);
       timeout = setTimeout(() => {
-        // Step 1
         setActiveStep(1);
         timeout = setTimeout(() => {
-          // Step 2 - start filling fields
           setActiveStep(2);
           let field = 0;
           const fillNext = () => {
             field++;
             setFilledFields(field);
-            if (field < 5) timeout = setTimeout(fillNext, 500);
+            if (field < 5) timeout = setTimeout(fillNext, 280);
             else timeout = setTimeout(() => {
-              // Show completion
               setShowCompletion(true);
               timeout = setTimeout(() => {
-                // Reset and loop
                 run();
-              }, 3000);
-            }, 800);
+              }, 2000);
+            }, 400);
           };
-          timeout = setTimeout(fillNext, 400);
-        }, 1200);
-      }, 1200);
+          timeout = setTimeout(fillNext, 250);
+        }, 600);
+      }, 600);
     };
     run();
     return () => clearTimeout(timeout);
