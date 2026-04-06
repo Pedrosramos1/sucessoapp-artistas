@@ -433,7 +433,7 @@ const ComposerCarouselCard = ({
                       </span>
                       <span className="text-xs text-muted-foreground whitespace-nowrap">{item.artist}</span>
                     </div>
-                    <span className="text-[10px] text-foreground/70 whitespace-nowrap">🎵 {item.song}</span>
+                    <span className="text-[10px] text-foreground/70 whitespace-nowrap">{item.song}</span>
                   </div>
                 ))}
               </div>
