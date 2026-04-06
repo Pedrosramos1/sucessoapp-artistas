@@ -25,6 +25,7 @@ interface FeatureSection {
   scrollScreen?: string;
   animatedPlayer?: boolean;
   animatedAudition?: boolean;
+  animatedPayment?: boolean;
 }
 
 const features: FeatureSection[] = [
