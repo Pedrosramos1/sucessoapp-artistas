@@ -339,7 +339,7 @@ const ComposerCarouselCard = ({
   const artists = extractArtists(composer.hits);
 
   return (
-    <div className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]">
+    <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
       <motion.div
         className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
         animate={{
@@ -459,8 +459,8 @@ const Composers = () => {
 
   return (
     <>
-      <section id="composers" className="relative py-28 overflow-hidden">
-        <div className="relative px-4 max-w-6xl mx-auto mb-16">
+      <section id="composers" className="relative py-16 md:py-28 overflow-hidden">
+        <div className="relative px-4 max-w-6xl mx-auto mb-10 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -471,11 +471,11 @@ const Composers = () => {
             <span className="inline-block mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Compositores na plataforma
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 md:mb-4">
               Juntos, somam mais de{" "}
               <span className="text-highlight">60 bilhões de visualizações</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto">
               Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.{" "}
               <span className="text-foreground font-medium">
                 E agora um deles pode ser seu.

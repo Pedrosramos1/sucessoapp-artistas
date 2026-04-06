@@ -9,7 +9,7 @@ const TrustedBy = () => {
   const doubled = [...logos, ...logos];
 
   return (
-    <section className="py-14 border-y border-border/50 overflow-hidden">
+    <section className="py-10 md:py-14 border-y border-border/50 overflow-hidden">
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
