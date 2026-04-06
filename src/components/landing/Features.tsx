@@ -132,22 +132,24 @@ const PhoneMockup = ({ screenSrc }: { screenSrc: string }) => {
   return (
     <motion.div
       ref={containerRef}
-      className="flex-1 max-w-xs w-full mx-auto"
+      className="flex-1 max-w-[240px] md:max-w-xs w-full mx-auto"
       variants={itemVariants}
     >
-      <div className="relative mx-auto" style={{ width: 280, height: 580 }}>
-        <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
-        <div className="absolute inset-[4px] rounded-[2.75rem] overflow-hidden bg-black">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-2xl z-20" />
-          <motion.img
-            src={screenSrc}
-            alt="App screenshot"
-            className="w-full h-auto"
-            style={{ y: screenY }}
-            loading="lazy"
-          />
+      <div className="relative mx-auto" style={{ maxWidth: 280 }}>
+        <div className="relative w-full" style={{ paddingBottom: "207%" }}>
+          <div className="absolute inset-0 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
+          <div className="absolute inset-[3px] md:inset-[4px] rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-black">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100px] md:w-[120px] h-[24px] md:h-[30px] bg-black rounded-b-2xl z-20" />
+            <motion.img
+              src={screenSrc}
+              alt="App screenshot"
+              className="w-full h-auto"
+              style={{ y: screenY }}
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[80px] md:w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
         </div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
       </div>
     </motion.div>
   );
@@ -266,7 +268,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
   return (
     <motion.div
       ref={ref}
-      className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20`}
+      className={`flex flex-col ${feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-8 md:gap-12 lg:gap-20`}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -274,15 +276,15 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
     >
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
         <motion.span
-          className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-border bg-secondary text-[10px] md:text-xs font-semibold uppercase tracking-widest text-muted-foreground"
           variants={itemVariants}
         >
-          <feature.icon className="w-3.5 h-3.5" />
+          <feature.icon className="w-3 h-3 md:w-3.5 md:h-3.5" />
           {feature.badge}
         </motion.span>
 
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3 md:mb-4"
           variants={itemVariants}
         >
           {feature.title}{" "}
@@ -290,13 +292,13 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.h2>
 
         <motion.p
-          className="text-muted-foreground text-lg mb-8 leading-relaxed"
+          className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8 leading-relaxed"
           variants={itemVariants}
         >
           {feature.subtitle}
         </motion.p>
 
-        <ul className="space-y-4">
+        <ul className="space-y-3 md:space-y-4">
           {feature.bullets.map((bullet, i) => (
             <motion.li
               key={bullet}
@@ -312,9 +314,9 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
                   },
                 },
               }}
-              className="flex items-start gap-3 text-base text-secondary-foreground"
+              className="flex items-start gap-3 text-sm md:text-base text-secondary-foreground"
             >
-              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              <span className="mt-1.5 md:mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               {bullet}
             </motion.li>
           ))}
@@ -328,7 +330,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-28 px-4 overflow-hidden">
+    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden">
 
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -351,12 +353,12 @@ const Features = () => {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-6"
         >
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
             O App <span className="text-highlight">(per)feito</span> pra construir seu repertório.
           </h2>
         </motion.div>
 
-        <div className="space-y-28 lg:space-y-36 mt-24">
+        <div className="space-y-16 md:space-y-28 lg:space-y-36 mt-16 md:mt-24">
           {features.map((feature, i) => (
             <FeatureBlock key={feature.title} feature={feature} index={i} />
           ))}

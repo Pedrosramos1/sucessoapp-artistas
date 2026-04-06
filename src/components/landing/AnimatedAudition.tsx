@@ -60,7 +60,7 @@ const AnimatedAudition = () => {
   return (
     <motion.div
       ref={containerRef}
-      className="flex-1 max-w-xs w-full mx-auto"
+      className="flex-1 max-w-[240px] md:max-w-xs w-full mx-auto"
       style={{ perspective: 800 }}
       initial={{ opacity: 0, y: 40, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
