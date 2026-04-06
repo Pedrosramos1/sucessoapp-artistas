@@ -355,7 +355,9 @@ const extractArtistSongs = (hits: string[], max = 6): { artist: string; song: st
     .filter((h) => h.includes(" - "))
     .map((h) => {
       const parts = h.split(" - ");
-      return { artist: parts[0].trim(), song: parts.slice(1).join(" - ").trim() };
+      const songs = parts.slice(1).join(" - ").trim();
+      const firstSong = songs.split(",")[0].trim();
+      return { artist: parts[0].trim(), song: firstSong };
     })
     .slice(0, max);
 };
