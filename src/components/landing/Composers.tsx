@@ -364,13 +364,20 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+const extractSongName = (hit: string): { artist: string; song: string } => {
+  const parts = hit.split(" - ");
+  if (parts.length > 1) {
+    return { artist: parts[0].trim(), song: parts.slice(1).join(" - ").trim() };
+  }
+  return { artist: hit.trim(), song: "" };
+};
+
 const ComposerCarouselCard = ({
   composer,
 }: {
   composer: Composer;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const artists = extractArtists(composer.hits);
 
   return (
     <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
@@ -415,28 +422,27 @@ const ComposerCarouselCard = ({
           </p>
         </div>
 
-        {artists.length > 0 && (
-          <div className="px-0 pb-4 overflow-hidden">
-            <div className="border-t border-border pt-3 mx-4">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-3">
-                Artistas
+        {composer.hits.length > 0 && (
+          <div className="px-4 pb-4 flex-1 overflow-hidden">
+            <div className="border-t border-border pt-3">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest text-center mb-2">
+                Músicas
               </p>
-            </div>
-            <div className="relative overflow-hidden">
-              <div className="flex animate-marquee whitespace-nowrap gap-4">
-                {[...artists, ...artists].map((artist, i) => (
-                  <span
-                    key={`${artist}-${i}`}
-                    className="inline-flex items-center gap-1.5 text-xs text-muted-foreground shrink-0"
-                  >
-                    <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(artist)} flex items-center justify-center shrink-0`}>
-                      <span className="text-[8px] font-bold text-white/80 select-none">
-                        {getInitials(artist)}
-                      </span>
-                    </span>
-                    {artist}
-                  </span>
-                ))}
+              <div className="space-y-1.5 max-h-[140px] overflow-y-auto scrollbar-thin pr-1">
+                {composer.hits.map((hit, i) => {
+                  const { artist, song } = extractSongName(hit);
+                  return (
+                    <div key={i} className="text-[11px] leading-tight">
+                      <span className="text-muted-foreground">{artist}</span>
+                      {song && (
+                        <>
+                          {" - "}
+                          <span className="text-foreground font-medium">{song}</span>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
