@@ -81,8 +81,8 @@ const composers: Composer[] = [
   {
     name: "Bruno Cesar",
     streams: "5.3B",
+    photo: composerBrunoCesar,
     hits: [
-      "Zé Neto e Cristiano - Oi Balde, Estado Decadente, Deu Moral",
       "Gusttavo Lima - Termina Comigo Antes",
       "Simone Mendes - Você Mereceu",
       "Marília Mendonça - Estranho",
@@ -101,8 +101,8 @@ const composers: Composer[] = [
   {
     name: "Bruno Sucesso",
     streams: "5.2B",
+    photo: composerBrunoSucesso,
     hits: [
-      "Ana Castela - Chicletinho",
       "Zé Neto e Cristiano - Alô Ambev",
       "Danilo e Davi - Apaga Apaga Apaga",
       "Gustavo Mioto, Mc Don Juan - Quando Apaga a Luz",
@@ -120,8 +120,8 @@ const composers: Composer[] = [
   {
     name: "Rodrigo Reys",
     streams: "5.1B",
+    photo: composerRodrigoReys,
     hits: [
-      "João Gomes",
       "Murilo Huff - Mitos e Verdades",
       "Zé Neto e Cristiano - Estado Decadente, Derreter Essa Aliança, Me Bloqueia",
       "Mari Fernandez - Para de Me Assistir",
@@ -137,8 +137,8 @@ const composers: Composer[] = [
   {
     name: "Marcolino",
     streams: "4.5B",
+    photo: composerMarcolino,
     hits: [
-      "Luan Santana - Abalo Emocional, Aluga-se",
       "Ana Castela, Luan Santana - DEJA VU",
       "Matheus e Kauan - A Nossa Praia, Oitava Dose",
       "Diego e Victor Hugo - A Culpa é do Meu Grau",
@@ -168,8 +168,8 @@ const composers: Composer[] = [
   {
     name: "Lucas Ing",
     streams: "4.1B",
+    photo: composerLucasIng,
     hits: [
-      "Felipe e Rodrigo - Caos De Alguém",
       "Jorge e Mateus - Cantada Boba",
       "Henrique e Juliano - Alô Inveja, Ce Me Conhece Eu Me Conheço",
       "Ana Castela - Fronteira",
