@@ -3,18 +3,18 @@ import { useRef, useState, useEffect } from "react";
 
 
 
-import composerWaleria from "@/assets/composer-waleria.png";
-import composerHugoHenrique from "@/assets/composer-hugo-henrique.png";
-import composerJeff from "@/assets/composer-jeff.png";
+import composerWaleria from "@/assets/composer-waleria.jpg";
+import composerHugoHenrique from "@/assets/composer-hugo-henrique.jpg";
+import composerJeff from "@/assets/composer-jeff.jpg";
 import composerIkaro from "@/assets/composer-ikaro.png";
-import composerElias from "@/assets/composer-elias.png";
+import composerElias from "@/assets/composer-elias.jpg";
 import composerDanillo from "@/assets/composer-danillo.png";
-import composerDanielzao from "@/assets/composer-danielzao.png";
-import composerElan from "@/assets/composer-elan.png";
-import composerLeoSoares from "@/assets/composer-leo-soares.png";
-import composerDanCandido from "@/assets/composer-dan-candido.png";
-import composerEduValim from "@/assets/composer-edu-valim.png";
-import composerMarcello from "@/assets/composer-marcello.png";
+import composerDanielzao from "@/assets/composer-danielzao.jpg";
+import composerElan from "@/assets/composer-elan.jpg";
+import composerLeoSoares from "@/assets/composer-leo-soares.jpg";
+import composerDanCandido from "@/assets/composer-dan-candido.jpg";
+import composerEduValim from "@/assets/composer-edu-valim.jpg";
+import composerMarcello from "@/assets/composer-marcello.jpg";
 
 interface Composer {
   name: string;
