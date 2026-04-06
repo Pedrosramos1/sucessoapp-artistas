@@ -259,6 +259,9 @@ const FeatureImageCard = ({ feature }: { feature: FeatureSection }) => {
   if (feature.animatedPlayer) {
     return <AnimatedPlayer />;
   }
+  if (feature.animatedPayment) {
+    return <AnimatedPayment />;
+  }
   return <StaticImageCard feature={feature} />;
 };
 
