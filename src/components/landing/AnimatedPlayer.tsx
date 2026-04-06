@@ -1,315 +1,196 @@
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import { Play, Pause, SkipForward, SkipBack, Heart, Plus, Users } from "lucide-react";
-
-const members = [
-  { name: "Artista", initials: "AR", color: "bg-purple-500" },
-  { name: "Produtor", initials: "PR", color: "bg-blue-500" },
-  { name: "A&R", initials: "A&R", color: "bg-emerald-500" },
-];
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { ArrowLeft, Search, SlidersHorizontal, Play, Heart, Check, Camera, Music } from "lucide-react";
 
 const songs = [
-  { title: "Selfie com o Futuro", artist: "João Machado", duration: "3:42", addedBy: 0 },
-  { title: "Beijo na Testa", artist: "Bruno Sucesso", duration: "3:18", addedBy: 1 },
-  { title: "Noite de Verão", artist: "Rebeka Lins", duration: "4:01", addedBy: 2 },
-  { title: "Coração Blindado", artist: "Guth", duration: "3:55", addedBy: 0 },
-  { title: "Céu de Diamante", artist: "Mãozinha", duration: "3:29", addedBy: 1 },
-  { title: "Fogo Cruzado", artist: "Nattan", duration: "3:12", addedBy: 2 },
+  { title: "Exatamente como você é", status: "Público", statusColor: "text-blue-400", plays: "7M", hearts: "3M", price: "R$ 2.550,00", checked: true },
+  { title: "Beijo na Testa", status: "Privada", statusColor: "text-muted-foreground", plays: "7M", hearts: "3M", price: "R$ 2.550,00", checked: false },
+  { title: "Faixa 1, Rockey", status: "Rascunho", statusColor: "text-purple-400", plays: "3M", hearts: "1M", price: "R$ 1.110,00", checked: true },
+  { title: "In-sônia", status: "Não Listado", statusColor: "text-muted-foreground", plays: "2.5M", hearts: "1.5M", price: "R$ 4.430,00", checked: false },
+];
+
+const coverColors = [
+  "from-amber-500 to-orange-600",
+  "from-pink-500 to-rose-600",
+  "from-blue-500 to-indigo-600",
+  "from-emerald-500 to-teal-600",
 ];
 
 const AnimatedPlayer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentSong, setCurrentSong] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [liked, setLiked] = useState<Set<number>>(new Set([0, 2, 4]));
+  const [checkedSongs, setCheckedSongs] = useState<Set<number>>(new Set([0, 2]));
+  const [animPhase, setAnimPhase] = useState(0);
+  // Phases: 0=initial, 1=show songs, 2=check items, 3=button pulse
 
-  // Scroll-linked transforms
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const cardY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [80, 0, 0, -40]);
-  const cardRotateX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [8, 0, 0, -4]);
-  const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.9, 1, 1, 0.95]);
-  const glowOpacity = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0, 1, 0]);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+  const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.92, 1, 1, 0.95]);
 
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setCurrentSong((s) => (s + 1) % songs.length);
-          return 0;
-        }
-        return prev + 0.5;
-      });
-    }, 50);
-    return () => clearInterval(interval);
-  }, [isPlaying, currentSong]);
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    const run = () => {
+      setAnimPhase(0);
+      setCheckedSongs(new Set());
+      timeouts.push(setTimeout(() => setAnimPhase(1), 400));
+      timeouts.push(setTimeout(() => {
+        setAnimPhase(2);
+        setCheckedSongs(new Set([0]));
+      }, 1400));
+      timeouts.push(setTimeout(() => {
+        setCheckedSongs(new Set([0, 2]));
+      }, 2200));
+      timeouts.push(setTimeout(() => setAnimPhase(3), 3000));
+      timeouts.push(setTimeout(() => run(), 6000));
+    };
+    run();
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
 
-  const handleNext = () => {
-    setCurrentSong((s) => (s + 1) % songs.length);
-    setProgress(0);
-  };
-
-  const handlePrev = () => {
-    setCurrentSong((s) => (s - 1 + songs.length) % songs.length);
-    setProgress(0);
-  };
-
-  const song = songs[currentSong];
+  const selectedCount = checkedSongs.size;
 
   return (
     <motion.div
       ref={containerRef}
-      className="flex-1 max-w-md w-full mx-auto"
-      style={{ perspective: 1000 }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      className="flex-1 max-w-[240px] md:max-w-xs w-full mx-auto"
+      style={{ perspective: 800 }}
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <motion.div
-        style={{
-          y: cardY,
-          rotateX: cardRotateX,
-          scale: cardScale,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative"
-      >
-        {/* Glow effect behind card */}
-        <motion.div
-          className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/20 via-purple-500/10 to-blue-500/15 blur-2xl -z-10"
-          style={{ opacity: glowOpacity }}
-        />
+      <motion.div style={{ scale: cardScale }}>
+        {/* Phone frame */}
+        <div className="relative mx-auto" style={{ maxWidth: 280 }}>
+          <div className="relative w-full" style={{ paddingBottom: "207%" }}>
+            <div className="absolute inset-0 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-b from-[hsl(0_0%_25%)] to-[hsl(0_0%_12%)] shadow-[0_25px_60px_-12px_hsl(0_0%_0%/0.6)]" />
+            <div className="absolute inset-[3px] md:inset-[4px] rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden bg-background">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[100px] md:w-[120px] h-[24px] md:h-[30px] bg-black rounded-b-2xl z-20" />
 
-        <div className="rounded-2xl bg-card border border-border shadow-[0_20px_50px_-12px_hsl(0_0%_0%/0.4)] overflow-hidden backdrop-blur-sm">
-          {/* Header */}
-          <div className="px-5 pt-5 pb-3 border-b border-border/50">
-            <div className="flex items-center justify-between mb-1">
-              <div>
-                <motion.p
-                  className="text-foreground text-sm font-bold"
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                >
-                  Playlist do Álbum
-                </motion.p>
-                <p className="text-muted-foreground text-xs mt-0.5">6 músicas · Colaborativa</p>
-              </div>
-              <div className="flex items-center -space-x-2">
-                {members.map((m, i) => (
-                  <motion.div
-                    key={m.name}
-                    initial={{ opacity: 0, scale: 0, x: 20 }}
-                    whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-                    className={`w-7 h-7 rounded-full ${m.color} flex items-center justify-center text-[9px] font-bold text-white border-2 border-card`}
-                    title={m.name}
-                  >
-                    {m.initials}
-                  </motion.div>
-                ))}
+              {/* Screen content */}
+              <div className="absolute inset-0 pt-9 flex flex-col overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center justify-center px-4 py-2 relative">
+                  <ArrowLeft className="w-4 h-4 text-foreground absolute left-4" />
+                  <span className="text-[10px] font-bold text-foreground">Nova Playlist</span>
+                </div>
+
+                {/* Cover area */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.6, type: "spring" }}
-                  className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center border-2 border-card"
+                  className="mx-4 mt-2 rounded-xl bg-gradient-to-br from-purple-600/20 to-blue-600/20 border border-purple-500/20 flex flex-col items-center py-4"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: animPhase >= 0 ? 1 : 0, scale: animPhase >= 0 ? 1 : 0.9 }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <Plus className="w-3 h-3 text-muted-foreground" />
-                </motion.div>
-              </div>
-            </div>
-          </div>
-
-          {/* Now Playing mini bar */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSong}
-              initial={{ opacity: 0, y: 12, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.98 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="px-5 py-3 bg-primary/5 border-b border-border/30"
-            >
-              <div className="flex items-center gap-3">
-                {/* Visualizer */}
-                <div className="flex items-end gap-[2px] h-8 w-8 shrink-0">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="w-[4px] rounded-sm bg-primary"
-                      animate={{
-                        height: isPlaying ? [6, Math.random() * 26 + 8, 6] : 6,
-                      }}
-                      transition={{
-                        duration: 0.45 + Math.random() * 0.35,
-                        repeat: Infinity,
-                        delay: i * 0.08,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  ))}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <p className="text-foreground text-xs font-semibold truncate">{song.title}</p>
-                  <p className="text-muted-foreground text-[10px] truncate">{song.artist}</p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <motion.button whileTap={{ scale: 0.75 }} whileHover={{ scale: 1.15 }} onClick={handlePrev}>
-                    <SkipBack className="w-3.5 h-3.5 text-muted-foreground" />
-                  </motion.button>
-                  <motion.button
-                    whileTap={{ scale: 0.85 }}
-                    whileHover={{ scale: 1.1 }}
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/25"
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={isPlaying ? "pause" : "play"}
-                        initial={{ scale: 0, rotate: -90 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        exit={{ scale: 0, rotate: 90 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-3.5 h-3.5 text-primary-foreground" />
-                        ) : (
-                          <Play className="w-3.5 h-3.5 text-primary-foreground ml-0.5" />
-                        )}
-                      </motion.div>
-                    </AnimatePresence>
-                  </motion.button>
-                  <motion.button whileTap={{ scale: 0.75 }} whileHover={{ scale: 1.15 }} onClick={handleNext}>
-                    <SkipForward className="w-3.5 h-3.5 text-muted-foreground" />
-                  </motion.button>
-                </div>
-              </div>
-
-              {/* Progress */}
-              <div className="mt-2.5 flex items-center gap-2">
-                <span className="text-[9px] text-muted-foreground/50 w-6 text-right font-mono">
-                  {Math.floor((progress / 100) * 3)}:{String(Math.floor(((progress / 100) * 220) % 60)).padStart(2, "0")}
-                </span>
-                <div className="flex-1 h-[3px] bg-border rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-primary rounded-full"
-                    style={{ width: `${progress}%` }}
-                    transition={{ duration: 0.05 }}
-                  />
-                </div>
-                <span className="text-[9px] text-muted-foreground/50 w-6 font-mono">{song.duration}</span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Song list */}
-          <div className="px-2 py-1.5">
-            {songs.map((s, i) => {
-              const isActive = i === currentSong;
-              const member = members[s.addedBy];
-
-              return (
-                <motion.div
-                  key={s.title}
-                  layout
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 * i, duration: 0.35 }}
-                  whileHover={{ backgroundColor: "hsl(var(--secondary) / 0.5)", scale: 1.01 }}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
-                    isActive ? "bg-primary/10" : ""
-                  }`}
-                  onClick={() => {
-                    setCurrentSong(i);
-                    setProgress(0);
-                  }}
-                >
-                  <span className="text-[10px] text-muted-foreground w-4 text-right shrink-0 font-mono">
-                    {isActive && isPlaying ? (
-                      <motion.span
-                        animate={{ opacity: [1, 0.2, 1] }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                        className="text-primary text-xs"
-                      >
-                        ♪
-                      </motion.span>
-                    ) : (
-                      i + 1
-                    )}
-                  </span>
-
-                  <div className="min-w-0 flex-1">
-                    <p className={`text-xs font-medium truncate transition-colors ${isActive ? "text-primary" : "text-foreground"}`}>
-                      {s.title}
-                    </p>
-                    <p className="text-muted-foreground text-[10px] truncate">{s.artist}</p>
+                  <div className="w-12 h-12 rounded-xl bg-card/60 border border-border flex items-center justify-center mb-2">
+                    <Music className="w-5 h-5 text-primary" />
                   </div>
-
-                  <motion.div
-                    className={`w-5 h-5 rounded-full ${member.color} flex items-center justify-center shrink-0`}
-                    title={`Adicionado por ${member.name}`}
-                    whileHover={{ scale: 1.3 }}
-                  >
-                    <span className="text-[7px] font-bold text-white">{member.initials}</span>
-                  </motion.div>
-
-                  <motion.button
-                    whileTap={{ scale: 0.7 }}
-                    whileHover={{ scale: 1.3 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLiked((prev) => {
-                        const next = new Set(prev);
-                        if (next.has(i)) next.delete(i);
-                        else next.add(i);
-                        return next;
-                      });
-                    }}
-                    className="shrink-0"
-                  >
-                    <Heart
-                      className={`w-3.5 h-3.5 transition-all ${
-                        liked.has(i) ? "text-red-400 fill-red-400 scale-110" : "text-muted-foreground/30"
-                      }`}
-                    />
-                  </motion.button>
-
-                  <span className="text-[10px] text-muted-foreground/50 shrink-0 w-8 text-right font-mono">
-                    {s.duration}
-                  </span>
+                  <div className="flex items-center gap-1 bg-secondary/80 rounded-full px-2.5 py-1 mb-1">
+                    <span className="text-[7px] text-foreground font-medium">Adicionar uma capa</span>
+                    <Camera className="w-2.5 h-2.5 text-primary" />
+                  </div>
+                  <span className="text-[6px] text-muted-foreground">PNG ou JPG</span>
                 </motion.div>
-              );
-            })}
-          </div>
 
-          {/* Footer */}
-          <div className="px-5 py-3 border-t border-border/30 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Users className="w-3.5 h-3.5" />
-              <span className="text-[10px]">3 colaboradores online</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              {members.map((m, i) => (
+                {/* Title */}
+                <div className="px-4 mt-3 mb-2">
+                  <p className="text-[10px] text-primary font-bold leading-tight">Vamos começar a</p>
+                  <p className="text-[10px] text-primary font-bold leading-tight">criar sua playlist</p>
+                </div>
+
+                {/* Search bar */}
+                <div className="mx-4 mb-2 flex items-center gap-2 bg-secondary border border-border rounded-lg px-2.5 py-1.5">
+                  <SlidersHorizontal className="w-3 h-3 text-muted-foreground" />
+                  <span className="text-[8px] text-muted-foreground flex-1">O que você procura?</span>
+                  <Search className="w-3 h-3 text-muted-foreground" />
+                </div>
+
+                {/* Selected count */}
                 <motion.div
-                  key={m.name}
-                  className={`w-2 h-2 rounded-full ${m.color}`}
-                  animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.6, ease: "easeInOut" }}
-                />
-              ))}
+                  className="px-4 mb-1.5"
+                  animate={{ opacity: selectedCount > 0 ? 1 : 0.4 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <span className="text-[8px] text-muted-foreground font-semibold">{selectedCount} Selecionadas</span>
+                </motion.div>
+
+                {/* Song list */}
+                <div className="flex-1 px-3 space-y-0.5 overflow-hidden">
+                  {songs.map((song, i) => {
+                    const isChecked = checkedSongs.has(i);
+                    return (
+                      <motion.div
+                        key={song.title}
+                        className="flex items-center gap-2 py-1.5 px-1 rounded-lg"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{
+                          opacity: animPhase >= 1 ? 1 : 0,
+                          x: animPhase >= 1 ? 0 : -10,
+                        }}
+                        transition={{ duration: 0.3, delay: i * 0.1 }}
+                      >
+                        {/* Checkbox */}
+                        <motion.div
+                          className="w-4 h-4 rounded border-[1.5px] flex items-center justify-center shrink-0"
+                          animate={{
+                            borderColor: isChecked ? "hsl(216 100% 50%)" : "hsl(var(--border))",
+                            backgroundColor: isChecked ? "hsl(216 100% 50%)" : "transparent",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <motion.div
+                            animate={{ opacity: isChecked ? 1 : 0, scale: isChecked ? 1 : 0 }}
+                            transition={{ duration: 0.15 }}
+                          >
+                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                          </motion.div>
+                        </motion.div>
+
+                        {/* Cover art */}
+                        <div className={`w-8 h-8 rounded-md bg-gradient-to-br ${coverColors[i]} shrink-0 flex items-center justify-center`}>
+                          <Music className="w-3 h-3 text-white/70" />
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[8px] font-semibold text-foreground truncate leading-tight">{song.title}</p>
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <span className={`text-[6px] ${song.statusColor}`}>{song.status}</span>
+                          </div>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[6px] text-muted-foreground flex items-center gap-0.5">
+                              <Play className="w-2 h-2" /> {song.plays}
+                            </span>
+                            <span className="text-[6px] text-muted-foreground flex items-center gap-0.5">
+                              <Heart className="w-2 h-2" /> {song.hearts}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Price */}
+                        <span className="text-[7px] font-semibold text-primary shrink-0">{song.price}</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom button */}
+                <div className="px-4 py-3 mt-auto">
+                  <motion.div
+                    className="w-full rounded-xl py-2 text-center text-[9px] font-bold text-white bg-gradient-to-r from-blue-600 via-purple-600 to-primary"
+                    animate={{
+                      opacity: animPhase >= 3 ? 1 : 0.5,
+                      scale: animPhase >= 3 ? [1, 1.03, 1] : 1,
+                    }}
+                    transition={{
+                      opacity: { duration: 0.3 },
+                      scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
+                    }}
+                  >
+                    Salvar e Continuar
+                  </motion.div>
+                </div>
+              </div>
             </div>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[80px] md:w-[100px] h-[4px] rounded-full bg-white/30 z-20" />
           </div>
         </div>
       </motion.div>
