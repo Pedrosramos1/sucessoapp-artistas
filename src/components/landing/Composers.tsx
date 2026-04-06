@@ -15,6 +15,11 @@ import composerLeoSoares from "@/assets/composer-leo-soares.jpg";
 import composerDanCandido from "@/assets/composer-dan-candido.jpg";
 import composerEduValim from "@/assets/composer-edu-valim.jpg";
 import composerMarcello from "@/assets/composer-marcello.jpg";
+import composerBrunoCesar from "@/assets/composer-bruno-cesar.jpg";
+import composerBrunoSucesso from "@/assets/composer-bruno-sucesso.jpg";
+import composerRodrigoReys from "@/assets/composer-rodrigo-reys.jpg";
+import composerMarcolino from "@/assets/composer-marcolino.jpg";
+import composerLucasIng from "@/assets/composer-lucas-ing.jpg";
 
 interface Composer {
   name: string;
