@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { artistPhotos } from "./artistPhotos";
 
 
