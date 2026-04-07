@@ -453,7 +453,10 @@ const ComposerCarouselCard = ({
                       )}
                       <span className="text-xs text-muted-foreground whitespace-nowrap">{item.artist}</span>
                     </div>
-                    <span className="text-[10px] text-foreground/70 whitespace-nowrap">{item.song}</span>
+                    <div className="inline-flex items-center gap-1">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-primary shrink-0"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
+                      <span className="text-[10px] text-foreground/70 whitespace-nowrap">{item.song}</span>
+                    </div>
                   </div>
                 ))}
               </div>
