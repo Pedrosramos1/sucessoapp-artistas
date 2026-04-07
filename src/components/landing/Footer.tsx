@@ -1,7 +1,6 @@
 import logo from "@/assets/logo-horizontal.png";
 
 const Footer = () => {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <footer className="border-t border-border/50 pt-8 pb-10 px-6 md:px-12">
@@ -56,12 +55,6 @@ const Footer = () => {
               </a>
             </div>
 
-            <button
-              onClick={scrollToTop}
-              className="ml-2 px-4 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-foreground hover:border-primary transition-colors"
-            >
-              Voltar ↑
-            </button>
           </div>
         </div>
 
