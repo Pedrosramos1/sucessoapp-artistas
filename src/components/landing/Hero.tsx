@@ -23,7 +23,7 @@ const Hero = () => {
           loading="eager"
         />
         {/* Subtle overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-background/30" />
+        <div className="absolute inset-0 bg-background/70" />
       </div>
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
