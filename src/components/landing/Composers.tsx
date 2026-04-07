@@ -654,7 +654,8 @@ const Composers = () => {
           className="flex flex-col items-center justify-center mt-10 md:mt-14"
         >
           <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-center mb-6 px-2 sm:px-0">
-            Pronto pra encontrar o próximo hit da sua carreira?{" "}
+            Pronto pra encontrar o próximo hit da <br />
+            sua carreira?{" "}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Baixe agora</span>
           </h3>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
