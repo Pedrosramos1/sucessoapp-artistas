@@ -11,7 +11,7 @@ const Footer = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <a
-              href="https://sucessoapp.com/politica-de-privacidade"
+              href="https://sucessoapp.com/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
