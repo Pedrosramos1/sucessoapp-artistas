@@ -72,7 +72,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          className="relative flex flex-col sm:flex-row items-center justify-center -space-y-10 sm:-space-x-10 sm:space-y-0 w-full sm:w-auto"
+          className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
         >
           {/* Neon purple glow background */}
           <motion.div
@@ -82,10 +82,10 @@ const Hero = () => {
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
           <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeAppStore} alt="Baixar na App Store" className="h-[8.8rem] sm:h-[9.2rem] md:h-[11.5rem] w-[16rem] sm:w-[17rem] md:w-[22rem] object-contain" />
+            <img src={badgeAppStore} alt="Baixar na App Store" className="h-14 sm:h-16 md:h-20 w-auto object-contain" />
           </a>
           <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-[8.8rem] sm:h-[9.2rem] md:h-[11.5rem] w-[16rem] sm:w-[17rem] md:w-[22rem] object-contain" />
+            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-14 sm:h-16 md:h-20 w-auto object-contain" />
           </a>
         </motion.div>
 
