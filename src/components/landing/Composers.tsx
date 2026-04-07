@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { artistPhotos } from "./artistPhotos";
 
 
@@ -327,6 +327,31 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+const parseStreams = (str: string): { value: number; suffix: string } => {
+  const match = str.match(/^([\d.]+)([BM]?)$/);
+  if (!match) return { value: 0, suffix: "" };
+  return { value: parseFloat(match[1]), suffix: match[2] };
+};
+
+const useCountUp = (target: number, duration: number, start: boolean) => {
+  const [current, setCurrent] = useState(0);
+  useEffect(() => {
+    if (!start) { setCurrent(0); return; }
+    let startTime: number | null = null;
+    let raf: number;
+    const animate = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCurrent(eased * target);
+      if (progress < 1) raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, start]);
+  return current;
+};
+
 const extractArtistSongs = (hits: string[], max = 6): { artist: string; song: string }[] => {
   return hits
     .filter((h) => h.includes(" - "))
@@ -345,10 +370,14 @@ const ComposerCarouselCard = ({
   composer: Composer;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-50px" });
+  const { value: targetNum, suffix } = parseStreams(composer.streams);
+  const animatedValue = useCountUp(targetNum, 1800, isInView);
   const artistSongs = extractArtistSongs(composer.hits);
 
   return (
-    <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
+    <div ref={cardRef} className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
       <motion.div
         className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
         animate={{
@@ -386,7 +415,11 @@ const ComposerCarouselCard = ({
           <h3 className="font-bold text-base truncate">{composer.name}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             STREAMS{" "}
-            <span className="text-primary font-semibold">{composer.streams}</span>
+            <span className="text-primary font-semibold">
+              {suffix === "M"
+                ? `${Math.floor(animatedValue)}M`
+                : `${animatedValue.toFixed(1)}B`}
+            </span>
           </p>
         </div>
 
