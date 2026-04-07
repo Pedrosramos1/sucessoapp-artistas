@@ -566,7 +566,7 @@ const Composers = () => {
             className="text-center"
           >
             <span className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-detail shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               Compositores na plataforma
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 md:mb-4">
