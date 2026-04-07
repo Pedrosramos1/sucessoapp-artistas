@@ -1,10 +1,12 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-horizontal.png";
 import bgHero from "@/assets/bg-hero.png";
+import badgeAppStore from "@/assets/badge-appstore.png";
+import badgeGooglePlay from "@/assets/badge-googleplay.png";
 
-const CTA_LINK = "#";
+const APP_STORE_LINK = "#";
+const GOOGLE_PLAY_LINK = "#";
 
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
