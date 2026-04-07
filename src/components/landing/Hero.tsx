@@ -81,11 +81,11 @@ const Hero = () => {
             animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.95, 1.05, 0.95] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeAppStore} alt="Baixar na App Store" className="h-28 sm:h-32 md:h-40 w-auto" />
+          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300 h-14 sm:h-16 md:h-[4.5rem] w-[170px] sm:w-[200px] md:w-[230px] overflow-hidden rounded-xl">
+            <img src={badgeAppStore} alt="Baixar na App Store" className="h-[200%] w-[200%] max-w-none object-cover object-center -translate-x-1/4 -translate-y-1/4" />
           </a>
-          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-28 sm:h-32 md:h-40 w-auto" />
+          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300 h-14 sm:h-16 md:h-[4.5rem] w-[170px] sm:w-[200px] md:w-[230px] overflow-hidden rounded-xl">
+            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-[200%] w-[200%] max-w-none object-cover object-center -translate-x-1/4 -translate-y-1/4" />
           </a>
         </motion.div>
 
