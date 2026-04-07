@@ -38,6 +38,8 @@
 
     --highlight: 216 100% 55%;
 
+    --detail: 30 100% 55%;
+
     --gradient-primary: linear-gradient(135deg, hsl(216 100% 50%), hsl(274 79% 66%));
     --gradient-glow: linear-gradient(135deg, hsl(216 100% 50% / 0.3), hsl(274 79% 66% / 0.15));
     --shadow-glow: 0 0 40px hsl(216 100% 50% / 0.2);
