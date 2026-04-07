@@ -390,30 +390,29 @@ const ComposerCarouselCard = ({
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
-        <div className="relative aspect-square overflow-hidden">
-          {composer.photo ? (
-            <motion.img
-              src={composer.photo}
-              alt={composer.name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              style={{ imageRendering: "auto" }}
-              animate={{ scale: isHovered ? 1.08 : 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center`}>
-              <span className="text-5xl font-bold text-white/60 font-display select-none">
-                {getInitials(composer.name)}
-              </span>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-        </div>
-
-        <div className="px-4 pt-3 pb-2 text-center">
-          <h3 className="font-bold text-base truncate">{composer.name}</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
+        <div className="flex flex-col items-center pt-5 pb-3 px-4 text-center gap-2">
+          <motion.div
+            className="w-20 h-20 rounded-full overflow-hidden ring-2 ring-primary/30 shrink-0"
+            animate={{ scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            {composer.photo ? (
+              <img
+                src={composer.photo}
+                alt={composer.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className={`w-full h-full bg-gradient-to-br ${getAvatarColor(composer.name)} flex items-center justify-center`}>
+                <span className="text-2xl font-bold text-white/60 font-display select-none">
+                  {getInitials(composer.name)}
+                </span>
+              </div>
+            )}
+          </motion.div>
+          <h3 className="font-bold text-base truncate w-full">{composer.name}</h3>
+          <p className="text-xs text-muted-foreground">
             STREAMS{" "}
             <span className="text-primary font-semibold">
               {suffix === "M"
