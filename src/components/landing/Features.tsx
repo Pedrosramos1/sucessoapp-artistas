@@ -77,11 +77,12 @@ const features: FeatureSection[] = [
   {
     icon: CreditCard,
     badge: "Investimento",
-    title: "Um repertório que",
-    highlight: "se paga sozinho.",
+    title: "Parcele em até",
+    highlight: "12x no cartão.",
     subtitle: "Composições gigantes, que cabem no seu bolso.",
     bullets: [
-      "Parcele a licença em até 12x",
+      "Licencie músicas de forma acessível",
+      "Sem juros abusivos",
       "O investimento pode se pagar com a receita do fonograma",
     ],
     reverse: true,
