@@ -72,7 +72,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          className="relative flex flex-col sm:flex-row items-center justify-center -space-y-14 sm:space-y-0 sm:gap-4 w-full sm:w-auto"
+          className="relative flex flex-col sm:flex-row items-center justify-center -space-y-10 sm:space-y-0 sm:gap-4 w-full sm:w-auto"
         >
           {/* Neon purple glow background */}
           <motion.div
