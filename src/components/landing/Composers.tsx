@@ -377,7 +377,7 @@ const ComposerCarouselCard = ({
   const artistSongs = extractArtistSongs(composer.hits);
 
   return (
-    <div className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
+    <div ref={cardRef} className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
       <motion.div
         className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
         animate={{
