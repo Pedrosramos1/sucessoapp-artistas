@@ -476,40 +476,59 @@ const ComposerCarouselCard = ({
   );
 };
 
+const CARD_WIDTH_LG = 320;
+const CARD_GAP = 24;
+const CARD_STEP = CARD_WIDTH_LG + CARD_GAP;
+const SPEED = 0.5; // px per frame
+
 const Composers = () => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [trackWidth, setTrackWidth] = useState(0);
+  const offsetRef = useRef(0);
+  const pausedRef = useRef(false);
+  const rafRef = useRef<number>(0);
+  const [, forceRender] = useState(0);
 
   useEffect(() => {
     const updateTrackWidth = () => {
       if (!trackRef.current) return;
       setTrackWidth(trackRef.current.scrollWidth);
     };
-
     updateTrackWidth();
     window.addEventListener("resize", updateTrackWidth);
-
-    if (typeof ResizeObserver === "undefined") {
-      return () => {
-        window.removeEventListener("resize", updateTrackWidth);
-      };
-    }
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateTrackWidth();
-    });
-
-    if (trackRef.current) {
-      resizeObserver.observe(trackRef.current);
-    }
-
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateTrackWidth) : null;
+    if (trackRef.current && ro) ro.observe(trackRef.current);
     return () => {
-      resizeObserver.disconnect();
       window.removeEventListener("resize", updateTrackWidth);
+      ro?.disconnect();
     };
   }, []);
 
-  const animationDuration = trackWidth > 0 ? Math.max(trackWidth / 90, 32) : 32;
+  useEffect(() => {
+    if (trackWidth <= 0) return;
+    const animate = () => {
+      if (!pausedRef.current) {
+        offsetRef.current -= SPEED;
+        if (Math.abs(offsetRef.current) >= trackWidth) {
+          offsetRef.current += trackWidth;
+        }
+        if (scrollRef.current) {
+          scrollRef.current.style.transform = `translateX(${offsetRef.current}px)`;
+        }
+      }
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [trackWidth]);
+
+  const jump = (dir: 1 | -1) => {
+    offsetRef.current += dir * CARD_STEP;
+    if (trackWidth > 0 && Math.abs(offsetRef.current) >= trackWidth) {
+      offsetRef.current += trackWidth * (offsetRef.current < 0 ? 1 : -1);
+    }
+  };
 
   return (
     <>
@@ -538,34 +557,52 @@ const Composers = () => {
           </motion.div>
         </div>
 
-        <div className="relative">
-          <div className="overflow-hidden py-8" style={{ touchAction: "pan-y" }}>
-              <motion.div
-                className="flex w-max"
-                style={{ willChange: "transform" }}
-                animate={trackWidth > 0 ? { x: [0, -trackWidth] } : { x: 0 }}
-                transition={{
-                  duration: animationDuration,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-              >
-                {[0, 1].map((groupIndex) => (
-                  <div
-                    key={groupIndex}
-                    ref={groupIndex === 0 ? trackRef : undefined}
-                    className="flex gap-6 pr-6 shrink-0"
-                    aria-hidden={groupIndex === 1}
-                  >
-                    {composers.map((composer, i) => (
-                      <ComposerCarouselCard
-                        key={`${groupIndex}-${composer.name}-${i}`}
-                        composer={composer}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </motion.div>
+        <div className="relative group">
+          {/* Botão esquerda */}
+          <button
+            onClick={() => jump(1)}
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100"
+            aria-label="Anterior"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+
+          {/* Botão direita */}
+          <button
+            onClick={() => jump(-1)}
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100"
+            aria-label="Próximo"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+
+          <div
+            className="overflow-hidden py-8"
+            style={{ touchAction: "pan-y" }}
+            onMouseEnter={() => { pausedRef.current = true; }}
+            onMouseLeave={() => { pausedRef.current = false; }}
+          >
+            <div
+              ref={scrollRef}
+              className="flex w-max"
+              style={{ willChange: "transform" }}
+            >
+              {[0, 1].map((groupIndex) => (
+                <div
+                  key={groupIndex}
+                  ref={groupIndex === 0 ? trackRef : undefined}
+                  className="flex gap-6 pr-6 shrink-0"
+                  aria-hidden={groupIndex === 1}
+                >
+                  {composers.map((composer, i) => (
+                    <ComposerCarouselCard
+                      key={`${groupIndex}-${composer.name}-${i}`}
+                      composer={composer}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div
