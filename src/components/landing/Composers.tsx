@@ -434,9 +434,9 @@ const ComposerCarouselCard = ({
               animate={{
                 backgroundPosition: ["200% center", "-200% center"],
               }}
-              transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "easeInOut", delay: 0.5 }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
               style={{
-                backgroundImage: "linear-gradient(90deg, hsl(var(--detail)) 40%, hsl(var(--detail) / 0.5) 48%, hsl(0 0% 100%) 50%, hsl(var(--detail) / 0.5) 52%, hsl(var(--detail)) 60%)",
+                backgroundImage: "linear-gradient(90deg, hsl(var(--detail)) 40%, hsl(40 100% 75%) 50%, hsl(var(--detail)) 60%)",
                 backgroundSize: "200% 100%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
