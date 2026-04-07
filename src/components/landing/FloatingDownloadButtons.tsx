@@ -34,6 +34,7 @@ const FloatingDownloadButtons = () => {
         href={APP_STORE_LINK}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackDownloadClick('App Store')}
         className="relative group"
         animate={floatAnimation}
         whileHover={{ scale: 1.08 }}
@@ -50,6 +51,7 @@ const FloatingDownloadButtons = () => {
         href={GOOGLE_PLAY_LINK}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackDownloadClick('Google Play')}
         className="relative group"
         animate={{ ...floatAnimation, transition: { ...floatAnimation.transition, delay: 0.4 } }}
         whileHover={{ scale: 1.08 }}
