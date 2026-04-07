@@ -76,7 +76,7 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-3 md:mt-4 text-muted-foreground text-xs md:text-sm"
+          className="mt-3 md:mt-4 text-detail text-xs md:text-sm font-medium"
         >
           (Gratuito para artistas)
         </motion.p>
