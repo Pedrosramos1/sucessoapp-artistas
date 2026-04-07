@@ -30,7 +30,7 @@ const Footer = () => {
             {/* Social icons */}
             <div className="flex items-center gap-3">
               <a
-                href="https://www.facebook.com/sucessoapp"
+                href="https://www.facebook.com/profile.php?id=61577833469104"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -41,7 +41,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="https://www.instagram.com/sucessoapp"
+                href="https://www.instagram.com/sucessoapp/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
