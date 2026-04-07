@@ -542,13 +542,6 @@ const Composers = () => {
 
         <div className="relative">
           <div className="overflow-hidden py-8" style={{ touchAction: "pan-y" }}>
-            <div
-              className="w-full"
-              style={{
-                paddingLeft: "max(1.5rem, calc((100vw - 320px) / 2))",
-                paddingRight: "max(1.5rem, calc((100vw - 320px) / 2))",
-              }}
-            >
               <motion.div
                 className="flex w-max"
                 style={{ willChange: "transform" }}
@@ -575,7 +568,6 @@ const Composers = () => {
                   </div>
                 ))}
               </motion.div>
-            </div>
           </div>
 
           <div
