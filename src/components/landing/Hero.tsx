@@ -45,7 +45,7 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-8xl leading-[1.1] tracking-tight mb-3 md:mb-4 font-bold"
         >
-          Encontre um hit para chamar de seu
+          Encontre um hit para chamar de seu!
         </motion.h1>
 
         <motion.p
