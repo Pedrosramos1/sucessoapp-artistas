@@ -291,7 +291,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
           className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-500"
           variants={itemVariants}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-detail shrink-0" />
+          <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
           <feature.icon className="w-3 h-3 md:w-3.5 md:h-3.5" />
           {feature.badge}
         </motion.span>
@@ -355,7 +355,7 @@ const Features = () => {
           className="text-center mb-8"
         >
           <span className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500">
-            <span className="w-1.5 h-1.5 rounded-full bg-detail shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
             Nossa Plataforma
           </span>
         </motion.div>
