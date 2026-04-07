@@ -14,6 +14,12 @@ const floatAnimation = {
   },
 };
 
+const trackDownloadClick = (platform: 'App Store' | 'Google Play') => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', 'DownloadClick', { platform, section: 'floating' });
+  }
+};
+
 const FloatingDownloadButtons = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0.15, 0.25, 0.68, 0.76], [0, 1, 1, 0]);
@@ -28,6 +34,7 @@ const FloatingDownloadButtons = () => {
         href={APP_STORE_LINK}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackDownloadClick('App Store')}
         className="relative group"
         animate={floatAnimation}
         whileHover={{ scale: 1.08 }}
@@ -44,6 +51,7 @@ const FloatingDownloadButtons = () => {
         href={GOOGLE_PLAY_LINK}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackDownloadClick('Google Play')}
         className="relative group"
         animate={{ ...floatAnimation, transition: { ...floatAnimation.transition, delay: 0.4 } }}
         whileHover={{ scale: 1.08 }}
