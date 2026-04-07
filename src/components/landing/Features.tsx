@@ -301,7 +301,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
           variants={itemVariants}
         >
           {feature.title}{" "}
-          <span className="text-highlight">{feature.highlight}</span>
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{feature.highlight}</span>
         </motion.h2>
 
         <motion.p
@@ -368,7 +368,7 @@ const Features = () => {
           className="text-center mb-6"
         >
           <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-900">
-            O App <span className="text-highlight">(per)feito</span> pra construir seu repertório.
+            O App <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">(per)feito</span> pra construir seu repertório.
           </h2>
         </motion.div>
 
