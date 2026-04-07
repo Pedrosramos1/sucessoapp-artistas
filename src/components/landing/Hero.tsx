@@ -13,6 +13,86 @@ const Hero = () => {
 
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
+      {/* Aurora Borealis background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Base dark overlay */}
+        <div className="absolute inset-0 bg-background/40" />
+
+        {/* Aurora band 1 — wide blue sweep */}
+        <motion.div
+          className="absolute w-[250%] h-[60%] opacity-50"
+          style={{
+            background: "linear-gradient(180deg, transparent 0%, hsl(216 100% 50% / 0.35) 30%, hsl(200 100% 60% / 0.2) 50%, transparent 80%)",
+            top: "5%",
+            left: "-75%",
+            filter: "blur(60px)",
+          }}
+          animate={{
+            x: [0, 80, -40, 0],
+            y: [0, -20, 10, 0],
+            scaleX: [1, 1.1, 0.95, 1],
+            rotate: [0, 2, -1, 0],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Aurora band 2 — purple/violet ribbon */}
+        <motion.div
+          className="absolute w-[200%] h-[45%] opacity-40"
+          style={{
+            background: "linear-gradient(170deg, transparent 0%, hsl(274 79% 66% / 0.4) 25%, hsl(260 80% 55% / 0.25) 50%, transparent 75%)",
+            top: "15%",
+            left: "-50%",
+            filter: "blur(50px)",
+          }}
+          animate={{
+            x: [-30, 60, 0, -30],
+            y: [0, 15, -10, 0],
+            scaleY: [1, 1.15, 0.9, 1],
+            rotate: [0, -3, 1.5, 0],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Aurora band 3 — cyan accent */}
+        <motion.div
+          className="absolute w-[180%] h-[35%] opacity-30"
+          style={{
+            background: "linear-gradient(190deg, transparent 0%, hsl(190 100% 50% / 0.3) 30%, hsl(216 100% 60% / 0.2) 60%, transparent 85%)",
+            top: "25%",
+            left: "-40%",
+            filter: "blur(70px)",
+          }}
+          animate={{
+            x: [20, -50, 30, 20],
+            y: [-10, 20, -5, -10],
+            scaleX: [1, 0.9, 1.1, 1],
+          }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Vertical shimmer streaks */}
+        <motion.div
+          className="absolute w-full h-full opacity-20"
+          style={{
+            background: "repeating-linear-gradient(95deg, transparent, transparent 120px, hsl(216 100% 60% / 0.08) 120px, transparent 240px)",
+            filter: "blur(20px)",
+          }}
+          animate={{ x: [-100, 100, -100] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Bottom horizon glow */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[40%] opacity-40"
+          style={{
+            background: "radial-gradient(ellipse at 50% 100%, hsl(216 100% 50% / 0.2) 0%, hsl(274 79% 66% / 0.1) 40%, transparent 70%)",
+            filter: "blur(40px)",
+          }}
+          animate={{ opacity: [0.4, 0.25, 0.4] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
         <img src={logo} alt="SucessoApp" className="h-7 md:h-8" />
