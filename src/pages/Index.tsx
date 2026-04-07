@@ -8,8 +8,8 @@ import Footer from "@/components/landing/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Wrapper with animated background gradient curves */}
-      <div className="relative overflow-hidden">
+      {/* Dark zone — matches hero bg image tone until Parceiros */}
+      <div className="relative overflow-hidden bg-background">
         <Hero />
         <Features />
       </div>

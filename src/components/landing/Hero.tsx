@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-horizontal.png";
+import bgHero from "@/assets/bg-hero.png";
 
 const CTA_LINK = "#";
 
@@ -13,96 +14,16 @@ const Hero = () => {
 
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Aurora Borealis background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Aurora band 1 — intense blue sweep */}
-        <motion.div
-          className="absolute w-[300%] h-[70%] opacity-70"
-          style={{
-            background: "linear-gradient(180deg, transparent 0%, hsl(216 100% 50% / 0.55) 20%, hsl(200 100% 55% / 0.4) 45%, hsl(190 90% 50% / 0.2) 65%, transparent 85%)",
-            top: "0%",
-            left: "-100%",
-            filter: "blur(40px)",
-          }}
-          animate={{
-            x: [0, 120, -60, 0],
-            y: [0, -30, 15, 0],
-            scaleX: [1, 1.15, 0.9, 1],
-            rotate: [0, 3, -2, 0],
-          }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={bgHero}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="eager"
         />
-
-        {/* Aurora band 2 — vivid purple/violet */}
-        <motion.div
-          className="absolute w-[250%] h-[55%] opacity-65"
-          style={{
-            background: "linear-gradient(170deg, transparent 0%, hsl(274 79% 66% / 0.6) 20%, hsl(260 85% 55% / 0.45) 40%, hsl(240 70% 60% / 0.2) 60%, transparent 80%)",
-            top: "10%",
-            left: "-75%",
-            filter: "blur(35px)",
-          }}
-          animate={{
-            x: [-50, 100, 0, -50],
-            y: [0, 25, -15, 0],
-            scaleY: [1, 1.2, 0.85, 1],
-            rotate: [0, -4, 2, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Aurora band 3 — bright cyan/teal */}
-        <motion.div
-          className="absolute w-[220%] h-[45%] opacity-55"
-          style={{
-            background: "linear-gradient(185deg, transparent 0%, hsl(180 100% 45% / 0.45) 25%, hsl(200 100% 55% / 0.35) 50%, transparent 75%)",
-            top: "20%",
-            left: "-60%",
-            filter: "blur(45px)",
-          }}
-          animate={{
-            x: [30, -80, 50, 30],
-            y: [-15, 30, -10, -15],
-            scaleX: [1, 0.85, 1.15, 1],
-          }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Central bright glow pulse */}
-        <motion.div
-          className="absolute w-[80%] h-[50%] left-[10%] top-[10%]"
-          style={{
-            background: "radial-gradient(ellipse at 50% 50%, hsl(216 100% 55% / 0.4) 0%, hsl(274 79% 66% / 0.2) 40%, transparent 70%)",
-            filter: "blur(50px)",
-          }}
-          animate={{
-            opacity: [0.5, 0.8, 0.5],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Vertical shimmer streaks */}
-        <motion.div
-          className="absolute w-full h-full opacity-30"
-          style={{
-            background: "repeating-linear-gradient(92deg, transparent, transparent 80px, hsl(216 100% 60% / 0.12) 80px, transparent 160px)",
-            filter: "blur(12px)",
-          }}
-          animate={{ x: [-80, 80, -80] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Bottom horizon glow */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[45%]"
-          style={{
-            background: "radial-gradient(ellipse at 50% 100%, hsl(216 100% 50% / 0.35) 0%, hsl(274 79% 66% / 0.15) 35%, transparent 65%)",
-            filter: "blur(30px)",
-          }}
-          animate={{ opacity: [0.6, 0.35, 0.6] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Subtle overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-background/30" />
       </div>
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
