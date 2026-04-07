@@ -19,7 +19,7 @@ const Footer = () => {
               Política de Privacidade
             </a>
             <a
-              href="https://sucessoapp.com/termos-de-uso"
+              href="https://sucessoapp.com/terms-of-use"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
