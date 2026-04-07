@@ -288,7 +288,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
     >
       <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
         <motion.span
-          className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-border bg-secondary text-[10px] md:text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-500"
           variants={itemVariants}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-detail shrink-0" />
@@ -297,7 +297,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.span>
 
         <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3 md:mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3 md:mb-4 text-gray-900"
           variants={itemVariants}
         >
           {feature.title}{" "}
@@ -305,7 +305,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
         </motion.h2>
 
         <motion.p
-          className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8 leading-relaxed"
+          className="text-gray-500 text-base md:text-lg mb-6 md:mb-8 leading-relaxed"
           variants={itemVariants}
         >
           {feature.subtitle}
@@ -327,7 +327,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
                   },
                 },
               }}
-              className="flex items-start gap-3 text-sm md:text-base text-secondary-foreground"
+              className="flex items-start gap-3 text-sm md:text-base text-gray-700"
             >
               <span className="mt-1.5 md:mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               {bullet}
@@ -343,7 +343,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden mx-3 md:mx-6 lg:mx-10 mb-10 md:mb-16 rounded-[2rem] md:rounded-[3rem] bg-white border border-white/30">
+    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden mx-3 md:mx-6 lg:mx-10 mb-10 md:mb-16 rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-200 text-gray-900">
 
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -354,7 +354,7 @@ const Features = () => {
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-8"
         >
-          <span className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-border bg-secondary text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          <span className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-xs font-semibold uppercase tracking-widest text-gray-500">
             <span className="w-1.5 h-1.5 rounded-full bg-detail shrink-0" />
             Nossa Plataforma
           </span>
@@ -367,7 +367,7 @@ const Features = () => {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-6"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-900">
             O App <span className="text-highlight">(per)feito</span> pra construir seu repertório.
           </h2>
         </motion.div>
