@@ -380,13 +380,8 @@ const ComposerCarouselCard = ({
     <div ref={cardRef} className="flex-shrink-0 w-[240px] sm:w-[280px] lg:w-[320px]">
       <motion.div
         className="relative rounded-2xl overflow-hidden border border-border bg-card h-full flex flex-col"
-        animate={{
-          scale: isHovered ? 1.04 : 1,
-          boxShadow: isHovered
-            ? "0 24px 60px -18px hsl(var(--foreground) / 0.15)"
-            : "0 12px 30px -24px hsl(var(--foreground) / 0.22)",
-        }}
-        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
