@@ -429,11 +429,25 @@ const ComposerCarouselCard = ({
             >
               STREAMS
             </motion.span>{" "}
-            <span className="text-detail font-semibold drop-shadow-[0_0_8px_hsl(var(--detail)/0.6)]">
+            <motion.span
+              className="font-semibold"
+              animate={{
+                backgroundPosition: ["200% center", "-200% center"],
+              }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "easeInOut", delay: 0.5 }}
+              style={{
+                backgroundImage: "linear-gradient(90deg, hsl(var(--detail)) 40%, hsl(var(--detail) / 0.5) 48%, hsl(0 0% 100%) 50%, hsl(var(--detail) / 0.5) 52%, hsl(var(--detail)) 60%)",
+                backgroundSize: "200% 100%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                filter: "drop-shadow(0 0 8px hsl(var(--detail) / 0.6))",
+              }}
+            >
               {suffix === "M"
                 ? `${Math.floor(animatedValue)}M`
                 : `${animatedValue.toFixed(1)}B`}
-            </span>
+            </motion.span>
           </p>
         </div>
 
