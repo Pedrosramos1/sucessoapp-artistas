@@ -413,15 +413,22 @@ const ComposerCarouselCard = ({
           </motion.div>
           <h3 className="font-bold text-base truncate w-full">{composer.name}</h3>
           <p className="text-xs text-muted-foreground flex items-center gap-1">
-            <span className="relative overflow-hidden inline-block">
-              <span className="relative z-10">STREAMS</span>
-              <motion.span
-                className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                style={{ width: "200%" }}
-                animate={{ x: ["-100%", "100%"] }}
-                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
-              />
-            </span>{" "}
+            <motion.span
+              className="font-medium"
+              animate={{
+                backgroundPosition: ["200% center", "-200% center"],
+              }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
+              style={{
+                backgroundImage: "linear-gradient(90deg, hsl(var(--muted-foreground)) 40%, hsl(0 0% 95%) 50%, hsl(var(--muted-foreground)) 60%)",
+                backgroundSize: "200% 100%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              STREAMS
+            </motion.span>{" "}
             <span className="text-detail font-semibold drop-shadow-[0_0_8px_hsl(var(--detail)/0.6)]">
               {suffix === "M"
                 ? `${Math.floor(animatedValue)}M`
