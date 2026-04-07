@@ -576,7 +576,7 @@ const Composers = () => {
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 md:mb-4">
               Juntos, somam mais de{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">60 bilhões de visualizações</span>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">80 bilhões de visualizações</span>
             </h2>
             <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto">
               Mentes criadoras de hits que somam mais de 80 Bilhões de streamings.{" "}
