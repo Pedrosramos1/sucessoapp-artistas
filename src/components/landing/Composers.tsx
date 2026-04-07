@@ -415,7 +415,11 @@ const ComposerCarouselCard = ({
           <h3 className="font-bold text-base truncate">{composer.name}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             STREAMS{" "}
-            <span className="text-primary font-semibold">{composer.streams}</span>
+            <span className="text-primary font-semibold">
+              {suffix === "M"
+                ? `${Math.floor(animatedValue)}M`
+                : `${animatedValue.toFixed(1)}B`}
+            </span>
           </p>
         </div>
 
