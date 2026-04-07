@@ -343,7 +343,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
 
 const Features = () => {
   return (
-    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden mx-3 md:mx-6 lg:mx-10 rounded-[2rem] md:rounded-[3rem] bg-white/[0.03] backdrop-blur-sm border border-white/[0.06]">
+    <section id="features" className="relative py-16 md:py-28 px-4 overflow-hidden mx-3 md:mx-6 lg:mx-10 mb-10 md:mb-16 rounded-[2rem] md:rounded-[3rem] bg-white/[0.03] backdrop-blur-sm border border-white/[0.06]">
 
 
       <div className="max-w-6xl mx-auto relative z-10">
