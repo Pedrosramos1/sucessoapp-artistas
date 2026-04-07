@@ -370,6 +370,10 @@ const ComposerCarouselCard = ({
   composer: Composer;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-50px" });
+  const { value: targetNum, suffix } = parseStreams(composer.streams);
+  const animatedValue = useCountUp(targetNum, 1800, isInView);
   const artistSongs = extractArtistSongs(composer.hits);
 
   return (
