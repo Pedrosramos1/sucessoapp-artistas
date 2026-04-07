@@ -1,8 +1,25 @@
 import { motion } from "framer-motion";
 
+import abramusLogo from "@/assets/partners/abramus.png";
+import sbacemLogo from "@/assets/partners/sbacem.png";
+import somLivreLogo from "@/assets/partners/som-livre.png";
+import abramusDigitalLogo from "@/assets/partners/abramus-digital.png";
+import lionHitsLogo from "@/assets/partners/lion-hits.png";
+import oiBaldeLogo from "@/assets/partners/oi-balde.png";
+import valimLogo from "@/assets/partners/valim.png";
+import bridgeLogo from "@/assets/partners/bridge.png";
+import brunaCamposLogo from "@/assets/partners/bruna-campos.png";
+
 const logos = [
-  "Abramus", "Sbacem", "Som Livre", "Abramus Digital",
-  "Lion Hits", "Oi Balde", "Valim Music", "Bridge", "Bruna Campos",
+  { name: "Abramus", src: abramusLogo },
+  { name: "Sbacem", src: sbacemLogo },
+  { name: "Som Livre", src: somLivreLogo },
+  { name: "Abramus Digital", src: abramusDigitalLogo },
+  { name: "Lion Hits", src: lionHitsLogo },
+  { name: "Oi Balde", src: oiBaldeLogo },
+  { name: "Valim Publishing", src: valimLogo },
+  { name: "Bridge", src: bridgeLogo },
+  { name: "Bruna Campos", src: brunaCamposLogo },
 ];
 
 const TrustedBy = () => {
@@ -25,13 +42,13 @@ const TrustedBy = () => {
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
         <div className="flex animate-scroll-left w-max gap-16 items-center">
-          {doubled.map((name, i) => (
-            <span
-              key={`${name}-${i}`}
-              className="text-muted-foreground/40 hover:text-muted-foreground/70 text-lg font-display font-bold whitespace-nowrap select-none transition-colors duration-300"
-            >
-              {name}
-            </span>
+          {doubled.map((logo, i) => (
+            <img
+              key={`${logo.name}-${i}`}
+              src={logo.src}
+              alt={logo.name}
+              className="h-10 md:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 select-none"
+            />
           ))}
         </div>
       </div>
