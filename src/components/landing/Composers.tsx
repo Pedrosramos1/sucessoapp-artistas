@@ -653,7 +653,7 @@ const Composers = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col items-center justify-center mt-10 md:mt-14"
         >
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6">
+          <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-center mb-6 px-2 sm:px-0">
             Pronto pra encontrar o próximo hit da sua carreira?{" "}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Baixe agora</span>
           </h3>
