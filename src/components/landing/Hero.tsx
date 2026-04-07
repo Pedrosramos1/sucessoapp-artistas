@@ -82,10 +82,10 @@ const Hero = () => {
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
           <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeAppStore} alt="Baixar na App Store" className="h-16 sm:h-[4.5rem] md:h-20 w-auto" />
+            <img src={badgeAppStore} alt="Baixar na App Store" className="h-20 sm:h-24 md:h-28 w-auto" />
           </a>
           <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-16 sm:h-[4.5rem] md:h-20 w-auto" />
+            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-20 sm:h-24 md:h-28 w-auto" />
           </a>
         </motion.div>
 
