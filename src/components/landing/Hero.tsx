@@ -13,52 +13,6 @@ const Hero = () => {
 
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background gradient curves */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Large sweeping arc - blue */}
-        <div
-          className="absolute w-[200%] h-[120%] rounded-[50%] opacity-30"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 100%, hsl(216 100% 50% / 0.35), transparent 60%)',
-            top: '10%',
-            left: '-50%',
-          }}
-        />
-        {/* Purple arc top-right */}
-        <div
-          className="absolute w-[140%] h-[100%] rounded-[50%] opacity-25"
-          style={{
-            background: 'radial-gradient(ellipse at 70% 0%, hsl(274 79% 66% / 0.3), transparent 55%)',
-            top: '-30%',
-            right: '-40%',
-          }}
-        />
-        {/* Curved line effect - blue sweep */}
-        <div
-          className="absolute w-[180%] h-[80%] opacity-20"
-          style={{
-            background: 'conic-gradient(from 200deg at 50% 80%, transparent 0deg, hsl(216 100% 50% / 0.4) 40deg, transparent 120deg)',
-            top: '20%',
-            left: '-40%',
-          }}
-        />
-        {/* Secondary purple sweep */}
-        <div
-          className="absolute w-[160%] h-[70%] opacity-15"
-          style={{
-            background: 'conic-gradient(from 340deg at 60% 30%, transparent 0deg, hsl(274 79% 66% / 0.35) 30deg, transparent 100deg)',
-            top: '0%',
-            right: '-30%',
-          }}
-        />
-        {/* Subtle bottom glow */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-[40%] opacity-20"
-          style={{
-            background: 'linear-gradient(to top, hsl(216 100% 50% / 0.15), transparent)',
-          }}
-        />
-      </div>
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
         <img src={logo} alt="SucessoApp" className="h-7 md:h-8" />
