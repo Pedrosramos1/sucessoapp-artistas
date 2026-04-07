@@ -327,7 +327,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
                   },
                 },
               }}
-              className="flex items-start gap-3 text-sm md:text-base text-gray-700"
+              className="flex items-start gap-3 text-sm md:text-base text-gray-700 text-left"
             >
               <span className="mt-1.5 md:mt-2 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
               {bullet}
