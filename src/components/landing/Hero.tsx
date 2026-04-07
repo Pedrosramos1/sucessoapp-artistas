@@ -8,6 +8,12 @@ import badgeGooglePlay from "@/assets/badge-googleplay.png";
 const APP_STORE_LINK = "https://apps.apple.com/us/app/sucesso-app/id6670179038";
 const GOOGLE_PLAY_LINK = "https://play.google.com/store/apps/details?id=com.brunosucesso.sucesso";
 
+const trackDownloadClick = (platform: 'App Store' | 'Google Play') => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', 'DownloadClick', { platform, section: 'hero' });
+  }
+};
+
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
