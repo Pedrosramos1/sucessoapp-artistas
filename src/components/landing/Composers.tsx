@@ -383,7 +383,7 @@ const ComposerCarouselCard = ({
         animate={{
           scale: isHovered ? 1.04 : 1,
           boxShadow: isHovered
-            ? "0 24px 60px -18px hsl(var(--primary) / 0.24), 0 0 30px hsl(var(--accent) / 0.12)"
+            ? "0 24px 60px -18px hsl(var(--foreground) / 0.15)"
             : "0 12px 30px -24px hsl(var(--foreground) / 0.22)",
         }}
         transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
