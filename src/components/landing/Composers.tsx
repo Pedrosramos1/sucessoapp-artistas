@@ -645,22 +645,28 @@ const Composers = () => {
           />
         </div>
 
-        {/* Download badges */}
+        {/* CTA heading + Download badges */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-10 md:mt-14"
+          className="flex flex-col items-center justify-center mt-10 md:mt-14"
         >
-          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
-            <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <img src={badgeAppStore} alt="Baixar na App Store" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
-          </a>
-          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
-            <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
-          </a>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6">
+            Pronto pra encontrar o próximo hit da sua carreira?{" "}
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Baixe agora</span>
+          </h3>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <img src={badgeAppStore} alt="Baixar na App Store" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
+            </a>
+            <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <img src={badgeGooglePlay} alt="Disponível no Google Play" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
+            </a>
+          </div>
         </motion.div>
       </section>
     </>
