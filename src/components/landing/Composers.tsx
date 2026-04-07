@@ -414,7 +414,7 @@ const ComposerCarouselCard = ({
           <h3 className="font-bold text-base truncate w-full">{composer.name}</h3>
           <p className="text-xs text-muted-foreground">
             STREAMS{" "}
-            <span className="text-primary font-semibold">
+            <span className="text-primary font-semibold drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]">
               {suffix === "M"
                 ? `${Math.floor(animatedValue)}M`
                 : `${animatedValue.toFixed(1)}B`}
