@@ -82,7 +82,6 @@ const features: FeatureSection[] = [
     subtitle: "Composições gigantes, que cabem no seu bolso.",
     bullets: [
       "Parcele a licença em até 12x",
-      "Lance a música",
       "O investimento pode se pagar com a receita do fonograma",
     ],
     reverse: true,
