@@ -157,30 +157,32 @@ const AnimatedContract = () => {
           </div>
 
           {/* Verified banner */}
-          <motion.div
-            className="relative z-10 mx-5 mb-4 rounded-xl overflow-hidden"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{
-              height: phase >= 4 ? "auto" : 0,
-              opacity: phase >= 4 ? 1 : 0,
-            }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="flex items-center gap-2.5 bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3">
-              <motion.div
-                className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shrink-0 shadow-[0_0_20px_hsl(142_71%_45%/0.3)]"
-                initial={{ scale: 0 }}
-                animate={{ scale: phase >= 4 ? 1 : 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
-              >
-                <ShieldCheck className="w-4 h-4 text-white" />
-              </motion.div>
-              <div>
-                <p className="text-[10px] font-bold text-green-500">Contrato Verificado</p>
-                <p className="text-[8px] text-muted-foreground">Assinatura digital válida</p>
+          <div className="relative z-10 mx-5 mb-4">
+            <motion.div
+              className="rounded-xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{
+                opacity: phase >= 4 ? 1 : 0,
+                scale: phase >= 4 ? 1 : 0.8,
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <div className="flex items-center gap-2.5 bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3">
+                <motion.div
+                  className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shrink-0 shadow-[0_0_20px_hsl(142_71%_45%/0.3)]"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: phase >= 4 ? 1 : 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
+                >
+                  <ShieldCheck className="w-4 h-4 text-white" />
+                </motion.div>
+                <div>
+                  <p className="text-[10px] font-bold text-green-500">Contrato Verificado</p>
+                  <p className="text-[8px] text-muted-foreground">Assinatura digital válida</p>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </motion.div>
     </motion.div>
