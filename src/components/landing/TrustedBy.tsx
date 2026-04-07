@@ -47,7 +47,7 @@ const TrustedBy = () => {
               key={`${logo.name}-${i}`}
               src={logo.src}
               alt={logo.name}
-              className="h-10 md:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 select-none"
+              className="h-16 md:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 select-none"
             />
           ))}
         </div>
