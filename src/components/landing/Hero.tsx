@@ -5,7 +5,7 @@ import bgHero from "@/assets/bg-hero.png";
 import badgeAppStore from "@/assets/badge-appstore.png";
 import badgeGooglePlay from "@/assets/badge-googleplay.png";
 
-const APP_STORE_LINK = "#";
+const APP_STORE_LINK = "https://apps.apple.com/us/app/sucesso-app/id6670179038";
 const GOOGLE_PLAY_LINK = "#";
 
 const Hero = () => {
