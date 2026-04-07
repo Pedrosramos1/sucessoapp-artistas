@@ -74,18 +74,13 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
           className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
         >
-          {/* Neon purple glow background */}
-          <motion.div
-            className="absolute -inset-6 rounded-3xl opacity-60 blur-2xl pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at center, hsl(var(--accent) / 0.45), hsl(var(--accent) / 0.15), transparent 70%)' }}
-            animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.95, 1.05, 0.95] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeAppStore} alt="Baixar na App Store" className="h-14 sm:h-16 md:h-20 w-auto object-contain" />
+          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
+            <div className="absolute -inset-3 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.5),hsl(var(--accent)/0.15),transparent_70%)] blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none" />
+            <img src={badgeAppStore} alt="Baixar na App Store" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
           </a>
-          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
-            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-14 sm:h-16 md:h-20 w-auto object-contain" />
+          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative group hover:scale-105 transition-transform duration-300">
+            <div className="absolute -inset-3 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.5),hsl(var(--accent)/0.15),transparent_70%)] blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none" />
+            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
           </a>
         </motion.div>
 
