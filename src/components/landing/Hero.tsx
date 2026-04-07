@@ -72,18 +72,21 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+          className="relative flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
         >
-          <Button
-            asChild
-            size="lg"
-            className="text-primary-foreground w-full sm:w-auto px-8 py-6 text-base font-semibold rounded-xl hover:scale-[1.02] transition-all duration-300 hover:shadow-lg"
-            style={{ background: 'var(--gradient-primary)' }}
-          >
-            <a href={CTA_LINK} target="_blank" rel="noopener noreferrer">
-              Explorar músicas agora
-            </a>
-          </Button>
+          {/* Neon purple glow background */}
+          <motion.div
+            className="absolute -inset-6 rounded-3xl opacity-60 blur-2xl pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at center, hsl(var(--accent) / 0.45), hsl(var(--accent) / 0.15), transparent 70%)' }}
+            animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
+            <img src={badgeAppStore} alt="Baixar na App Store" className="h-12 md:h-14 w-auto" />
+          </a>
+          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" className="relative hover:scale-105 transition-transform duration-300">
+            <img src={badgeGooglePlay} alt="Disponível no Google Play" className="h-12 md:h-14 w-auto" />
+          </a>
         </motion.div>
 
         <motion.p
