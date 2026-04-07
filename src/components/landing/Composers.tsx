@@ -434,25 +434,23 @@ const ComposerCarouselCard = ({
                 {[...artistSongs, ...artistSongs].map((item, i) => (
                   <div
                     key={`${item.artist}-${i}`}
-                    className="inline-flex flex-col items-center gap-1 shrink-0 min-w-[100px]"
+                    className="inline-flex flex-col items-center gap-1.5 shrink-0 min-w-[100px]"
                   >
-                    <div className="inline-flex items-center gap-1.5">
-                      {artistPhotos[item.artist] ? (
-                        <img
-                          src={artistPhotos[item.artist]}
-                          alt={item.artist}
-                          className="w-6 h-6 rounded-full object-cover shrink-0"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span className={`w-6 h-6 rounded-full bg-gradient-to-br ${getAvatarColor(item.artist)} flex items-center justify-center shrink-0`}>
-                          <span className="text-[8px] font-bold text-white/80 select-none">
-                            {getInitials(item.artist)}
-                          </span>
+                    {artistPhotos[item.artist] ? (
+                      <img
+                        src={artistPhotos[item.artist]}
+                        alt={item.artist}
+                        className="w-8 h-8 rounded-full object-cover shrink-0"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span className={`w-8 h-8 rounded-full bg-gradient-to-br ${getAvatarColor(item.artist)} flex items-center justify-center shrink-0`}>
+                        <span className="text-[9px] font-bold text-white/80 select-none">
+                          {getInitials(item.artist)}
                         </span>
-                      )}
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">{item.artist}</span>
-                    </div>
+                      </span>
+                    )}
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{item.artist}</span>
                     <div className="inline-flex items-center gap-1">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-primary shrink-0"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
                       <span className="text-[10px] text-foreground/70 whitespace-nowrap">{item.song}</span>
