@@ -40,7 +40,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-[1.5rem] sm:text-3xl md:text-4xl lg:text-6xl leading-[1.15] tracking-tight text-highlight mb-6 md:mb-8 font-sans font-semibold"
+          className="text-[1.5rem] sm:text-3xl md:text-4xl lg:text-6xl leading-[1.15] tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 md:mb-8 font-sans font-semibold"
         >
           Na maior vitrine musical do país.
         </motion.p>
