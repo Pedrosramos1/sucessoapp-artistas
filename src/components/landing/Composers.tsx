@@ -327,6 +327,31 @@ const getAvatarColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+const parseStreams = (str: string): { value: number; suffix: string } => {
+  const match = str.match(/^([\d.]+)([BM]?)$/);
+  if (!match) return { value: 0, suffix: "" };
+  return { value: parseFloat(match[1]), suffix: match[2] };
+};
+
+const useCountUp = (target: number, duration: number, start: boolean) => {
+  const [current, setCurrent] = useState(0);
+  useEffect(() => {
+    if (!start) { setCurrent(0); return; }
+    let startTime: number | null = null;
+    let raf: number;
+    const animate = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCurrent(eased * target);
+      if (progress < 1) raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, start]);
+  return current;
+};
+
 const extractArtistSongs = (hits: string[], max = 6): { artist: string; song: string }[] => {
   return hits
     .filter((h) => h.includes(" - "))
