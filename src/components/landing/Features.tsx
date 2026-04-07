@@ -286,7 +286,7 @@ const FeatureBlock = ({ feature, index }: { feature: FeatureSection; index: numb
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
     >
-      <motion.div className="flex-1 max-w-xl" style={{ opacity, y }}>
+      <motion.div className="flex-1 max-w-xl text-center lg:text-left" style={{ opacity, y }}>
         <motion.span
           className="inline-flex items-center gap-2 mb-4 md:mb-5 px-3 md:px-4 py-1.5 rounded-full border border-gray-200 bg-gray-100 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-500"
           variants={itemVariants}
