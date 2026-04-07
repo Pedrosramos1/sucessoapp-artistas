@@ -14,6 +14,12 @@ const floatAnimation = {
   },
 };
 
+const trackDownloadClick = (platform: 'App Store' | 'Google Play') => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', 'DownloadClick', { platform, section: 'floating' });
+  }
+};
+
 const FloatingDownloadButtons = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0.15, 0.25, 0.68, 0.76], [0, 1, 1, 0]);
