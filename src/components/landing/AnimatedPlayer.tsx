@@ -108,11 +108,8 @@ const AnimatedPlayer = () => {
 
           {/* Cover / hero area */}
           <div className="relative h-28 flex items-end px-4 pb-3 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_18%)] to-black" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-28 h-28 rounded-full border-[6px] border-white/8 opacity-40" />
-              <div className="absolute w-16 h-16 rounded-full border-[3px] border-white/6 opacity-30" />
-            </div>
+            <img src={playlistCover} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />
             <div className="relative z-10">
               <h3 className="text-[13px] font-bold text-white leading-tight">
                 As melhores do Sucesso 🔥
