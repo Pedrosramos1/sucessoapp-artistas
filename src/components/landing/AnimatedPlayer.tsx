@@ -2,20 +2,32 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, Play, Heart, Pause } from "lucide-react";
 import playlistCover from "@/assets/playlist-cover.png";
+import cover01 from "@/assets/covers/cover-01.jpg";
+import cover02 from "@/assets/covers/cover-02.jpg";
+import cover03 from "@/assets/covers/cover-03.jpg";
+import cover04 from "@/assets/covers/cover-04.jpg";
+import cover05 from "@/assets/covers/cover-05.jpg";
+import cover06 from "@/assets/covers/cover-06.jpg";
+import cover07 from "@/assets/covers/cover-07.jpg";
+import cover08 from "@/assets/covers/cover-08.jpg";
+import cover09 from "@/assets/covers/cover-09.jpg";
+import cover10 from "@/assets/covers/cover-10.jpg";
+import cover11 from "@/assets/covers/cover-11.jpg";
+import cover12 from "@/assets/covers/cover-12.jpg";
 
 const songs = [
-  { id: 1, title: "Furando sinal", plays: 25, hearts: 0, coverGradient: "from-green-500 via-emerald-600 to-green-800" },
-  { id: 2, title: "Pro nosso bem", plays: 19, hearts: 1, coverGradient: "from-blue-700 via-indigo-800 to-purple-900" },
-  { id: 3, title: "Bagunça minha vida", plays: 26, hearts: 1, coverGradient: "from-cyan-500 via-purple-600 to-pink-700" },
-  { id: 4, title: "Segunda taça", plays: 27, hearts: 1, coverGradient: "from-red-600 via-purple-700 to-indigo-800" },
-  { id: 5, title: "Quando apaga a luz", plays: 16, hearts: 0, coverGradient: "from-amber-700 via-orange-800 to-red-900" },
-  { id: 6, title: "Saudade marcada", plays: 88, hearts: 4, coverGradient: "from-rose-300 via-pink-200 to-orange-200" },
-  { id: 7, title: "Tudo indica", plays: 15, hearts: 1, coverGradient: "from-teal-400 via-emerald-500 to-green-600" },
-  { id: 8, title: "Alô Ambev", plays: 41, hearts: 0, coverGradient: "from-violet-600 via-purple-700 to-blue-800" },
-  { id: 9, title: "S de Saudade", plays: 25, hearts: 1, coverGradient: "from-red-400 via-rose-500 to-pink-600" },
-  { id: 10, title: "Desejando Eu", plays: 48, hearts: 3, coverGradient: "from-sky-400 via-blue-500 to-indigo-600" },
-  { id: 11, title: "Chicletinho 🍬", plays: 39, hearts: 1, coverGradient: "from-pink-300 via-rose-400 to-red-400" },
-  { id: 12, title: "Pra sempre nós", plays: 32, hearts: 2, coverGradient: "from-yellow-500 via-amber-600 to-orange-700" },
+  { id: 1, title: "Furando sinal", plays: 25, hearts: 0, cover: cover01 },
+  { id: 2, title: "Pro nosso bem", plays: 19, hearts: 1, cover: cover02 },
+  { id: 3, title: "Bagunça minha vida", plays: 26, hearts: 1, cover: cover03 },
+  { id: 4, title: "Segunda taça", plays: 27, hearts: 1, cover: cover04 },
+  { id: 5, title: "Quando apaga a luz", plays: 16, hearts: 0, cover: cover05 },
+  { id: 6, title: "Saudade marcada", plays: 88, hearts: 4, cover: cover06 },
+  { id: 7, title: "Tudo indica", plays: 15, hearts: 1, cover: cover07 },
+  { id: 8, title: "Alô Ambev", plays: 41, hearts: 0, cover: cover08 },
+  { id: 9, title: "S de Saudade", plays: 25, hearts: 1, cover: cover09 },
+  { id: 10, title: "Desejando Eu", plays: 48, hearts: 3, cover: cover10 },
+  { id: 11, title: "Chicletinho 🍬", plays: 39, hearts: 1, cover: cover11 },
+  { id: 12, title: "Pra sempre nós", plays: 32, hearts: 2, cover: cover12 },
 ];
 
 const AnimatedPlayer = () => {
@@ -37,44 +49,35 @@ const AnimatedPlayer = () => {
 
     const run = () => {
       if (cancelled) return;
-      // Reset
       setScrollOffset(0);
       setPlayingSongIndex(0);
       setHighlightedSong(null);
       setIsPlaying(false);
 
-      // Tap first song → starts playing
       s(() => { setHighlightedSong(0); }, 800);
       s(() => { setHighlightedSong(null); setPlayingSongIndex(0); setIsPlaying(true); }, 1200);
 
-      // Scroll down smoothly
       s(() => setScrollOffset(1), 2800);
       s(() => setScrollOffset(2), 3600);
       s(() => setScrollOffset(3), 4400);
 
-      // Tap song 5 (Quando apaga a luz)
       s(() => setHighlightedSong(4), 5200);
       s(() => { setHighlightedSong(null); setPlayingSongIndex(4); }, 5600);
 
-      // Continue scrolling
       s(() => setScrollOffset(4), 6400);
       s(() => setScrollOffset(5), 7200);
       s(() => setScrollOffset(6), 8000);
 
-      // Tap song 9 (Alô Ambev → index 7)
       s(() => setHighlightedSong(7), 8800);
       s(() => { setHighlightedSong(null); setPlayingSongIndex(7); }, 9200);
 
-      // Scroll back up
       s(() => setScrollOffset(4), 10500);
       s(() => setScrollOffset(2), 11200);
       s(() => setScrollOffset(0), 12000);
 
-      // Tap song 1 again
       s(() => setHighlightedSong(0), 13000);
       s(() => { setHighlightedSong(null); setPlayingSongIndex(0); }, 13400);
 
-      // Loop
       s(() => run(), 15000);
     };
 
@@ -172,11 +175,9 @@ const AnimatedPlayer = () => {
                       <span className="text-[10px] text-[hsl(0_0%_40%)] w-4 text-center font-medium tabular-nums">
                         {i + 1}
                       </span>
-                      {/* Square cover */}
-                      <div
-                        className="w-12 h-12 rounded-lg shrink-0 shadow-md overflow-hidden relative bg-black"
-                      >
-                        <img src={playlistCover} alt="" className="w-full h-full object-cover" />
+                      {/* Square cover with actual image */}
+                      <div className="w-12 h-12 rounded-lg shrink-0 shadow-md overflow-hidden relative bg-black">
+                        <img src={song.cover} alt="" className="w-full h-full object-cover" loading="lazy" />
                         {/* Playing indicator overlay */}
                         <AnimatePresence>
                           {isCurrentlyPlaying && (
@@ -243,7 +244,7 @@ const AnimatedPlayer = () => {
               className="flex items-center gap-2.5 px-3 py-2 bg-[hsl(0_0%_6%)] border-t border-[hsl(0_0%_12%)]"
             >
               <div className="w-9 h-9 rounded-md shrink-0 relative overflow-hidden bg-black">
-                <img src={playlistCover} alt="" className="w-full h-full object-cover" />
+                <img src={playingSong.cover} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[9px] font-bold text-white truncate">{playingSong.title}</p>
