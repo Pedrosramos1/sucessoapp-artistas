@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { ArrowLeft, Play, Heart } from "lucide-react";
+import { ArrowLeft, Play, Heart, Pause } from "lucide-react";
 
 const songs = [
   { id: 1, title: "Furando sinal", plays: 25, hearts: 0, coverGradient: "from-green-500 via-emerald-600 to-green-800" },
@@ -20,45 +20,69 @@ const songs = [
 const AnimatedPlayer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
-  const [playingSongIndex, setPlayingSongIndex] = useState(1); // "Pro nosso bem" playing
+  const [playingSongIndex, setPlayingSongIndex] = useState(0);
+  const [highlightedSong, setHighlightedSong] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
   const cardScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.92, 1, 1, 0.95]);
 
-  // Auto-scroll animation through the song list
   useEffect(() => {
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     let cancelled = false;
+    const s = (fn: () => void, ms: number) => {
+      timeouts.push(setTimeout(() => { if (!cancelled) fn(); }, ms));
+    };
 
     const run = () => {
       if (cancelled) return;
+      // Reset
       setScrollOffset(0);
+      setPlayingSongIndex(0);
+      setHighlightedSong(null);
+      setIsPlaying(false);
 
-      // Gradually scroll down
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(1); }, 1500));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(2); }, 2500));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(3); }, 3500));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(4); }, 4500));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(5); }, 5500));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(6); }, 6500));
+      // Tap first song → starts playing
+      s(() => { setHighlightedSong(0); }, 800);
+      s(() => { setHighlightedSong(null); setPlayingSongIndex(0); setIsPlaying(true); }, 1200);
 
-      // Scroll back to top
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(3); }, 8000));
-      timeouts.push(setTimeout(() => { if (!cancelled) setScrollOffset(0); }, 9000));
+      // Scroll down smoothly
+      s(() => setScrollOffset(1), 2800);
+      s(() => setScrollOffset(2), 3600);
+      s(() => setScrollOffset(3), 4400);
 
-      // Restart
-      timeouts.push(setTimeout(() => { if (!cancelled) run(); }, 11000));
+      // Tap song 5 (Quando apaga a luz)
+      s(() => setHighlightedSong(4), 5200);
+      s(() => { setHighlightedSong(null); setPlayingSongIndex(4); }, 5600);
+
+      // Continue scrolling
+      s(() => setScrollOffset(4), 6400);
+      s(() => setScrollOffset(5), 7200);
+      s(() => setScrollOffset(6), 8000);
+
+      // Tap song 9 (Alô Ambev → index 7)
+      s(() => setHighlightedSong(7), 8800);
+      s(() => { setHighlightedSong(null); setPlayingSongIndex(7); }, 9200);
+
+      // Scroll back up
+      s(() => setScrollOffset(4), 10500);
+      s(() => setScrollOffset(2), 11200);
+      s(() => setScrollOffset(0), 12000);
+
+      // Tap song 1 again
+      s(() => setHighlightedSong(0), 13000);
+      s(() => { setHighlightedSong(null); setPlayingSongIndex(0); }, 13400);
+
+      // Loop
+      s(() => run(), 15000);
     };
 
     run();
-    return () => {
-      cancelled = true;
-      timeouts.forEach(clearTimeout);
-    };
+    return () => { cancelled = true; timeouts.forEach(clearTimeout); };
   }, []);
 
-  // Each song row ~62px, show 4 visible at a time
-  const translateY = scrollOffset * -62;
+  const ROW_HEIGHT = 62;
+  const translateY = scrollOffset * -ROW_HEIGHT;
   const playingSong = songs[playingSongIndex];
 
   return (
@@ -72,7 +96,7 @@ const AnimatedPlayer = () => {
     >
       <motion.div style={{ scale: cardScale }}>
         <div className="rounded-2xl bg-black border border-[hsl(0_0%_12%)] shadow-[0_20px_50px_-12px_hsl(0_0%_0%/0.5)] overflow-hidden">
-          
+
           {/* Header */}
           <div className="flex items-center justify-center px-4 py-2.5 relative">
             <div className="absolute left-3 w-7 h-7 rounded-full bg-[hsl(0_0%_15%)] flex items-center justify-center">
@@ -84,14 +108,13 @@ const AnimatedPlayer = () => {
           {/* Cover / hero area */}
           <div className="relative h-28 flex items-end px-4 pb-3 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_18%)] to-black" />
-            {/* Watermark circle */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-28 h-28 rounded-full border-[6px] border-white/8 opacity-40" />
               <div className="absolute w-16 h-16 rounded-full border-[3px] border-white/6 opacity-30" />
             </div>
             <div className="relative z-10">
               <h3 className="text-[13px] font-bold text-white leading-tight">
-                As preferidas da Oi Balde 🔥
+                As melhores do Sucesso 🔥
               </h3>
               <span className="text-[9px] text-[hsl(0_0%_50%)]">12 guias</span>
             </div>
@@ -130,63 +153,122 @@ const AnimatedPlayer = () => {
           <div className="relative overflow-hidden" style={{ height: 260 }}>
             <motion.div
               animate={{ y: translateY }}
-              transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="px-3"
             >
-              {songs.map((song, i) => (
-                <div key={song.id}>
-                  <div className="flex items-center gap-2.5 py-2 px-1">
-                    <span className="text-[10px] text-[hsl(0_0%_40%)] w-4 text-center font-medium tabular-nums">
-                      {i + 1}
-                    </span>
-                    {/* Square cover with rounded corners */}
-                    <div
-                      className={`w-12 h-12 rounded-lg bg-gradient-to-br ${song.coverGradient} shrink-0 shadow-md overflow-hidden relative`}
+              {songs.map((song, i) => {
+                const isTapped = highlightedSong === i;
+                const isCurrentlyPlaying = playingSongIndex === i && isPlaying;
+                return (
+                  <div key={song.id}>
+                    <motion.div
+                      className="flex items-center gap-2.5 py-2 px-1 rounded-lg"
+                      animate={{
+                        backgroundColor: isTapped
+                          ? "hsla(0, 0%, 100%, 0.08)"
+                          : "hsla(0, 0%, 0%, 0)",
+                        scale: isTapped ? 0.97 : 1,
+                      }}
+                      transition={{ duration: 0.15 }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-bold text-white truncate leading-tight">{song.title}</p>
-                      <div className="flex items-center gap-2.5 mt-0.5">
-                        <span className="text-[8px] text-[hsl(0_0%_42%)] flex items-center gap-0.5">
-                          <Play className="w-2.5 h-2.5 fill-current" /> {song.plays}
-                        </span>
-                        <span className="text-[8px] text-[hsl(0_0%_42%)] flex items-center gap-0.5">
-                          <Heart className="w-2.5 h-2.5" /> {song.hearts}
-                        </span>
+                      <span className="text-[10px] text-[hsl(0_0%_40%)] w-4 text-center font-medium tabular-nums">
+                        {i + 1}
+                      </span>
+                      {/* Square cover */}
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-br ${song.coverGradient} shrink-0 shadow-md overflow-hidden relative`}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
+                        {/* Playing indicator overlay */}
+                        <AnimatePresence>
+                          {isCurrentlyPlaying && (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="absolute inset-0 bg-black/40 flex items-center justify-center"
+                            >
+                              <div className="flex items-end gap-[2px] h-3">
+                                {[0, 1, 2].map((bar) => (
+                                  <motion.div
+                                    key={bar}
+                                    className="w-[2px] bg-white rounded-full"
+                                    animate={{ height: ["4px", "12px", "6px", "10px", "4px"] }}
+                                    transition={{
+                                      duration: 0.8,
+                                      repeat: Infinity,
+                                      delay: bar * 0.15,
+                                      ease: "easeInOut",
+                                    }}
+                                  />
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
-                    </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-[10px] font-bold truncate leading-tight ${isCurrentlyPlaying ? "text-orange-400" : "text-white"}`}>
+                          {song.title}
+                        </p>
+                        <div className="flex items-center gap-2.5 mt-0.5">
+                          <span className="text-[8px] text-[hsl(0_0%_42%)] flex items-center gap-0.5">
+                            <Play className="w-2.5 h-2.5 fill-current" /> {song.plays}
+                          </span>
+                          <span className="text-[8px] text-[hsl(0_0%_42%)] flex items-center gap-0.5">
+                            <Heart className="w-2.5 h-2.5" /> {song.hearts}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                    {/* Separator */}
+                    {i < songs.length - 1 && (
+                      <div className="ml-[72px] mr-2 h-[0.5px] bg-[hsl(0_0%_13%)]" />
+                    )}
                   </div>
-                  {/* Separator line */}
-                  {i < songs.length - 1 && (
-                    <div className="ml-[72px] mr-2 h-[0.5px] bg-[hsl(0_0%_15%)]" />
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </motion.div>
-            {/* Fade at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+            {/* Top & bottom fade */}
+            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-black to-transparent pointer-events-none z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black to-transparent pointer-events-none z-10" />
           </div>
 
           {/* Mini player bar */}
-          <div className="flex items-center gap-2.5 px-3 py-2 bg-[hsl(0_0%_6%)] border-t border-[hsl(0_0%_12%)]">
-            <div className={`w-9 h-9 rounded-md bg-gradient-to-br ${playingSong.coverGradient} shrink-0 relative overflow-hidden`}>
-              <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[9px] font-bold text-white truncate">{playingSong.title}</p>
-              <p className="text-[7px] text-[hsl(0_0%_45%)]">Bruno Sucesso</p>
-              {/* Progress bar */}
-              <div className="w-full h-[2px] bg-[hsl(0_0%_18%)] rounded-full mt-1 overflow-hidden">
-                <motion.div
-                  className="h-full bg-orange-500 rounded-full"
-                  animate={{ width: ["10%", "45%"] }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={playingSongIndex}
+              initial={{ y: 8, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -8, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="flex items-center gap-2.5 px-3 py-2 bg-[hsl(0_0%_6%)] border-t border-[hsl(0_0%_12%)]"
+            >
+              <div className={`w-9 h-9 rounded-md bg-gradient-to-br ${playingSong.coverGradient} shrink-0 relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
               </div>
-            </div>
-            <span className="text-[12px] text-white/50 font-light cursor-pointer">✕</span>
-          </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[9px] font-bold text-white truncate">{playingSong.title}</p>
+                <p className="text-[7px] text-[hsl(0_0%_45%)]">Bruno Sucesso</p>
+                <div className="w-full h-[2px] bg-[hsl(0_0%_18%)] rounded-full mt-1 overflow-hidden">
+                  <motion.div
+                    className="h-full bg-orange-500 rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: "60%" }}
+                    transition={{ duration: 8, ease: "linear" }}
+                  />
+                </div>
+              </div>
+              <div className="w-5 h-5 rounded-full flex items-center justify-center">
+                {isPlaying ? (
+                  <Pause className="w-3 h-3 text-white/60 fill-white/60" />
+                ) : (
+                  <Play className="w-3 h-3 text-white/60 fill-white/60 ml-0.5" />
+                )}
+              </div>
+              <span className="text-[12px] text-white/40 font-light">✕</span>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </motion.div>
     </motion.div>
