@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, Play, Heart, Pause } from "lucide-react";
+import playlistCover from "@/assets/playlist-cover.png";
 
 const songs = [
   { id: 1, title: "Furando sinal", plays: 25, hearts: 0, coverGradient: "from-green-500 via-emerald-600 to-green-800" },
