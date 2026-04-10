@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, Play, Heart, Pause } from "lucide-react";
+import playlistCover from "@/assets/playlist-cover.png";
 
 const songs = [
   { id: 1, title: "Furando sinal", plays: 25, hearts: 0, coverGradient: "from-green-500 via-emerald-600 to-green-800" },
@@ -107,11 +108,8 @@ const AnimatedPlayer = () => {
 
           {/* Cover / hero area */}
           <div className="relative h-28 flex items-end px-4 pb-3 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_18%)] to-black" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-28 h-28 rounded-full border-[6px] border-white/8 opacity-40" />
-              <div className="absolute w-16 h-16 rounded-full border-[3px] border-white/6 opacity-30" />
-            </div>
+            <img src={playlistCover} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />
             <div className="relative z-10">
               <h3 className="text-[13px] font-bold text-white leading-tight">
                 As melhores do Sucesso 🔥
@@ -176,9 +174,9 @@ const AnimatedPlayer = () => {
                       </span>
                       {/* Square cover */}
                       <div
-                        className={`w-12 h-12 rounded-lg bg-gradient-to-br ${song.coverGradient} shrink-0 shadow-md overflow-hidden relative`}
+                        className="w-12 h-12 rounded-lg shrink-0 shadow-md overflow-hidden relative bg-black"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
+                        <img src={playlistCover} alt="" className="w-full h-full object-cover" />
                         {/* Playing indicator overlay */}
                         <AnimatePresence>
                           {isCurrentlyPlaying && (
@@ -244,8 +242,8 @@ const AnimatedPlayer = () => {
               transition={{ duration: 0.25 }}
               className="flex items-center gap-2.5 px-3 py-2 bg-[hsl(0_0%_6%)] border-t border-[hsl(0_0%_12%)]"
             >
-              <div className={`w-9 h-9 rounded-md bg-gradient-to-br ${playingSong.coverGradient} shrink-0 relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
+              <div className="w-9 h-9 rounded-md shrink-0 relative overflow-hidden bg-black">
+                <img src={playlistCover} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[9px] font-bold text-white truncate">{playingSong.title}</p>
