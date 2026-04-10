@@ -134,7 +134,7 @@ const AnimatedPlayer = () => {
           <div className="px-4 pt-2 pb-1.5">
             <span className="text-[10px] text-[hsl(0_0%_60%)] font-medium">Colaboradores</span>
             <div className="flex items-center gap-2 mt-1.5">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 ring-1 ring-white/10" />
+              <img src={brunoSucesso} alt="Bruno Sucesso" className="w-7 h-7 rounded-full ring-1 ring-white/10 object-cover" />
               <div>
                 <span className="text-[9px] text-white font-semibold">@brunosucesso</span>
                 <br />
