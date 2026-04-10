@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, Play, Heart, Pause } from "lucide-react";
 import playlistCover from "@/assets/playlist-cover.png";
+import brunoSucesso from "@/assets/bruno-sucesso.jpg";
 import cover01 from "@/assets/covers/cover-01.jpg";
 import cover02 from "@/assets/covers/cover-02.jpg";
 import cover03 from "@/assets/covers/cover-03.jpg";
