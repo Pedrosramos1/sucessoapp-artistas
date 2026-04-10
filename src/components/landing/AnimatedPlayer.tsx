@@ -177,9 +177,9 @@ const AnimatedPlayer = () => {
                       </span>
                       {/* Square cover */}
                       <div
-                        className={`w-12 h-12 rounded-lg bg-gradient-to-br ${song.coverGradient} shrink-0 shadow-md overflow-hidden relative`}
+                        className="w-12 h-12 rounded-lg shrink-0 shadow-md overflow-hidden relative bg-black"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
+                        <img src={playlistCover} alt="" className="w-full h-full object-cover" />
                         {/* Playing indicator overlay */}
                         <AnimatePresence>
                           {isCurrentlyPlaying && (
@@ -245,8 +245,8 @@ const AnimatedPlayer = () => {
               transition={{ duration: 0.25 }}
               className="flex items-center gap-2.5 px-3 py-2 bg-[hsl(0_0%_6%)] border-t border-[hsl(0_0%_12%)]"
             >
-              <div className={`w-9 h-9 rounded-md bg-gradient-to-br ${playingSong.coverGradient} shrink-0 relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent" />
+              <div className="w-9 h-9 rounded-md shrink-0 relative overflow-hidden bg-black">
+                <img src={playlistCover} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[9px] font-bold text-white truncate">{playingSong.title}</p>
