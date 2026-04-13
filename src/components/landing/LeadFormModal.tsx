@@ -169,7 +169,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                     placeholder="Seu telefone"
                     value={telefone}
                     onChange={(e) => setTelefone(e.target.value)}
-                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    className="w-full h-11 sm:h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
                     maxLength={20}
                   />
                 </motion.div>
