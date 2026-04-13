@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Download } from "lucide-react";
 import DateRangeFilter, { DateRange } from "@/components/admin/DateRangeFilter";
+import logo from "@/assets/logo-horizontal.png";
 
 interface Lead {
   id: string;
