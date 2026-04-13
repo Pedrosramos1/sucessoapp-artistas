@@ -512,6 +512,8 @@ const CARD_STEP = CARD_WIDTH_LG + CARD_GAP;
 const SPEED = 0.5; // px per frame
 
 const Composers = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<{ url: string; name: string }>({ url: "", name: "" });
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [trackWidth, setTrackWidth] = useState(0);
