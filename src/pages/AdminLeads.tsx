@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Download, CalendarDays } from "lucide-react";
+import { Download } from "lucide-react";
+import DateRangeFilter, { DateRange } from "@/components/admin/DateRangeFilter";
 
 interface Lead {
   id: string;
@@ -16,7 +17,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
-  const [dateFilter, setDateFilter] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +44,6 @@ const AdminLeads = () => {
 
     fetchLeads();
 
-    // Realtime subscription
     const channel = supabase
       .channel("leads-realtime")
       .on(
@@ -68,12 +68,22 @@ const AdminLeads = () => {
   }, [authenticated]);
 
   const filteredLeads = useMemo(() => {
-    if (!dateFilter) return leads;
+    if (!dateRange.from && !dateRange.to) return leads;
     return leads.filter((lead) => {
-      const leadDate = new Date(lead.created_at).toISOString().slice(0, 10);
-      return leadDate === dateFilter;
+      const leadDate = new Date(lead.created_at);
+      const leadDay = new Date(leadDate.getFullYear(), leadDate.getMonth(), leadDate.getDate());
+      if (dateRange.from && dateRange.to) {
+        const from = new Date(dateRange.from.getFullYear(), dateRange.from.getMonth(), dateRange.from.getDate());
+        const to = new Date(dateRange.to.getFullYear(), dateRange.to.getMonth(), dateRange.to.getDate());
+        return leadDay >= from && leadDay <= to;
+      }
+      if (dateRange.from) {
+        const from = new Date(dateRange.from.getFullYear(), dateRange.from.getMonth(), dateRange.from.getDate());
+        return leadDay >= from;
+      }
+      return true;
     });
-  }, [leads, dateFilter]);
+  }, [leads, dateRange]);
 
   const handleDownloadCSV = () => {
     if (filteredLeads.length === 0) return;
@@ -95,7 +105,9 @@ const AdminLeads = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    const fileName = dateFilter ? `leads_${dateFilter}.csv` : "leads.csv";
+    const fileName = dateRange.from
+      ? `leads_${dateRange.from.toISOString().slice(0, 10)}${dateRange.to ? "_" + dateRange.to.toISOString().slice(0, 10) : ""}.csv`
+      : "leads.csv";
     link.setAttribute("download", fileName);
     document.body.appendChild(link);
     link.click();
@@ -136,7 +148,7 @@ const AdminLeads = () => {
               Leads Capturados ({filteredLeads.length})
             </h1>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs text-muted-foreground">Tempo real ativo</span>
             </div>
           </div>
@@ -147,23 +159,7 @@ const AdminLeads = () => {
 
         {/* Filters & Actions */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
-          <div className="relative">
-            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="h-10 rounded-lg border border-input bg-card pl-9 pr-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
-          {dateFilter && (
-            <button
-              onClick={() => setDateFilter("")}
-              className="text-xs text-muted-foreground hover:text-foreground underline"
-            >
-              Limpar filtro
-            </button>
-          )}
+          <DateRangeFilter value={dateRange} onChange={setDateRange} />
           <button
             onClick={handleDownloadCSV}
             disabled={filteredLeads.length === 0}
