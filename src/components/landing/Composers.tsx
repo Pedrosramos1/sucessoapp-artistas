@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { artistPhotos } from "./artistPhotos";
 import badgeAppStore from "@/assets/badge-appstore.png";
 import badgeGooglePlay from "@/assets/badge-googleplay.png";
+import LeadFormModal from "./LeadFormModal";
 
 const APP_STORE_LINK = "https://apps.apple.com/us/app/sucesso-app/id6670179038";
 const GOOGLE_PLAY_LINK = "https://play.google.com/store/apps/details?id=com.brunosucesso.sucesso";
