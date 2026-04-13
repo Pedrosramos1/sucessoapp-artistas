@@ -193,7 +193,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                   transition={{ delay: 0.25 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-2 w-full h-13 py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm tracking-wide hover:shadow-[0_8px_25px_-5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="mt-1 sm:mt-2 w-full h-12 sm:h-13 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm tracking-wide hover:shadow-[0_8px_25px_-5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
