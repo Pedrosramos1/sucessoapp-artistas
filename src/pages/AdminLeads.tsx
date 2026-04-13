@@ -69,12 +69,17 @@ const AdminLeads = () => {
   }, [authenticated]);
 
   const filteredLeads = useMemo(() => {
-    if (!dateFilter) return leads;
+    if (!dateRange.from && !dateRange.to) return leads;
     return leads.filter((lead) => {
-      const leadDate = new Date(lead.created_at).toISOString().slice(0, 10);
-      return leadDate === dateFilter;
+      const leadDate = new Date(lead.created_at);
+      leadDate.setHours(0, 0, 0, 0);
+      const from = dateRange.from ? new Date(dateRange.from.setHours(0, 0, 0, 0)) : null;
+      const to = dateRange.to ? new Date(dateRange.to.setHours(23, 59, 59, 999)) : null;
+      if (from && to) return leadDate >= from && leadDate <= to;
+      if (from) return leadDate >= from;
+      return true;
     });
-  }, [leads, dateFilter]);
+  }, [leads, dateRange]);
 
   const handleDownloadCSV = () => {
     if (filteredLeads.length === 0) return;
