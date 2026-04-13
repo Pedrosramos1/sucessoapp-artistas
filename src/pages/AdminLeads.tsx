@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Download } from "lucide-react";
 import DateRangeFilter, { DateRange } from "@/components/admin/DateRangeFilter";
+import logo from "@/assets/logo-horizontal.png";
 
 interface Lead {
   id: string;
@@ -128,7 +129,10 @@ const AdminLeads = () => {
   if (!authenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
-        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
+        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-6">
+          <div className="flex justify-center">
+            <img src={logo} alt="Sucesso App" className="h-10 object-contain" />
+          </div>
           <h1 className="text-xl font-bold text-foreground text-center">Área Restrita</h1>
           <input
             type="password"
@@ -153,7 +157,8 @@ const AdminLeads = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="Sucesso App" className="h-8 object-contain" />
             <h1 className="text-2xl font-bold text-foreground">
               Leads Capturados ({filteredLeads.length})
             </h1>
