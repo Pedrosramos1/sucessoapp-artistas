@@ -18,6 +18,7 @@ const AdminLeads = () => {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [platformFilter, setPlatformFilter] = useState<string>("all");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
