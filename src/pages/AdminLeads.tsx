@@ -168,8 +168,18 @@ const AdminLeads = () => {
         </div>
 
         {/* Filters & Actions */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5 flex-wrap">
           <DateRangeFilter value={dateRange} onChange={setDateRange} />
+          <select
+            value={platformFilter}
+            onChange={(e) => setPlatformFilter(e.target.value)}
+            className="h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="all">Todas plataformas</option>
+            {platforms.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
           <button
             onClick={handleDownloadCSV}
             disabled={filteredLeads.length === 0}
