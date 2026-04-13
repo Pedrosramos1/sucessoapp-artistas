@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Download, CalendarDays } from "lucide-react";
+import { Download } from "lucide-react";
+import DateRangeFilter, { DateRange } from "@/components/admin/DateRangeFilter";
 
 interface Lead {
   id: string;
@@ -16,7 +17,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
-  const [dateFilter, setDateFilter] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
