@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Music, Smartphone, Mail, User } from "lucide-react";
+import { X, Smartphone, Mail, User } from "lucide-react";
+import iconDownload from "@/assets/icon-download.png";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LeadFormModalProps {
