@@ -101,16 +101,9 @@ const AdminLeads = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    const fileName = dateFilter ? `leads_${dateFilter}.csv` : "leads.csv";
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  if (!authenticated) {
-    return (
+    const fileName = dateRange.from
+      ? `leads_${dateRange.from.toISOString().slice(0, 10)}${dateRange.to ? "_" + dateRange.to.toISOString().slice(0, 10) : ""}.csv`
+      : "leads.csv";
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
           <h1 className="text-xl font-bold text-foreground text-center">Área Restrita</h1>
