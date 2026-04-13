@@ -1,18 +1,13 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import logo from "@/assets/logo-horizontal.png";
 import bgHero from "@/assets/bg-hero.png";
 import badgeAppStore from "@/assets/badge-appstore.png";
 import badgeGooglePlay from "@/assets/badge-googleplay.png";
+import LeadFormModal from "./LeadFormModal";
 
 const APP_STORE_LINK = "https://apps.apple.com/us/app/sucesso-app/id6670179038";
 const GOOGLE_PLAY_LINK = "https://play.google.com/store/apps/details?id=com.brunosucesso.sucesso";
-
-const trackDownloadClick = (platform: 'App Store' | 'Google Play') => {
-  if (typeof window !== 'undefined' && (window as any).fbq) {
-    (window as any).fbq('trackCustom', 'DownloadClick', { platform, section: 'hero' });
-  }
-};
 
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
@@ -20,19 +15,22 @@ const Hero = () => {
   const yText = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<{ url: string; name: string }>({ url: "", name: "" });
+
+  const handleDownloadClick = (url: string, name: string) => {
+    setSelectedPlatform({ url, name });
+    setModalOpen(true);
+  };
+
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={bgHero}
-          alt=""
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-        {/* Subtle overlay to ensure text readability */}
+        <img src={bgHero} alt="" className="w-full h-full object-cover" loading="eager" />
         <div className="absolute inset-0 bg-background/[0.85]" />
       </div>
+
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
         <img src={logo} alt="SucessoApp" className="h-7 md:h-8" />
@@ -80,14 +78,14 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
           className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
         >
-          <a href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" onClick={() => trackDownloadClick('App Store')} className="relative group hover:scale-105 transition-transform duration-300">
+          <button onClick={() => handleDownloadClick(APP_STORE_LINK, "App Store")} className="relative group hover:scale-105 transition-transform duration-300">
             <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <img src={badgeAppStore} alt="Baixar na App Store" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
-          </a>
-          <a href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" onClick={() => trackDownloadClick('Google Play')} className="relative group hover:scale-105 transition-transform duration-300">
+          </button>
+          <button onClick={() => handleDownloadClick(GOOGLE_PLAY_LINK, "Google Play")} className="relative group hover:scale-105 transition-transform duration-300">
             <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <img src={badgeGooglePlay} alt="Disponível no Google Play" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
-          </a>
+          </button>
         </motion.div>
 
         <motion.p
@@ -114,6 +112,13 @@ const Hero = () => {
           />
         </div>
       </motion.div>
+
+      <LeadFormModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        redirectUrl={selectedPlatform.url}
+        plataforma={selectedPlatform.name}
+      />
     </section>
   );
 };
