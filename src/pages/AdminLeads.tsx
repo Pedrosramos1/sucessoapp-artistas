@@ -68,9 +68,18 @@ const AdminLeads = () => {
     };
   }, [authenticated]);
 
+  const platforms = useMemo(() => {
+    const set = new Set(leads.map((l) => l.plataforma).filter(Boolean) as string[]);
+    return Array.from(set).sort();
+  }, [leads]);
+
   const filteredLeads = useMemo(() => {
-    if (!dateRange.from && !dateRange.to) return leads;
-    return leads.filter((lead) => {
+    let filtered = leads;
+    if (platformFilter !== "all") {
+      filtered = filtered.filter((l) => l.plataforma === platformFilter);
+    }
+    if (!dateRange.from && !dateRange.to) return filtered;
+    return filtered.filter((lead) => {
       const leadDate = new Date(lead.created_at);
       const leadDay = new Date(leadDate.getFullYear(), leadDate.getMonth(), leadDate.getDate());
       if (dateRange.from && dateRange.to) {
@@ -84,7 +93,7 @@ const AdminLeads = () => {
       }
       return true;
     });
-  }, [leads, dateRange]);
+  }, [leads, dateRange, platformFilter]);
 
   const handleDownloadCSV = () => {
     if (filteredLeads.length === 0) return;
