@@ -88,7 +88,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="relative bg-card border border-border/50 rounded-b-3xl p-7">
+            <div className="relative bg-card border border-border/50 rounded-b-2xl sm:rounded-b-3xl p-5 sm:p-7">
               {/* Close button */}
               <button
                 onClick={onClose}
