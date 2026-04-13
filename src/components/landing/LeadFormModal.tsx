@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Music, Smartphone, Mail, User } from "lucide-react";
+import { X, Smartphone, Mail, User } from "lucide-react";
+import iconDownload from "@/assets/icon-download.png";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LeadFormModalProps {
@@ -99,11 +100,11 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
               {/* Header */}
               <div className="flex items-center gap-3 mb-2">
                 <motion.div
-                  className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20"
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center"
                   animate={{ rotate: [0, -5, 5, 0] }}
                   transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Music size={20} className="text-primary-foreground" />
+                  <img src={iconDownload} alt="" className="w-11 h-11 object-contain" />
                 </motion.div>
                 <div>
                   <h2 className="text-lg font-bold text-foreground leading-tight">
