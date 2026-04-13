@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Download, CalendarDays } from "lucide-react";
 
 interface Lead {
   id: string;
@@ -15,11 +16,10 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [dateFilter, setDateFilter] = useState("");
 
-  // Simple password gate (not stored in code for security — uses a basic check)
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple auth — the user sets this password
     if (password === "sucesso2026") {
       setAuthenticated(true);
     }
@@ -42,7 +42,66 @@ const AdminLeads = () => {
     };
 
     fetchLeads();
+
+    // Realtime subscription
+    const channel = supabase
+      .channel("leads-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "leads" },
+        (payload) => {
+          setLeads((prev) => [payload.new as Lead, ...prev]);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "leads" },
+        (payload) => {
+          setLeads((prev) => prev.filter((l) => l.id !== (payload.old as Lead).id));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [authenticated]);
+
+  const filteredLeads = useMemo(() => {
+    if (!dateFilter) return leads;
+    return leads.filter((lead) => {
+      const leadDate = new Date(lead.created_at).toISOString().slice(0, 10);
+      return leadDate === dateFilter;
+    });
+  }, [leads, dateFilter]);
+
+  const handleDownloadCSV = () => {
+    if (filteredLeads.length === 0) return;
+
+    const headers = ["Nome", "Email", "Telefone", "Plataforma", "Data"];
+    const rows = filteredLeads.map((lead) => [
+      lead.nome,
+      lead.email,
+      lead.telefone,
+      lead.plataforma ?? "",
+      new Date(lead.created_at).toLocaleString("pt-BR"),
+    ]);
+
+    const csvContent =
+      "\uFEFF" +
+      [headers, ...rows].map((row) => row.map((v) => `"${v}"`).join(",")).join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const fileName = dateFilter ? `leads_${dateFilter}.csv` : "leads.csv";
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   if (!authenticated) {
     return (
@@ -70,19 +129,56 @@ const AdminLeads = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">
-            Leads Capturados ({leads.length})
-          </h1>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">
+              Leads Capturados ({filteredLeads.length})
+            </h1>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs text-muted-foreground">Tempo real ativo</span>
+            </div>
+          </div>
           <a href="/" className="text-sm text-primary hover:underline">
             ← Voltar ao site
           </a>
         </div>
 
+        {/* Filters & Actions */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
+          <div className="relative">
+            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="h-10 rounded-lg border border-input bg-card pl-9 pr-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+          {dateFilter && (
+            <button
+              onClick={() => setDateFilter("")}
+              className="text-xs text-muted-foreground hover:text-foreground underline"
+            >
+              Limpar filtro
+            </button>
+          )}
+          <button
+            onClick={handleDownloadCSV}
+            disabled={filteredLeads.length === 0}
+            className="h-10 px-4 rounded-lg bg-primary text-primary-foreground font-medium text-sm flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-40"
+          >
+            <Download size={16} />
+            Baixar planilha
+          </button>
+        </div>
+
+        {/* Table */}
         {loading ? (
           <p className="text-muted-foreground">Carregando...</p>
-        ) : leads.length === 0 ? (
-          <p className="text-muted-foreground">Nenhum lead capturado ainda.</p>
+        ) : filteredLeads.length === 0 ? (
+          <p className="text-muted-foreground">Nenhum lead encontrado.</p>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
@@ -96,7 +192,7 @@ const AdminLeads = () => {
                 </tr>
               </thead>
               <tbody>
-                {leads.map((lead) => (
+                {filteredLeads.map((lead) => (
                   <tr key={lead.id} className="border-b border-border/50 hover:bg-card/50">
                     <td className="px-4 py-3 text-foreground">{lead.nome}</td>
                     <td className="px-4 py-3 text-foreground">{lead.email}</td>
