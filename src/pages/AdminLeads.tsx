@@ -44,7 +44,6 @@ const AdminLeads = () => {
 
     fetchLeads();
 
-    // Realtime subscription
     const channel = supabase
       .channel("leads-realtime")
       .on(
@@ -72,11 +71,16 @@ const AdminLeads = () => {
     if (!dateRange.from && !dateRange.to) return leads;
     return leads.filter((lead) => {
       const leadDate = new Date(lead.created_at);
-      leadDate.setHours(0, 0, 0, 0);
-      const from = dateRange.from ? new Date(dateRange.from.setHours(0, 0, 0, 0)) : null;
-      const to = dateRange.to ? new Date(dateRange.to.setHours(23, 59, 59, 999)) : null;
-      if (from && to) return leadDate >= from && leadDate <= to;
-      if (from) return leadDate >= from;
+      const leadDay = new Date(leadDate.getFullYear(), leadDate.getMonth(), leadDate.getDate());
+      if (dateRange.from && dateRange.to) {
+        const from = new Date(dateRange.from.getFullYear(), dateRange.from.getMonth(), dateRange.from.getDate());
+        const to = new Date(dateRange.to.getFullYear(), dateRange.to.getMonth(), dateRange.to.getDate());
+        return leadDay >= from && leadDay <= to;
+      }
+      if (dateRange.from) {
+        const from = new Date(dateRange.from.getFullYear(), dateRange.from.getMonth(), dateRange.from.getDate());
+        return leadDay >= from;
+      }
       return true;
     });
   }, [leads, dateRange]);
@@ -104,6 +108,15 @@ const AdminLeads = () => {
     const fileName = dateRange.from
       ? `leads_${dateRange.from.toISOString().slice(0, 10)}${dateRange.to ? "_" + dateRange.to.toISOString().slice(0, 10) : ""}.csv`
       : "leads.csv";
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  if (!authenticated) {
+    return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
           <h1 className="text-xl font-bold text-foreground text-center">Área Restrita</h1>
@@ -135,7 +148,7 @@ const AdminLeads = () => {
               Leads Capturados ({filteredLeads.length})
             </h1>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs text-muted-foreground">Tempo real ativo</span>
             </div>
           </div>
@@ -146,23 +159,7 @@ const AdminLeads = () => {
 
         {/* Filters & Actions */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
-          <div className="relative">
-            <CalendarDays size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="h-10 rounded-lg border border-input bg-card pl-9 pr-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
-          {dateFilter && (
-            <button
-              onClick={() => setDateFilter("")}
-              className="text-xs text-muted-foreground hover:text-foreground underline"
-            >
-              Limpar filtro
-            </button>
-          )}
+          <DateRangeFilter value={dateRange} onChange={setDateRange} />
           <button
             onClick={handleDownloadCSV}
             disabled={filteredLeads.length === 0}
