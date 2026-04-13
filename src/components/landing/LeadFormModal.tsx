@@ -106,7 +106,6 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                 >
                   <img src={iconDownload} alt="" className="w-11 h-11 object-contain" />
                 </motion.div>
-                </motion.div>
                 <div>
                   <h2 className="text-lg font-bold text-foreground leading-tight">
                     Quase lá! 🎵
