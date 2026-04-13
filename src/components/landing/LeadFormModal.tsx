@@ -79,7 +79,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 40 }}
             transition={{ type: "spring", damping: 22, stiffness: 260 }}
-            className="relative w-full max-w-[420px] overflow-hidden rounded-3xl shadow-[0_25px_60px_-15px_hsl(var(--primary)/0.3)]"
+            className="relative w-full max-w-[92vw] sm:max-w-[420px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_hsl(var(--primary)/0.3)]"
           >
             {/* Top accent gradient bar */}
             <div className="h-1.5 w-full bg-gradient-to-r from-primary via-accent to-primary" />
@@ -88,7 +88,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="relative bg-card border border-border/50 rounded-b-3xl p-7">
+            <div className="relative bg-card border border-border/50 rounded-b-2xl sm:rounded-b-3xl p-5 sm:p-7">
               {/* Close button */}
               <button
                 onClick={onClose}
@@ -133,7 +133,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                     placeholder="Seu nome"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
-                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    className="w-full h-11 sm:h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
                     maxLength={100}
                   />
                 </motion.div>
@@ -151,7 +151,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                     placeholder="Seu e-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    className="w-full h-11 sm:h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
                     maxLength={255}
                   />
                 </motion.div>
@@ -169,7 +169,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                     placeholder="Seu telefone"
                     value={telefone}
                     onChange={(e) => setTelefone(e.target.value)}
-                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    className="w-full h-11 sm:h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
                     maxLength={20}
                   />
                 </motion.div>
@@ -193,7 +193,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                   transition={{ delay: 0.25 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-2 w-full h-13 py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm tracking-wide hover:shadow-[0_8px_25px_-5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="mt-1 sm:mt-2 w-full h-12 sm:h-13 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm tracking-wide hover:shadow-[0_8px_25px_-5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
