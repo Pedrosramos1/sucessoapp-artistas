@@ -79,7 +79,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 40 }}
             transition={{ type: "spring", damping: 22, stiffness: 260 }}
-            className="relative w-full max-w-[420px] overflow-hidden rounded-3xl shadow-[0_25px_60px_-15px_hsl(var(--primary)/0.3)]"
+            className="relative w-full max-w-[92vw] sm:max-w-[420px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_hsl(var(--primary)/0.3)]"
           >
             {/* Top accent gradient bar */}
             <div className="h-1.5 w-full bg-gradient-to-r from-primary via-accent to-primary" />
