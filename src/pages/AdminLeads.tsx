@@ -18,6 +18,7 @@ const AdminLeads = () => {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [platformFilter, setPlatformFilter] = useState<string>("all");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,9 +68,18 @@ const AdminLeads = () => {
     };
   }, [authenticated]);
 
+  const platforms = useMemo(() => {
+    const set = new Set(leads.map((l) => l.plataforma).filter(Boolean) as string[]);
+    return Array.from(set).sort();
+  }, [leads]);
+
   const filteredLeads = useMemo(() => {
-    if (!dateRange.from && !dateRange.to) return leads;
-    return leads.filter((lead) => {
+    let filtered = leads;
+    if (platformFilter !== "all") {
+      filtered = filtered.filter((l) => l.plataforma === platformFilter);
+    }
+    if (!dateRange.from && !dateRange.to) return filtered;
+    return filtered.filter((lead) => {
       const leadDate = new Date(lead.created_at);
       const leadDay = new Date(leadDate.getFullYear(), leadDate.getMonth(), leadDate.getDate());
       if (dateRange.from && dateRange.to) {
@@ -83,7 +93,7 @@ const AdminLeads = () => {
       }
       return true;
     });
-  }, [leads, dateRange]);
+  }, [leads, dateRange, platformFilter]);
 
   const handleDownloadCSV = () => {
     if (filteredLeads.length === 0) return;
@@ -158,8 +168,18 @@ const AdminLeads = () => {
         </div>
 
         {/* Filters & Actions */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5 flex-wrap">
           <DateRangeFilter value={dateRange} onChange={setDateRange} />
+          <select
+            value={platformFilter}
+            onChange={(e) => setPlatformFilter(e.target.value)}
+            className="h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="all">Todas plataformas</option>
+            {platforms.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
           <button
             onClick={handleDownloadCSV}
             disabled={filteredLeads.length === 0}
