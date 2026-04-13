@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Music, Smartphone, Mail, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LeadFormModalProps {
@@ -37,12 +37,10 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
 
       if (dbError) throw dbError;
 
-      // Track event
       if (typeof window !== "undefined" && (window as any).fbq) {
         (window as any).fbq("trackCustom", "LeadCaptured", { plataforma });
       }
 
-      // Redirect after saving
       window.open(redirectUrl, "_blank");
       onClose();
       setNome("");
@@ -63,74 +61,151 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
         >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+          {/* Backdrop with blur */}
+          <motion.div
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-md bg-card border border-border rounded-2xl p-6 shadow-2xl"
+            exit={{ opacity: 0, scale: 0.85, y: 40 }}
+            transition={{ type: "spring", damping: 22, stiffness: 260 }}
+            className="relative w-full max-w-[420px] overflow-hidden rounded-3xl shadow-[0_25px_60px_-15px_hsl(var(--primary)/0.3)]"
           >
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <X size={20} />
-            </button>
+            {/* Top accent gradient bar */}
+            <div className="h-1.5 w-full bg-gradient-to-r from-primary via-accent to-primary" />
 
-            <h2 className="text-xl font-bold text-foreground mb-1">
-              Quase lá! 🎵
-            </h2>
-            <p className="text-sm text-muted-foreground mb-5">
-              Preencha seus dados para liberar o download.
-            </p>
+            {/* Glow effects */}
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input
-                type="text"
-                placeholder="Seu nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="w-full h-11 rounded-lg border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                maxLength={100}
-              />
-              <input
-                type="email"
-                placeholder="Seu e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 rounded-lg border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                maxLength={255}
-              />
-              <input
-                type="tel"
-                placeholder="Seu telefone"
-                value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
-                className="w-full h-11 rounded-lg border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                maxLength={20}
-              />
-
-              {error && (
-                <p className="text-xs text-destructive">{error}</p>
-              )}
-
+            <div className="relative bg-card border border-border/50 rounded-b-3xl p-7">
+              {/* Close button */}
               <button
-                type="submit"
-                disabled={loading}
-                className="mt-1 w-full h-12 rounded-lg bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+                onClick={onClose}
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
               >
-                {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  "🔓 Liberar Download"
-                )}
+                <X size={16} />
               </button>
-            </form>
+
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-2">
+                <motion.div
+                  className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20"
+                  animate={{ rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Music size={20} className="text-primary-foreground" />
+                </motion.div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground leading-tight">
+                    Quase lá! 🎵
+                  </h2>
+                  <p className="text-xs text-muted-foreground">
+                    Preencha para liberar o download
+                  </p>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px w-full bg-border/60 my-4" />
+
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                {/* Nome */}
+                <motion.div
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="relative"
+                >
+                  <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Seu nome"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    maxLength={100}
+                  />
+                </motion.div>
+
+                {/* Email */}
+                <motion.div
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="relative"
+                >
+                  <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="email"
+                    placeholder="Seu e-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    maxLength={255}
+                  />
+                </motion.div>
+
+                {/* Telefone */}
+                <motion.div
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="relative"
+                >
+                  <Smartphone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="tel"
+                    placeholder="Seu telefone"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
+                    className="w-full h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
+                    maxLength={20}
+                  />
+                </motion.div>
+
+                {error && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs text-destructive font-medium"
+                  >
+                    {error}
+                  </motion.p>
+                )}
+
+                {/* Submit button */}
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mt-2 w-full h-13 py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm tracking-wide hover:shadow-[0_8px_25px_-5px_hsl(var(--primary)/0.4)] transition-shadow duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>🔓 Liberar Download</>
+                  )}
+                </motion.button>
+
+                <p className="text-[11px] text-muted-foreground/60 text-center mt-1">
+                  Seus dados estão seguros e não serão compartilhados.
+                </p>
+              </form>
+            </div>
           </motion.div>
         </motion.div>
       )}
