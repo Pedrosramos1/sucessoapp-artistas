@@ -55,19 +55,21 @@ Deno.serve(async (req) => {
       formattedPhone = '+' + formattedPhone
     }
 
-    const brevoPayload: Record<string, unknown> = {
-      email,
-      attributes: {
-        FIRSTNAME: firstName,
-        LASTNAME: lastName,
-        PLATAFORMA: plataforma || '',
-      },
-      updateEnabled: true,
+    const attributes: Record<string, string> = {
+      FIRSTNAME: firstName,
+      LASTNAME: lastName,
+      PLATAFORMA: plataforma || '',
     }
 
-    // Only include SMS if we have a valid formatted phone
-    if (formattedPhone.length >= 12) {
-      (brevoPayload.attributes as Record<string, string>).SMS = formattedPhone
+    // Only include SMS if phone has country code + at least 10 digits (e.g. +5511999999999)
+    if (formattedPhone.length >= 13 && /^\+\d{12,15}$/.test(formattedPhone)) {
+      attributes.SMS = formattedPhone
+    }
+
+    const brevoPayload = {
+      email,
+      attributes,
+      updateEnabled: true,
     }
 
     const response = await fetch('https://api.brevo.com/v3/contacts', {
