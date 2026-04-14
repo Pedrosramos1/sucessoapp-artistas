@@ -14,7 +14,40 @@ interface LeadFormModalProps {
 const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModalProps) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
+  const [telefone, setTelefone] = useState("+55 ");
+
+  const formatPhone = (value: string) => {
+    // Keep only digits after removing +
+    const digits = value.replace(/\D/g, '');
+    
+    // Always keep 55 prefix
+    let numbered = digits;
+    if (!numbered.startsWith('55')) {
+      numbered = '55' + numbered.replace(/^55*/, '');
+    }
+    
+    const ddd = numbered.slice(2, 4);
+    const part1 = numbered.slice(4, 9);
+    const part2 = numbered.slice(9, 13);
+    
+    let formatted = '+55';
+    if (ddd) formatted += ` (${ddd}`;
+    if (ddd.length === 2) formatted += ')';
+    if (part1) formatted += ` ${part1}`;
+    if (part2) formatted += `-${part2}`;
+    
+    return formatted;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    // Don't allow deleting the +55 prefix
+    if (raw.replace(/\D/g, '').length < 2) {
+      setTelefone('+55 ');
+      return;
+    }
+    setTelefone(formatPhone(raw));
+  };
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
