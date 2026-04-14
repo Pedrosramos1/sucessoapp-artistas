@@ -2,14 +2,57 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
+
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
 
 const BodySchema = z.object({
-  nome: z.string().min(1).max(100),
-  email: z.string().email(),
-  telefone: z.string().min(1).max(20),
-  plataforma: z.string().optional(),
+  nome: z.string().trim().min(1).max(100),
+  email: z.string().trim().email(),
+  telefone: z.string().trim().min(1).max(30),
+  plataforma: z.string().trim().optional(),
 })
+
+const normalizePhone = (value: string) => {
+  const digits = value.replace(/\D/g, '')
+
+  if (!digits) return null
+  if (value.trim().startsWith('+')) return `+${digits}`
+  if (digits.startsWith('55')) return `+${digits}`
+  if (digits.length <= 11) return `+55${digits}`
+
+  return `+${digits}`
+}
+
+const isLikelyValidPhone = (phone: string | null) => {
+  if (!phone || !/^\+\d{12,15}$/.test(phone)) return false
+
+  const nationalDigits = phone.startsWith('+55') ? phone.slice(3) : phone.slice(1)
+
+  if (/^(\d)\1+$/.test(nationalDigits)) return false
+  if (/0{8,}/.test(nationalDigits)) return false
+
+  return true
+}
+
+const sendToBrevo = async (apiKey: string, payload: Record<string, unknown>) => {
+  const response = await fetch('https://api.brevo.com/v3/contacts', {
+    method: 'POST',
+    headers: {
+      'api-key': apiKey,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  const responseText = await response.text()
+
+  return {
+    ok: response.ok || response.status === 204 || response.status === 409,
+    status: response.status,
+    responseText,
+  }
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -36,24 +79,10 @@ Deno.serve(async (req) => {
     }
 
     const { nome, email, telefone, plataforma } = parsed.data
-
-    // Split name into first/last
-    const nameParts = nome.trim().split(/\s+/)
+    const nameParts = nome.split(/\s+/)
     const firstName = nameParts[0] || ''
     const lastName = nameParts.slice(1).join(' ') || ''
-
-    // Format phone for Brevo: must start with +countrycode
-    let formattedPhone = telefone.replace(/\D/g, '')
-    if (formattedPhone && !telefone.startsWith('+')) {
-      // Assume Brazilian number if no country code
-      if (formattedPhone.length <= 11) {
-        formattedPhone = '+55' + formattedPhone
-      } else {
-        formattedPhone = '+' + formattedPhone
-      }
-    } else if (telefone.startsWith('+')) {
-      formattedPhone = '+' + formattedPhone
-    }
+    const formattedPhone = normalizePhone(telefone)
 
     const attributes: Record<string, string> = {
       FIRSTNAME: firstName,
@@ -61,42 +90,38 @@ Deno.serve(async (req) => {
       PLATAFORMA: plataforma || '',
     }
 
-    // Only include SMS if phone has country code + at least 10 digits (e.g. +5511999999999)
-    if (formattedPhone.length >= 13 && /^\+\d{12,15}$/.test(formattedPhone)) {
-      attributes.SMS = formattedPhone
+    if (isLikelyValidPhone(formattedPhone)) {
+      attributes.SMS = formattedPhone as string
     }
 
-    const brevoPayload = {
+    let brevoPayload: Record<string, unknown> = {
       email,
       attributes,
       updateEnabled: true,
     }
 
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        'api-key': BREVO_API_KEY,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(brevoPayload),
-    })
+    let result = await sendToBrevo(BREVO_API_KEY, brevoPayload)
 
-    const responseText = await response.text()
-
-    if (!response.ok && response.status !== 204) {
-      // 409 = contact already exists, which is fine with updateEnabled
-      if (response.status !== 409) {
-        console.error(`Brevo API error [${response.status}]: ${responseText}`)
-        return new Response(
-          JSON.stringify({ error: `Brevo API error: ${response.status}` }),
-          { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+    if (!result.ok && attributes.SMS && result.status === 400 && /invalid phone number/i.test(result.responseText)) {
+      delete attributes.SMS
+      brevoPayload = {
+        email,
+        attributes,
+        updateEnabled: true,
       }
+      result = await sendToBrevo(BREVO_API_KEY, brevoPayload)
+    }
+
+    if (!result.ok) {
+      console.error(`Brevo API error [${result.status}]: ${result.responseText}`)
+      return new Response(
+        JSON.stringify({ error: `Brevo API error: ${result.status}` }),
+        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, phoneSkipped: !attributes.SMS && Boolean(formattedPhone) }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error: unknown) {
