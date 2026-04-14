@@ -42,15 +42,32 @@ Deno.serve(async (req) => {
     const firstName = nameParts[0] || ''
     const lastName = nameParts.slice(1).join(' ') || ''
 
-    const brevoPayload = {
+    // Format phone for Brevo: must start with +countrycode
+    let formattedPhone = telefone.replace(/\D/g, '')
+    if (formattedPhone && !telefone.startsWith('+')) {
+      // Assume Brazilian number if no country code
+      if (formattedPhone.length <= 11) {
+        formattedPhone = '+55' + formattedPhone
+      } else {
+        formattedPhone = '+' + formattedPhone
+      }
+    } else if (telefone.startsWith('+')) {
+      formattedPhone = '+' + formattedPhone
+    }
+
+    const brevoPayload: Record<string, unknown> = {
       email,
       attributes: {
         FIRSTNAME: firstName,
         LASTNAME: lastName,
-        SMS: telefone,
         PLATAFORMA: plataforma || '',
       },
       updateEnabled: true,
+    }
+
+    // Only include SMS if we have a valid formatted phone
+    if (formattedPhone.length >= 12) {
+      (brevoPayload.attributes as Record<string, string>).SMS = formattedPhone
     }
 
     const response = await fetch('https://api.brevo.com/v3/contacts', {
