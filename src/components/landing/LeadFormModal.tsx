@@ -29,14 +29,20 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
 
     setLoading(true);
     try {
-      const { error: dbError } = await supabase.from("leads").insert({
+      const leadData = {
         nome: nome.trim(),
         email: email.trim(),
         telefone: telefone.trim(),
         plataforma,
-      });
+      };
 
+      const { error: dbError } = await supabase.from("leads").insert(leadData);
       if (dbError) throw dbError;
+
+      // Sync to Brevo (fire-and-forget, don't block the user)
+      supabase.functions.invoke("sync-lead-brevo", { body: leadData }).catch((err) =>
+        console.error("Brevo sync error:", err)
+      );
 
       if (typeof window !== "undefined" && (window as any).fbq) {
         (window as any).fbq("trackCustom", "LeadCaptured", { plataforma });
