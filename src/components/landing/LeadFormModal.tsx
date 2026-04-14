@@ -85,7 +85,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
       onClose();
       setNome("");
       setEmail("");
-      setTelefone("");
+      setTelefone("+55 ");
     } catch {
       setError("Erro ao enviar. Tente novamente.");
     } finally {
