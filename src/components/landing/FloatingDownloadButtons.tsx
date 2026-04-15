@@ -25,6 +25,9 @@ const FloatingDownloadButtons = () => {
   const [selectedPlatform, setSelectedPlatform] = useState<{ url: string; name: string }>({ url: "", name: "" });
 
   const handleClick = (url: string, name: string) => {
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("trackCustom", "DownloadClick", { plataforma: name, secao: "Flutuante" });
+    }
     setSelectedPlatform({ url, name });
     setModalOpen(true);
   };

@@ -19,6 +19,9 @@ const Hero = () => {
   const [selectedPlatform, setSelectedPlatform] = useState<{ url: string; name: string }>({ url: "", name: "" });
 
   const handleDownloadClick = (url: string, name: string) => {
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("trackCustom", "DownloadClick", { plataforma: name, secao: "Hero" });
+    }
     setSelectedPlatform({ url, name });
     setModalOpen(true);
   };
