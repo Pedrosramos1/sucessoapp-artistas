@@ -78,6 +78,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
       );
 
       if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq("track", "Lead", { content_name: plataforma });
         (window as any).fbq("trackCustom", "LeadCaptured", { plataforma });
       }
 

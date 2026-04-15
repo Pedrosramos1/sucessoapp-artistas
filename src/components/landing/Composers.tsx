@@ -662,11 +662,11 @@ const Composers = () => {
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Baixe agora</span>
           </h3>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-            <button onClick={() => { setSelectedPlatform({ url: APP_STORE_LINK, name: "App Store" }); setModalOpen(true); }} className="relative group hover:scale-105 transition-transform duration-300">
+            <button onClick={() => { if ((window as any).fbq) (window as any).fbq("trackCustom", "DownloadClick", { plataforma: "App Store", secao: "Compositores" }); setSelectedPlatform({ url: APP_STORE_LINK, name: "App Store" }); setModalOpen(true); }} className="relative group hover:scale-105 transition-transform duration-300">
               <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               <img src={badgeAppStore} alt="Baixar na App Store" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
             </button>
-            <button onClick={() => { setSelectedPlatform({ url: GOOGLE_PLAY_LINK, name: "Google Play" }); setModalOpen(true); }} className="relative group hover:scale-105 transition-transform duration-300">
+            <button onClick={() => { if ((window as any).fbq) (window as any).fbq("trackCustom", "DownloadClick", { plataforma: "Google Play", secao: "Compositores" }); setSelectedPlatform({ url: GOOGLE_PLAY_LINK, name: "Google Play" }); setModalOpen(true); }} className="relative group hover:scale-105 transition-transform duration-300">
               <div className="absolute -inset-5 rounded-2xl bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.8),hsl(var(--accent)/0.35),transparent_70%)] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               <img src={badgeGooglePlay} alt="Disponível no Google Play" className="relative h-14 sm:h-16 md:h-20 w-auto object-contain" />
             </button>
