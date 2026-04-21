@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto">
         {/* Top row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-          <img src={logo} alt="SucessoApp" className="h-7" />
+          <img src={logo} alt="Sucesso.App" className="h-7" />
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <a
