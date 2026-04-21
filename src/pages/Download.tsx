@@ -49,9 +49,11 @@ const Download = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-[2rem] sm:text-5xl md:text-6xl lg:text-8xl leading-[1.1] tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 md:mb-8 font-sans font-bold"
+          className="text-[2rem] sm:text-5xl md:text-6xl lg:text-8xl leading-[1.1] tracking-tight mb-6 md:mb-8 font-sans font-bold"
         >
-          SucessoApp
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Sucesso</span>
+          <span className="text-foreground">.</span>
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">App</span>
         </motion.p>
 
         <motion.p
