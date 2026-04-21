@@ -36,7 +36,7 @@ const Hero = () => {
 
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
-        <img src={logo} alt="SucessoApp" className="h-7 md:h-8" />
+        <img src={logo} alt="Sucesso.App" className="h-7 md:h-8" />
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">A plataforma</a>
           <a href="#composers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Compositores</a>

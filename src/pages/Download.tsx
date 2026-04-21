@@ -31,7 +31,7 @@ const Download = () => {
 
       {/* Logo header */}
       <header className="relative z-20 flex items-center justify-center px-5 md:px-12 py-6 md:py-8">
-        <img src={logo} alt="SucessoApp" className="h-8 md:h-10" />
+        <img src={logo} alt="Sucesso.App" className="h-8 md:h-10" />
       </header>
 
       {/* Hero content */}
