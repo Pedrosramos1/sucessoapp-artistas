@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Smartphone, Mail, User } from "lucide-react";
+import { X, Smartphone, Mail, User, Mic, Music } from "lucide-react";
 import iconDownload from "@/assets/icon-download.png";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -58,8 +58,13 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
     e.preventDefault();
     setError("");
 
-    if (!nome.trim() || !email.trim() || !telefone.trim() || !perfil) {
+    if (!nome.trim() || !email.trim() || !telefone.trim()) {
       setError("Preencha todos os campos.");
+      return;
+    }
+
+    if (!perfil) {
+      setError("Selecione se você é Artista ou Compositor.");
       return;
     }
 
@@ -225,33 +230,53 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.25 }}
                   className="flex flex-col gap-2"
+                  role="radiogroup"
+                  aria-required="true"
+                  aria-label="Perfil do lead"
                 >
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Você é artista ou compositor?
+                  <p className="text-xs text-foreground font-semibold">
+                    Você é artista ou compositor? <span className="text-destructive">*</span>
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(["artista", "compositor"] as const).map((opcao) => (
-                      <label
-                        key={opcao}
-                        className={`relative flex items-center justify-center gap-2 h-11 sm:h-12 rounded-xl border cursor-pointer transition-all duration-200 ${
-                          perfil === opcao
-                            ? "border-primary bg-primary/10 text-foreground"
-                            : "border-input bg-background text-muted-foreground hover:border-primary/50"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="perfil"
-                          value={opcao}
-                          checked={perfil === opcao}
-                          onChange={() => setPerfil(opcao)}
-                          className="sr-only"
-                        />
-                        <span className="text-sm font-medium capitalize">
-                          {opcao === "artista" ? "Artista" : "Compositor"}
-                        </span>
-                      </label>
-                    ))}
+                  <p className="text-[11px] text-muted-foreground">
+                    Selecione uma opção obrigatória para liberar o download.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(["artista", "compositor"] as const).map((opcao) => {
+                      const Icon = opcao === "artista" ? Mic : Music;
+                      const label = opcao === "artista" ? "Artista" : "Compositor";
+                      const selected = perfil === opcao;
+                      return (
+                        <label
+                          key={opcao}
+                          className={`relative flex flex-col items-center justify-center gap-1.5 h-[4.5rem] sm:h-20 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                            selected
+                              ? "border-primary bg-primary/15 text-foreground shadow-[0_0_20px_-5px_hsl(var(--primary)/0.35)] ring-2 ring-primary/30"
+                              : "border-border/80 bg-card/50 text-muted-foreground hover:border-primary/60 hover:bg-card"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="perfil"
+                            value={opcao}
+                            checked={selected}
+                            onChange={() => setPerfil(opcao)}
+                            className="sr-only"
+                            required
+                          />
+                          <Icon
+                            size={22}
+                            className={selected ? "text-primary" : "text-muted-foreground"}
+                            strokeWidth={2}
+                          />
+                          <span className="text-sm sm:text-base font-bold capitalize">
+                            {label}
+                          </span>
+                          {selected && (
+                            <span className="absolute top-2 right-2 flex h-2.5 w-2.5 rounded-full bg-primary" />
+                          )}
+                        </label>
+                      );
+                    })}
                   </div>
                 </motion.div>
 
