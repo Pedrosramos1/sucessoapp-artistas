@@ -19,55 +19,39 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
   const [platformFilter, setPlatformFilter] = useState<string>("all");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "sucesso2026") {
-      setAuthenticated(true);
+    setLoginError(null);
+    const { data, error } = await supabase.functions.invoke("admin-leads", {
+      body: { password },
+    });
+    if (error || !data?.leads) {
+      setLoginError("Senha inválida.");
+      return;
     }
+    setLeads(data.leads as Lead[]);
+    setLoading(false);
+    setAuthenticated(true);
   };
 
   useEffect(() => {
     if (!authenticated) return;
 
     const fetchLeads = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("leads")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (!error && data) {
-        setLeads(data as Lead[]);
+      const { data, error } = await supabase.functions.invoke("admin-leads", {
+        body: { password },
+      });
+      if (!error && data?.leads) {
+        setLeads(data.leads as Lead[]);
       }
-      setLoading(false);
     };
 
-    fetchLeads();
-
-    const channel = supabase
-      .channel("leads-realtime")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "leads" },
-        (payload) => {
-          setLeads((prev) => [payload.new as Lead, ...prev]);
-        }
-      )
-      .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "leads" },
-        (payload) => {
-          setLeads((prev) => prev.filter((l) => l.id !== (payload.old as Lead).id));
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    const interval = setInterval(fetchLeads, 15000);
+    return () => clearInterval(interval);
   }, [authenticated]);
 
   const platforms = useMemo(() => {
@@ -143,6 +127,9 @@ const AdminLeads = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full h-11 rounded-lg border border-input bg-card px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
+          {loginError && (
+            <p className="text-sm text-destructive text-center">{loginError}</p>
+          )}
           <button
             type="submit"
             className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-semibold text-sm"
