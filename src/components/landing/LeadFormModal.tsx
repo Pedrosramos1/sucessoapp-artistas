@@ -248,10 +248,10 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                       return (
                         <label
                           key={opcao}
-                          className={`relative flex flex-col items-center justify-center gap-1.5 h-[4.5rem] sm:h-20 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                          className={`relative flex flex-col items-center justify-center gap-2 h-[4.5rem] sm:h-20 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
                             selected
-                              ? "border-primary bg-primary/15 text-foreground shadow-[0_0_20px_-5px_hsl(var(--primary)/0.35)] ring-2 ring-primary/30"
-                              : "border-border/80 bg-card/50 text-muted-foreground hover:border-primary/60 hover:bg-card"
+                              ? "border-primary bg-primary/25 text-foreground shadow-[0_0_28px_-4px_hsl(var(--primary)/0.55)] ring-2 ring-primary/40 scale-[1.02]"
+                              : "border-border/80 bg-card/50 text-muted-foreground hover:border-primary/60 hover:bg-card hover:scale-[1.01]"
                           }`}
                         >
                           <input
@@ -264,15 +264,19 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                             required
                           />
                           <Icon
-                            size={22}
-                            className={selected ? "text-primary" : "text-muted-foreground"}
-                            strokeWidth={2}
+                            size={26}
+                            className={selected ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" : "text-muted-foreground"}
+                            strokeWidth={selected ? 2.5 : 2}
                           />
-                          <span className="text-sm sm:text-base font-bold capitalize">
+                          <span className={`text-sm sm:text-base font-bold capitalize ${selected ? "text-foreground" : ""}`}>
                             {label}
                           </span>
                           {selected && (
-                            <span className="absolute top-2 right-2 flex h-2.5 w-2.5 rounded-full bg-primary" />
+                            <span className="absolute top-2 right-2 flex items-center justify-center h-5 w-5 rounded-full bg-primary text-primary-foreground shadow-md">
+                              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 5L3.5 7.5L9 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
                           )}
                         </label>
                       );
