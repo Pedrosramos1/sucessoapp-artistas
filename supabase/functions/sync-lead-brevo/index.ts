@@ -10,6 +10,7 @@ const BodySchema = z.object({
   email: z.string().trim().email(),
   telefone: z.string().trim().min(1).max(30),
   plataforma: z.string().trim().optional(),
+  perfil: z.string().trim().optional(),
 })
 
 const normalizePhone = (value: string) => {

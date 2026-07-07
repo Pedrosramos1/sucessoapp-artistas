@@ -9,6 +9,7 @@ interface Lead {
   nome: string;
   email: string;
   telefone: string;
+  perfil: string | null;
   plataforma: string | null;
   created_at: string;
 }

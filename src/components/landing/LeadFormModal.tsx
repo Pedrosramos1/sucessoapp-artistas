@@ -11,10 +11,13 @@ interface LeadFormModalProps {
   plataforma: string;
 }
 
+type Perfil = "artista" | "compositor" | "";
+
 const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModalProps) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("+55 ");
+  const [perfil, setPerfil] = useState<Perfil>("");
 
   const formatPhone = (value: string) => {
     // Keep only digits after removing +
