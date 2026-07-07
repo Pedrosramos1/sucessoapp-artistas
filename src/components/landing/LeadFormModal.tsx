@@ -58,8 +58,13 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
     e.preventDefault();
     setError("");
 
-    if (!nome.trim() || !email.trim() || !telefone.trim() || !perfil) {
+    if (!nome.trim() || !email.trim() || !telefone.trim()) {
       setError("Preencha todos os campos.");
+      return;
+    }
+
+    if (!perfil) {
+      setError("Selecione se você é Artista ou Compositor.");
       return;
     }
 
