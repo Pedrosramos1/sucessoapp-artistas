@@ -10,6 +10,7 @@ const BodySchema = z.object({
   email: z.string().trim().email(),
   telefone: z.string().trim().min(1).max(30),
   plataforma: z.string().trim().optional(),
+  perfil: z.string().trim().optional(),
 })
 
 const normalizePhone = (value: string) => {
@@ -78,7 +79,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    const { nome, email, telefone, plataforma } = parsed.data
+    const { nome, email, telefone, plataforma, perfil } = parsed.data
     const nameParts = nome.split(/\s+/)
     const firstName = nameParts[0] || ''
     const lastName = nameParts.slice(1).join(' ') || ''
@@ -88,6 +89,7 @@ Deno.serve(async (req) => {
       FIRSTNAME: firstName,
       LASTNAME: lastName,
       PLATAFORMA: plataforma || '',
+      PERFIL: perfil || '',
     }
 
     if (isLikelyValidPhone(formattedPhone)) {

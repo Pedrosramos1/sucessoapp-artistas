@@ -9,6 +9,7 @@ interface Lead {
   nome: string;
   email: string;
   telefone: string;
+  perfil: string | null;
   plataforma: string | null;
   created_at: string;
 }
@@ -99,11 +100,12 @@ const AdminLeads = () => {
   const handleDownloadCSV = () => {
     if (filteredLeads.length === 0) return;
 
-    const headers = ["Nome", "Email", "Telefone", "Plataforma", "Data"];
+    const headers = ["Nome", "Email", "Telefone", "Perfil", "Plataforma", "Data"];
     const rows = filteredLeads.map((lead) => [
       lead.nome,
       lead.email,
       lead.telefone,
+      lead.perfil ?? "",
       lead.plataforma ?? "",
       new Date(lead.created_at).toLocaleString("pt-BR"),
     ]);
@@ -208,6 +210,7 @@ const AdminLeads = () => {
                   <th className="text-left px-4 py-3 text-muted-foreground font-medium">Nome</th>
                   <th className="text-left px-4 py-3 text-muted-foreground font-medium">Email</th>
                   <th className="text-left px-4 py-3 text-muted-foreground font-medium">Telefone</th>
+                  <th className="text-left px-4 py-3 text-muted-foreground font-medium">Perfil</th>
                   <th className="text-left px-4 py-3 text-muted-foreground font-medium">Plataforma</th>
                   <th className="text-left px-4 py-3 text-muted-foreground font-medium">Data</th>
                 </tr>
@@ -218,6 +221,7 @@ const AdminLeads = () => {
                     <td className="px-4 py-3 text-foreground">{lead.nome}</td>
                     <td className="px-4 py-3 text-foreground">{lead.email}</td>
                     <td className="px-4 py-3 text-foreground">{lead.telefone}</td>
+                    <td className="px-4 py-3 text-foreground capitalize">{lead.perfil ?? "—"}</td>
                     <td className="px-4 py-3 text-foreground">{lead.plataforma ?? "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {new Date(lead.created_at).toLocaleString("pt-BR")}

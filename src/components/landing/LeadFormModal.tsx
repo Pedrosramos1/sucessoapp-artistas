@@ -11,10 +11,13 @@ interface LeadFormModalProps {
   plataforma: string;
 }
 
+type Perfil = "artista" | "compositor" | "";
+
 const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModalProps) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("+55 ");
+  const [perfil, setPerfil] = useState<Perfil>("");
 
   const formatPhone = (value: string) => {
     // Keep only digits after removing +
@@ -55,7 +58,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
     e.preventDefault();
     setError("");
 
-    if (!nome.trim() || !email.trim() || !telefone.trim()) {
+    if (!nome.trim() || !email.trim() || !telefone.trim() || !perfil) {
       setError("Preencha todos os campos.");
       return;
     }
@@ -67,6 +70,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
         email: email.trim(),
         telefone: telefone.trim(),
         plataforma,
+        perfil,
       };
 
       const { error: dbError } = await supabase.from("leads").insert(leadData);
@@ -79,7 +83,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
 
       if (typeof window !== "undefined" && (window as any).fbq) {
         (window as any).fbq("track", "Lead", { content_name: plataforma });
-        (window as any).fbq("trackCustom", "LeadCaptured", { plataforma });
+        (window as any).fbq("trackCustom", "LeadCaptured", { plataforma, perfil });
       }
 
       window.open(redirectUrl, "_blank");
@@ -87,6 +91,7 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
       setNome("");
       setEmail("");
       setTelefone("+55 ");
+      setPerfil("");
     } catch {
       setError("Erro ao enviar. Tente novamente.");
     } finally {
@@ -212,6 +217,42 @@ const LeadFormModal = ({ open, onClose, redirectUrl, plataforma }: LeadFormModal
                     className="w-full h-11 sm:h-12 rounded-xl border border-input bg-background pl-10 pr-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200"
                     maxLength={20}
                   />
+                </motion.div>
+
+                {/* Perfil */}
+                <motion.div
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.25 }}
+                  className="flex flex-col gap-2"
+                >
+                  <p className="text-xs text-muted-foreground font-medium">
+                    Você é artista ou compositor?
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(["artista", "compositor"] as const).map((opcao) => (
+                      <label
+                        key={opcao}
+                        className={`relative flex items-center justify-center gap-2 h-11 sm:h-12 rounded-xl border cursor-pointer transition-all duration-200 ${
+                          perfil === opcao
+                            ? "border-primary bg-primary/10 text-foreground"
+                            : "border-input bg-background text-muted-foreground hover:border-primary/50"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="perfil"
+                          value={opcao}
+                          checked={perfil === opcao}
+                          onChange={() => setPerfil(opcao)}
+                          className="sr-only"
+                        />
+                        <span className="text-sm font-medium capitalize">
+                          {opcao === "artista" ? "Artista" : "Compositor"}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </motion.div>
 
                 {error && (
