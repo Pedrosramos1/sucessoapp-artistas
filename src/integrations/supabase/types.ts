@@ -20,6 +20,7 @@ export type Database = {
           email: string
           id: string
           nome: string
+          perfil: string | null
           plataforma: string | null
           telefone: string
         }
@@ -28,6 +29,7 @@ export type Database = {
           email: string
           id?: string
           nome: string
+          perfil?: string | null
           plataforma?: string | null
           telefone: string
         }
@@ -36,6 +38,7 @@ export type Database = {
           email?: string
           id?: string
           nome?: string
+          perfil?: string | null
           plataforma?: string | null
           telefone?: string
         }
